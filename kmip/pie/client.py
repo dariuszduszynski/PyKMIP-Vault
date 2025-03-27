@@ -194,8 +194,7 @@ class ProxyKmipClient(object):
                 raise
 
     @is_connected
-    def create(self, algorithm, length, operation_policy_name=None, name=None,
-               cryptographic_usage_mask=None):
+    def create(self, algorithm, length, operation_policy_name=None, name=None, cryptographic_usage_mask=None):
         """
         Create a symmetric key on a KMIP appliance.
 
@@ -218,10 +217,24 @@ class ProxyKmipClient(object):
             KmipOperationFailure: if the operation result is a failure
             TypeError: if the input arguments are invalid
         """
+
+
         # Check inputs
-        if not isinstance(algorithm, enums.CryptographicAlgorithm):
+        # TODO (peter-hamilton) Add better input validation checks.
+        from kmip.core.enums import CryptographicAlgorithm as CoreAlgorithm
+
+        if not (
+        isinstance(algorithm, enums.CryptographicAlgorithm) or isinstance(algorithm, CoreAlgorithm)
+        ):
             raise TypeError(
-                "algorithm must be a CryptographicAlgorithm enumeration")
+                f"algorithm must be a CryptographicAlgorithm enumeration, got {type(algorithm)}"
+            )
+    
+
+        #if not isinstance(algorithm, enums.CryptographicAlgorithm):
+        #    raise TypeError(
+        #        "algorithm must be a CryptographicAlgorithm enumeration")
+        
         elif not isinstance(length, six.integer_types) or length <= 0:
             raise TypeError("length must be a positive integer")
         if cryptographic_usage_mask is not None:
