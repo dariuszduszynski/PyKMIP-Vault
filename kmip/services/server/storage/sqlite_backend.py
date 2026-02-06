@@ -20,6 +20,7 @@ from __future__ import annotations
 import logging
 import os
 import shutil
+import sqlite3
 import tempfile
 from typing import Any
 from typing import Mapping
@@ -134,7 +135,20 @@ class SQLiteBackend(StorageBackend):
         if destination_dir:
             os.makedirs(destination_dir, exist_ok=True)
 
-        shutil.copy2(database_path, destination)
+        try:
+            source_conn = sqlite3.connect(database_path)
+            dest_conn = sqlite3.connect(destination)
+            try:
+                source_conn.backup(dest_conn)
+            finally:
+                dest_conn.close()
+                source_conn.close()
+        except sqlite3.Error:
+            self._logger.exception(
+                "SQLite backup failed, falling back to file copy."
+            )
+            shutil.copy2(database_path, destination)
+
         self._logger.info("SQLite backup created at %s", destination)
         return destination
 

@@ -25,13 +25,16 @@ import socket
 import ssl
 import sys
 import threading
+import datetime
 
 from kmip.core import exceptions
 from kmip.core import policy as operation_policy
 from kmip.services import auth
 from kmip.services.server import config
 from kmip.services.server import engine
+from kmip.services.server import http as http_service
 from kmip.services.server import monitor
+from kmip.services.server import replication
 from kmip.services.server import session
 
 # Python 3.12 removed ssl.wrap_socket; provide a compatibility shim so the
@@ -114,7 +117,14 @@ class KmipServer(object):
             tls_cipher_suites=None,
             logging_level=None,
             live_policies=False,
-            database_path=None
+            database_path=None,
+            health_host=None,
+            health_port=None,
+            replication_role=None,
+            replication_leader_url=None,
+            replication_token=None,
+            replication_poll_interval=None,
+            replication_timeout=None
     ):
         """
         Create a KmipServer.
@@ -180,6 +190,20 @@ class KmipServer(object):
                 to False.
             database_path (string): The path to the server's SQLite database
                 file. Optional, defaults to None.
+            health_host (string): The host address for the HTTP health service.
+                Optional, defaults to None.
+            health_port (int): The port for the HTTP health service. Optional,
+                defaults to None.
+            replication_role (string): Replication role, either 'leader' or
+                'follower'. Optional, defaults to None.
+            replication_leader_url (string): URL for leader replication backup
+                endpoint. Optional, defaults to None.
+            replication_token (string): Optional shared token for replication
+                authorization. Optional, defaults to None.
+            replication_poll_interval (float): Seconds between follower syncs.
+                Optional, defaults to None.
+            replication_timeout (float): HTTP timeout for replication syncs.
+                Optional, defaults to None.
         """
         self._logger = logging.getLogger('kmip.server')
         self._setup_logging(log_path)
@@ -197,7 +221,14 @@ class KmipServer(object):
             enable_tls_client_auth,
             tls_cipher_suites,
             logging_level,
-            database_path
+            database_path,
+            health_host,
+            health_port,
+            replication_role,
+            replication_leader_url,
+            replication_token,
+            replication_poll_interval,
+            replication_timeout
         )
         self.live_policies = live_policies
         self.policies = {}
@@ -212,6 +243,8 @@ class KmipServer(object):
 
         self._session_id = 1
         self._is_serving = False
+        self._http_service = None
+        self._replication_manager = None
 
     def _setup_logging(self, path):
         # Create the logging directory/file if it doesn't exist.
@@ -247,7 +280,14 @@ class KmipServer(object):
             enable_tls_client_auth=None,
             tls_cipher_suites=None,
             logging_level=None,
-            database_path=None
+            database_path=None,
+            health_host=None,
+            health_port=None,
+            replication_role=None,
+            replication_leader_url=None,
+            replication_token=None,
+            replication_poll_interval=None,
+            replication_timeout=None
     ):
         if path:
             self.config.load_settings(path)
@@ -280,6 +320,29 @@ class KmipServer(object):
             self.config.set_setting('logging_level', logging_level)
         if database_path:
             self.config.set_setting('database_path', database_path)
+        if health_host:
+            self.config.set_setting('health_host', health_host)
+        if health_port is not None:
+            self.config.set_setting('health_port', health_port)
+        if replication_role:
+            self.config.set_setting('replication_role', replication_role)
+        if replication_leader_url:
+            self.config.set_setting(
+                'replication_leader_url',
+                replication_leader_url
+            )
+        if replication_token:
+            self.config.set_setting('replication_token', replication_token)
+        if replication_poll_interval is not None:
+            self.config.set_setting(
+                'replication_poll_interval',
+                replication_poll_interval
+            )
+        if replication_timeout is not None:
+            self.config.set_setting(
+                'replication_timeout',
+                replication_timeout
+            )
 
     def start(self):
         """
@@ -316,6 +379,31 @@ class KmipServer(object):
             policies=self.policies,
             database_path=self.config.settings.get('database_path')
         )
+
+        self._replication_manager = replication.ReplicationManager(
+            engine=self._engine,
+            role=self.config.settings.get('replication_role'),
+            leader_url=self.config.settings.get('replication_leader_url'),
+            token=self.config.settings.get('replication_token'),
+            poll_interval=self.config.settings.get('replication_poll_interval'),
+            timeout=self.config.settings.get('replication_timeout'),
+            logger=self._logger
+        )
+        self._replication_manager.start()
+
+        health_port = self.config.settings.get('health_port')
+        if health_port:
+            health_host = self.config.settings.get('health_host')
+            if not health_host:
+                health_host = self.config.settings.get('hostname')
+            self._http_service = http_service.KmipHTTPService(
+                health_host,
+                int(health_port),
+                status_provider=self._build_health_status,
+                replication_manager=self._replication_manager,
+                logger=self._logger
+            )
+            self._http_service.start()
 
         self._logger.info("Starting server socket handler.")
 
@@ -433,6 +521,24 @@ class KmipServer(object):
                     "Server failed to clean up the policy monitor."
                 )
 
+        if self._http_service:
+            try:
+                self._http_service.stop()
+            except Exception as e:
+                self._logger.exception(e)
+                raise exceptions.ShutdownError(
+                    "Server failed to stop the health service."
+                )
+
+        if self._replication_manager:
+            try:
+                self._replication_manager.stop()
+            except Exception as e:
+                self._logger.exception(e)
+                raise exceptions.ShutdownError(
+                    "Server failed to stop replication."
+                )
+
     def serve(self):
         """
         Serve client connections.
@@ -524,6 +630,36 @@ class KmipServer(object):
                 )
             )
             self._logger.exception(e)
+
+    def _build_health_status(self):
+        storage_info = {}
+        storage_ok = False
+        if hasattr(self, "_engine"):
+            storage_ok = self._engine.get_storage_health()
+            storage_info = self._engine.get_storage_info()
+
+        replication_status = {
+            "role": "standalone"
+        }
+        if self._replication_manager:
+            replication_status = self._replication_manager.get_status()
+
+        status = "ok" if (self._is_serving and storage_ok) else "degraded"
+
+        return {
+            "status": status,
+            "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+            "kmip": {
+                "hostname": self.config.settings.get('hostname'),
+                "port": self.config.settings.get('port'),
+                "serving": self._is_serving
+            },
+            "storage": {
+                "healthy": storage_ok,
+                "info": storage_info
+            },
+            "replication": replication_status
+        }
 
     def __enter__(self):
         self.start()

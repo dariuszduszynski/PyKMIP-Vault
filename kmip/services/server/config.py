@@ -35,6 +35,13 @@ class KmipServerConfig(object):
         self.settings['tls_cipher_suites'] = []
         self.settings['logging_level'] = logging.INFO
         self.settings['auth_plugins'] = []
+        self.settings['health_host'] = None
+        self.settings['health_port'] = None
+        self.settings['replication_role'] = None
+        self.settings['replication_leader_url'] = None
+        self.settings['replication_token'] = None
+        self.settings['replication_poll_interval'] = 10.0
+        self.settings['replication_timeout'] = 5.0
 
         self._expected_settings = [
             'hostname',
@@ -49,7 +56,14 @@ class KmipServerConfig(object):
             'enable_tls_client_auth',
             'tls_cipher_suites',
             'logging_level',
-            'database_path'
+            'database_path',
+            'health_host',
+            'health_port',
+            'replication_role',
+            'replication_leader_url',
+            'replication_token',
+            'replication_poll_interval',
+            'replication_timeout'
         ]
 
     def set_setting(self, setting, value):
@@ -93,6 +107,20 @@ class KmipServerConfig(object):
             self._set_tls_cipher_suites(value)
         elif setting == 'logging_level':
             self._set_logging_level(value)
+        elif setting == 'health_host':
+            self._set_health_host(value)
+        elif setting == 'health_port':
+            self._set_health_port(value)
+        elif setting == 'replication_role':
+            self._set_replication_role(value)
+        elif setting == 'replication_leader_url':
+            self._set_replication_leader_url(value)
+        elif setting == 'replication_token':
+            self._set_replication_token(value)
+        elif setting == 'replication_poll_interval':
+            self._set_replication_poll_interval(value)
+        elif setting == 'replication_timeout':
+            self._set_replication_timeout(value)
         else:
             self._set_database_path(value)
 
@@ -181,6 +209,30 @@ class KmipServerConfig(object):
             )
         if parser.has_option('server', 'database_path'):
             self._set_database_path(parser.get('server', 'database_path'))
+        if parser.has_option('server', 'health_host'):
+            self._set_health_host(parser.get('server', 'health_host'))
+        if parser.has_option('server', 'health_port'):
+            self._set_health_port(parser.getint('server', 'health_port'))
+        if parser.has_option('server', 'replication_role'):
+            self._set_replication_role(
+                parser.get('server', 'replication_role')
+            )
+        if parser.has_option('server', 'replication_leader_url'):
+            self._set_replication_leader_url(
+                parser.get('server', 'replication_leader_url')
+            )
+        if parser.has_option('server', 'replication_token'):
+            self._set_replication_token(
+                parser.get('server', 'replication_token')
+            )
+        if parser.has_option('server', 'replication_poll_interval'):
+            self._set_replication_poll_interval(
+                parser.getfloat('server', 'replication_poll_interval')
+            )
+        if parser.has_option('server', 'replication_timeout'):
+            self._set_replication_timeout(
+                parser.getfloat('server', 'replication_timeout')
+            )
 
     def _set_hostname(self, value):
         if isinstance(value, str):
@@ -346,4 +398,101 @@ class KmipServerConfig(object):
             raise exceptions.ConfigurationError(
                 "The database path, if specified, must be a valid path to a "
                 "SQLite database file."
+            )
+
+    def _set_health_host(self, value):
+        if not value:
+            self.settings['health_host'] = None
+        elif isinstance(value, str):
+            self.settings['health_host'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The health host value must be a string."
+            )
+
+    def _set_health_port(self, value):
+        if value is None:
+            self.settings['health_port'] = None
+            return
+        if isinstance(value, int):
+            if value == 0:
+                self.settings['health_port'] = None
+            elif 0 < value < 65535:
+                self.settings['health_port'] = value
+            else:
+                raise exceptions.ConfigurationError(
+                    "The health port value must be an integer in the range "
+                    "1 - 65535."
+                )
+        else:
+            raise exceptions.ConfigurationError(
+                "The health port value must be an integer in the range "
+                "1 - 65535."
+            )
+
+    def _set_replication_role(self, value):
+        if not value:
+            self.settings['replication_role'] = None
+            return
+        if isinstance(value, str):
+            role = value.strip().lower()
+            if role in ['leader', 'follower']:
+                self.settings['replication_role'] = role
+            else:
+                raise exceptions.ConfigurationError(
+                    "The replication role must be 'leader' or 'follower'."
+                )
+        else:
+            raise exceptions.ConfigurationError(
+                "The replication role must be a string."
+            )
+
+    def _set_replication_leader_url(self, value):
+        if not value:
+            self.settings['replication_leader_url'] = None
+        elif isinstance(value, str):
+            self.settings['replication_leader_url'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The replication leader URL must be a string."
+            )
+
+    def _set_replication_token(self, value):
+        if not value:
+            self.settings['replication_token'] = None
+        elif isinstance(value, str):
+            self.settings['replication_token'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The replication token must be a string."
+            )
+
+    def _set_replication_poll_interval(self, value):
+        if value is None:
+            self.settings['replication_poll_interval'] = 10.0
+            return
+        if isinstance(value, (int, float)):
+            if value <= 0:
+                raise exceptions.ConfigurationError(
+                    "The replication poll interval must be a positive number."
+                )
+            self.settings['replication_poll_interval'] = float(value)
+        else:
+            raise exceptions.ConfigurationError(
+                "The replication poll interval must be a number."
+            )
+
+    def _set_replication_timeout(self, value):
+        if value is None:
+            self.settings['replication_timeout'] = 5.0
+            return
+        if isinstance(value, (int, float)):
+            if value <= 0:
+                raise exceptions.ConfigurationError(
+                    "The replication timeout must be a positive number."
+                )
+            self.settings['replication_timeout'] = float(value)
+        else:
+            raise exceptions.ConfigurationError(
+                "The replication timeout must be a number."
             )

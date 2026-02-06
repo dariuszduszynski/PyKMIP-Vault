@@ -38,6 +38,13 @@ as found in the configuration file, is shown below:
         TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
     logging_level=DEBUG
     database_path=/tmp/pykmip.db
+    health_host=127.0.0.1
+    health_port=5697
+    replication_role=leader
+    replication_leader_url=http://127.0.0.1:5697/replication/backup
+    replication_token=change-me
+    replication_poll_interval=10
+    replication_timeout=5
 
 The server can also be configured manually via Python. The following example
 shows how to create the ``KmipServer`` in Python code, directly specifying the
@@ -125,6 +132,31 @@ The different configuration options are defined below:
 * ``database_path``
     A string representing a path to a SQLite database file. The server will
     store all managed objects (e.g., keys, certificates) in this file.
+* ``health_host``
+    A string representing the host/interface for the HTTP health service. If
+    unset, the KMIP hostname is reused.
+* ``health_port``
+    An integer representing the port for the HTTP health service. Set to
+    ``0`` or omit the value to disable the health endpoint.
+* ``replication_role``
+    A string indicating the replication role. Supported values are
+    ``leader`` and ``follower``. If unset, replication is disabled.
+* ``replication_leader_url``
+    A string representing the HTTP URL used by followers to fetch leader
+    snapshots. This should point to ``/replication/backup`` on the leader.
+* ``replication_token``
+    A shared token used to authorize replication backup requests. If unset,
+    the backup endpoint is unauthenticated.
+* ``replication_poll_interval``
+    A number of seconds between follower synchronization attempts.
+* ``replication_timeout``
+    A number of seconds used as the HTTP timeout for follower syncs.
+
+Health & Replication
+--------------------
+When ``health_port`` is configured, the server exposes a JSON health check at
+``http://<health_host>:<health_port>/health``. Leaders also expose a snapshot
+endpoint at ``/replication/backup`` for followers to pull from.
 
 .. note::
    When installing PyKMIP and deploying the server, you must manually set up

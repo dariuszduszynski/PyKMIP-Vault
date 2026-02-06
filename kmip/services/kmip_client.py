@@ -81,6 +81,7 @@ class KMIPProxy(object):
                  suppress_ragged_eofs=None,
                  username=None, password=None, timeout=30, config='client',
                  config_file=None,
+                 failover_enabled=None,
                  kmip_version=None):
         self.logger = logging.getLogger(__name__)
         self.credential_factory = CredentialFactory()
@@ -116,8 +117,11 @@ class KMIPProxy(object):
         self._set_variables(host, port, keyfile, certfile,
                             cert_reqs, ssl_version, ca_certs,
                             do_handshake_on_connect, suppress_ragged_eofs,
-                            username, password, timeout, config_file)
+                            username, password, timeout, config_file,
+                            failover_enabled)
         self.batch_items = []
+        self._last_request = None
+        self._host_index = 0
 
         self.conformance_clauses = [
             ConformanceClause.DISCOVER_VERSIONS]
@@ -269,20 +273,19 @@ class KMIPProxy(object):
             self.suppress_ragged_eofs))
 
         last_error = None
-
-        for host in self.host_list:
-            self.host = host
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self._create_socket(sock)
-            self.protocol = KMIPProtocol(self.socket)
+        host_count = len(self.host_list)
+        for offset in range(host_count):
+            idx = (self._host_index + offset) % host_count
+            host = self.host_list[idx]
             try:
-                self.socket.connect((self.host, self.port))
+                self._attempt_connect(host)
             except Exception as e:
                 self.logger.error("An error occurred while connecting to "
-                                  "appliance %s: %s", self.host, e)
-                self.socket.close()
+                                  "appliance %s: %s", host, e)
+                self._close_socket(clear=False)
                 last_error = sys.exc_info()
             else:
+                self._host_index = idx
                 return
 
         self.socket = None
@@ -329,12 +332,57 @@ class KMIPProxy(object):
             )
         self.socket.settimeout(self.timeout)
 
+    def _attempt_connect(self, host):
+        self.host = host
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        created = self._create_socket(sock)
+        if self.socket is None:
+            self.socket = created if created is not None else sock
+        self.protocol = KMIPProtocol(self.socket)
+        self.socket.connect((self.host, self.port))
+
+    def _failover_reconnect(self):
+        if not self.failover_enabled or len(self.host_list) <= 1:
+            return False
+
+        last_error = None
+        host_count = len(self.host_list)
+        for offset in range(1, host_count + 1):
+            idx = (self._host_index + offset) % host_count
+            host = self.host_list[idx]
+            try:
+                self._attempt_connect(host)
+            except Exception as e:
+                self.logger.error(
+                    "Failover attempt to appliance %s failed: %s", host, e
+                )
+                self.close()
+                last_error = sys.exc_info()
+            else:
+                self._host_index = idx
+                self.logger.warning(
+                    "Failover connected to appliance %s", host
+                )
+                return True
+
+        if last_error:
+            exc = last_error[1]
+            tb = last_error[2]
+            if exc is None:
+                raise last_error[0]
+            raise exc.with_traceback(tb)
+
+        return False
+
     def __del__(self):
         # Close the socket properly, helpful in case close() is not called.
         self.close()
 
     def close(self):
         # Shutdown and close the socket.
+        self._close_socket(clear=True)
+
+    def _close_socket(self, clear=True):
         if self.socket:
             try:
                 self.socket.shutdown(socket.SHUT_RDWR)
@@ -343,6 +391,7 @@ class KMIPProxy(object):
                 # Can be thrown if the socket is not actually connected to
                 # anything. In this case, ignore the error.
                 pass
+        if clear:
             self.socket = None
 
     def send_request_payload(self, operation, payload, credential=None):
@@ -1756,10 +1805,26 @@ class KMIPProxy(object):
     def _send_message(self, message):
         stream = BytearrayStream()
         message.write(stream, self.kmip_version)
-        self.protocol.write(stream.buffer)
+        self._last_request = bytes(stream.buffer)
+        try:
+            self.protocol.write(stream.buffer)
+        except Exception:
+            if self._failover_reconnect():
+                self.protocol.write(self._last_request)
+            else:
+                raise
 
     def _receive_message(self):
-        return self.protocol.read()
+        try:
+            data = self.protocol.read()
+        except Exception:
+            if self._last_request and self._failover_reconnect():
+                self.protocol.write(self._last_request)
+                data = self.protocol.read()
+            else:
+                raise
+        self._last_request = None
+        return data
 
     def _send_and_receive_message(self, request):
         self._send_message(request)
@@ -1771,7 +1836,8 @@ class KMIPProxy(object):
     def _set_variables(self, host, port, keyfile, certfile,
                        cert_reqs, ssl_version, ca_certs,
                        do_handshake_on_connect, suppress_ragged_eofs,
-                       username, password, timeout, config_file):
+                       username, password, timeout, config_file,
+                       failover_enabled=None):
         conf = ConfigHelper(config_file)
 
         # TODO: set this to a host list
@@ -1829,6 +1895,17 @@ class KMIPProxy(object):
                     conf.DEFAULT_TIMEOUT))
             self.timeout = conf.DEFAULT_TIMEOUT
 
+        self.failover_enabled = self._coerce_bool(
+            conf.get_valid_value(
+                failover_enabled,
+                self.config,
+                'failover_enabled',
+                None
+            )
+        )
+        if self.failover_enabled is None:
+            self.failover_enabled = len(self.host_list) > 1
+
     def _build_host_list(self, host_list_str):
         '''
         This internal function takes the host string from the config file
@@ -1844,3 +1921,16 @@ class KMIPProxy(object):
                             "list string. 'String' type expected but '" +
                             str(type(host_list_str)) + "' received")
         return host_list
+
+    @staticmethod
+    def _coerce_bool(value):
+        if value is None:
+            return None
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, str):
+            if value.lower() in ("true", "yes", "1"):
+                return True
+            if value.lower() in ("false", "no", "0"):
+                return False
+        return None

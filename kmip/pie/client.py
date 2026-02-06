@@ -62,6 +62,7 @@ class ProxyKmipClient(object):
                  password=None,
                  config='client',
                  config_file=None,
+                 failover_enabled=None,
                  kmip_version=None):
         """
         Construct a ProxyKmipClient.
@@ -91,6 +92,10 @@ class ProxyKmipClient(object):
                 Optional, defaults to the default client section, 'client'.
             config_file (string): The path to the client's configuration file.
                 Optional, defaults to None.
+            failover_enabled (boolean): Enable automatic failover to alternate
+                hosts if the active connection fails. Optional, defaults to
+                None. If unset, failover is enabled when multiple hosts are
+                configured.
             kmip_version (KMIPVersion): The KMIP version the client should use
                 when making requests. Optional, defaults to None. If None at
                 request time, the client will use KMIP 1.2.
@@ -114,6 +119,7 @@ class ProxyKmipClient(object):
             password=password,
             config=config,
             config_file=config_file,
+            failover_enabled=failover_enabled,
             kmip_version=kmip_version
         )
 

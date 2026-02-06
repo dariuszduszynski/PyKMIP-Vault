@@ -173,6 +173,25 @@ class KmipEngine(object):
         # form of client identity.
         self._client_identity = connection_credential
 
+    def get_storage_health(self):
+        """Return True if the storage backend is reachable."""
+        return self._storage_backend.health_check()
+
+    def get_storage_info(self):
+        """Return diagnostic information for the storage backend."""
+        return self._storage_backend.get_connection_info()
+
+    def create_storage_backup(self, destination=None):
+        """Create a backend snapshot for replication."""
+        return self._storage_backend.backup(destination)
+
+    def restore_storage_backup(self, source):
+        """Restore backend state from a replication snapshot."""
+        with self._lock:
+            self._storage_backend.restore(source)
+            self._data_store = self._storage_backend.get_engine()
+            self._data_store_session_factory = self._storage_backend.get_session
+
     @_synchronize
     def process_request(self, request, credential=None):
         """
