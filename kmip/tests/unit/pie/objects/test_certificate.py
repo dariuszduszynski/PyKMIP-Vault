@@ -23,6 +23,8 @@ class DummyCertificate(objects.Certificate):
     A dummy Certificate subclass for testing purposes.
     """
 
+    __mapper_args__ = {"polymorphic_identity": "DummyCertificate"}
+
     def __init__(self, certificate_type, value, masks=None,
                  name='Certificate'):
         """

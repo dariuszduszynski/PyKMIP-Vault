@@ -25,6 +25,11 @@ from cryptography.hazmat.primitives.asymmetric import padding as \
     asymmetric_padding
 from cryptography.hazmat.primitives import ciphers, keywrap
 from cryptography.hazmat.primitives.ciphers import algorithms, modes
+try:
+    from cryptography.hazmat.decrepit.ciphers import algorithms as \
+        decrepit_algorithms
+except ImportError:  # pragma: no cover - older cryptography fallback
+    decrepit_algorithms = algorithms
 from cryptography.hazmat.primitives.kdf import hkdf
 from cryptography.hazmat.primitives.kdf import kbkdf
 from cryptography.hazmat.primitives.kdf import pbkdf2
@@ -48,13 +53,13 @@ class CryptographyEngine(api.CryptographicEngine):
         # The IDEA algorithm is supported by cryptography but may not be
         # supported by certain backends, like OpenSSL.
         self._symmetric_key_algorithms = {
-            enums.CryptographicAlgorithm.TRIPLE_DES: algorithms.TripleDES,
+            enums.CryptographicAlgorithm.TRIPLE_DES: decrepit_algorithms.TripleDES,
             enums.CryptographicAlgorithm.AES:        algorithms.AES,
             enums.CryptographicAlgorithm.BLOWFISH:   algorithms.Blowfish,
             enums.CryptographicAlgorithm.CAMELLIA:   algorithms.Camellia,
             enums.CryptographicAlgorithm.CAST5:      algorithms.CAST5,
             enums.CryptographicAlgorithm.IDEA:       algorithms.IDEA,
-            enums.CryptographicAlgorithm.RC4:        algorithms.ARC4
+            enums.CryptographicAlgorithm.RC4:        decrepit_algorithms.ARC4
         }
         self._asymmetric_key_algorithms = {
             enums.CryptographicAlgorithm.RSA: self._create_rsa_key_pair

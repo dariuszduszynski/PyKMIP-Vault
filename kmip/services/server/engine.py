@@ -15,11 +15,6 @@
 
 import copy
 import logging
-import os
-import tempfile
-
-import sqlalchemy
-
 from sqlalchemy.orm import exc
 
 import threading
@@ -43,10 +38,9 @@ from kmip.core.messages import payloads
 
 from kmip.pie import factory
 from kmip.pie import objects
-from kmip.pie import sqltypes
-
 from kmip.services.server import policy
 from kmip.services.server.crypto import engine
+from kmip.services.server.storage.sqlite_backend import SQLiteBackend
 
 class KmipEngine(object):
     """
@@ -89,37 +83,11 @@ class KmipEngine(object):
 
         self._cryptography_engine = engine.CryptographyEngine()
 
-        if database_path:
-            if database_path.startswith('sqlite:'):
-                self.database_path = database_path
-            elif database_path == ':memory:':
-                self.database_path = 'sqlite:///:memory:'
-            else:
-                db_path = os.path.abspath(database_path)
-                db_dir = os.path.dirname(db_path)
-                if db_dir:
-                    os.makedirs(db_dir, exist_ok=True)
-                self.database_path = 'sqlite:///{}'.format(
-                    db_path.replace('\\', '/')
-                )
-        else:
-            db_path = os.path.join(tempfile.gettempdir(), 'pykmip.database')
-            db_dir = os.path.dirname(db_path)
-            if db_dir:
-                os.makedirs(db_dir, exist_ok=True)
-            self.database_path = 'sqlite:///{}'.format(
-                db_path.replace('\\', '/')
-            )
-
-        self._data_store = sqlalchemy.create_engine(
-            self.database_path,
-            echo=False,
-            connect_args={'check_same_thread': False}
-        )
-        sqltypes.Base.metadata.create_all(self._data_store)
-        self._data_store_session_factory = sqlalchemy.orm.sessionmaker(
-            bind=self._data_store
-        )
+        self._storage_backend = SQLiteBackend(database_path=database_path)
+        self._storage_backend.initialize()
+        self.database_path = self._storage_backend.database_uri
+        self._data_store = self._storage_backend.get_engine()
+        self._data_store_session_factory = self._storage_backend.get_session
 
         self._lock = threading.RLock()
 

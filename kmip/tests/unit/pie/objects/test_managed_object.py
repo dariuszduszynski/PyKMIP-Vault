@@ -22,6 +22,8 @@ class DummyManagedObject(ManagedObject):
     A dummy ManagedObject subclass for testing purposes.
     """
 
+    __mapper_args__ = {"polymorphic_identity": "DummyManagedObject"}
+
     def __init__(self, object_type=None):
         """
         Create a DummyManagedObject

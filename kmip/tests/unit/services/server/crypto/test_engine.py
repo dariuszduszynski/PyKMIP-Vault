@@ -22,6 +22,11 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.ciphers import algorithms
+try:
+    from cryptography.hazmat.decrepit.ciphers import algorithms as \
+        decrepit_algorithms
+except ImportError:  # pragma: no cover - older cryptography fallback
+    decrepit_algorithms = algorithms
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 
@@ -1770,7 +1775,7 @@ def test_encrypt_decrypt_asymmetric(asymmetric_parameters):
              b'\x48\x65\x6C\x6C\x6F\x0B\x0B\x0B'
              b'\x0B\x0B\x0B\x0B\x0B\x0B\x0B\x0B'
          )},
-        {'algorithm': algorithms.TripleDES,
+        {'algorithm': decrepit_algorithms.TripleDES,
          'plain_text': b'\x48\x65\x6C\x6C\x6F',
          'padding_method': enums.PaddingMethod.ANSI_X923,
          'padded_text': b'\x48\x65\x6C\x6C\x6F\x00\x00\x03'}

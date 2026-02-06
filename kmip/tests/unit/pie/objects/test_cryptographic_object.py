@@ -22,6 +22,8 @@ class DummyCryptographicObject(CryptographicObject):
     A dummy CryptographicObject subclass for testing purposes.
     """
 
+    __mapper_args__ = {"polymorphic_identity": "DummyCryptographicObject"}
+
     def __init__(self):
         """
         Create a DummyCryptographicObject

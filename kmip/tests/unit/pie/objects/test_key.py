@@ -22,6 +22,8 @@ class DummyKey(Key):
     A dummy Key subclass for testing purposes.
     """
 
+    __mapper_args__ = {"polymorphic_identity": "DummyKey"}
+
     def __init__(self):
         """
         Create a DummyKey

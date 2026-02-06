@@ -55,7 +55,21 @@ if not hasattr(ssl, 'wrap_socket'):
         else:
             protocol = ssl_version
 
+        deprecated_protocols = {
+            getattr(ssl, 'PROTOCOL_TLS', None),
+            getattr(ssl, 'PROTOCOL_SSLv23', None),
+        }
+        if protocol in deprecated_protocols:
+            if server_side:
+                protocol = ssl.PROTOCOL_TLS_SERVER
+            else:
+                protocol = ssl.PROTOCOL_TLS_CLIENT
+
         context = ssl.SSLContext(protocol)
+        if not server_side:
+            # Legacy wrap_socket does not take server_hostname; disable
+            # hostname checking to avoid ValueError on TLS client contexts.
+            context.check_hostname = False
         context.verify_mode = cert_reqs
 
         if ca_certs:

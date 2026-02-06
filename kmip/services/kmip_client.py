@@ -305,7 +305,14 @@ class KMIPProxy(object):
                 do_handshake_on_connect=self.do_handshake_on_connect,
                 suppress_ragged_eofs=self.suppress_ragged_eofs)
         else:
-            context = ssl.SSLContext(self.ssl_version)
+            protocol = self.ssl_version
+            deprecated_protocols = {
+                getattr(ssl, 'PROTOCOL_TLS', None),
+                getattr(ssl, 'PROTOCOL_SSLv23', None),
+            }
+            if protocol in deprecated_protocols:
+                protocol = ssl.PROTOCOL_TLS_CLIENT
+            context = ssl.SSLContext(protocol)
             context.check_hostname = False
             context.verify_mode = self.cert_reqs
             if self.ca_certs:

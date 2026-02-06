@@ -15,7 +15,10 @@
 
 from kmip.core import enums
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+try:
+    from sqlalchemy.orm import declarative_base
+except ImportError:  # pragma: no cover - SQLAlchemy < 1.4 fallback
+    from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 import sqlalchemy.types as types
@@ -39,6 +42,7 @@ class UsageMaskType(types.TypeDecorator):
     """
 
     impl = types.Integer
+    cache_ok = True
 
     def process_bind_param(self, value, dialect):
         """
@@ -80,6 +84,7 @@ class EnumType(types.TypeDecorator):
     """
 
     impl = types.Integer
+    cache_ok = True
 
     def __init__(self, cls):
         """

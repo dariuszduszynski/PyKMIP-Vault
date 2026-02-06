@@ -104,6 +104,8 @@ class TestUtils(testtools.TestCase):
         subject_no_common_name = issuer_no_common_name = x509.Name([
             x509.NameAttribute(x509.NameOID.ORGANIZATION_NAME, u"Test, Inc.")
         ])
+        now = datetime.datetime.now(datetime.timezone.utc)
+        expires = now + datetime.timedelta(days=1)
         self.certificate = x509.CertificateBuilder().subject_name(
             subject
         ).issuer_name(
@@ -113,9 +115,9 @@ class TestUtils(testtools.TestCase):
         ).serial_number(
             x509.random_serial_number()
         ).not_valid_before(
-            datetime.datetime.utcnow()
+            now
         ).not_valid_after(
-            datetime.datetime.utcnow() + datetime.timedelta(days=1)
+            expires
         ).add_extension(
             x509.ExtendedKeyUsage([x509.ExtendedKeyUsageOID.CLIENT_AUTH]),
             critical=True
@@ -130,9 +132,9 @@ class TestUtils(testtools.TestCase):
         ).serial_number(
             x509.random_serial_number()
         ).not_valid_before(
-            datetime.datetime.utcnow()
+            now
         ).not_valid_after(
-            datetime.datetime.utcnow() + datetime.timedelta(days=1)
+            expires
         ).sign(private_key, hashes.SHA256(), backends.default_backend())
 
         self.certificate_no_extension = x509.CertificateBuilder().subject_name(
@@ -144,9 +146,9 @@ class TestUtils(testtools.TestCase):
         ).serial_number(
             x509.random_serial_number()
         ).not_valid_before(
-            datetime.datetime.utcnow()
+            now
         ).not_valid_after(
-            datetime.datetime.utcnow() + datetime.timedelta(days=1)
+            expires
         ).sign(private_key, hashes.SHA256(), backends.default_backend())
 
     def tearDown(self):
