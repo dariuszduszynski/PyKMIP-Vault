@@ -52,6 +52,7 @@ setuptools.setup(
     },
     install_requires=[
         "cryptography",
+        "flask",
         "requests",
         "sqlalchemy"
     ],

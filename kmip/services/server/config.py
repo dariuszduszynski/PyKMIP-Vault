@@ -37,6 +37,8 @@ class KmipServerConfig(object):
         self.settings['auth_plugins'] = []
         self.settings['health_host'] = None
         self.settings['health_port'] = None
+        self.settings['dashboard_host'] = None
+        self.settings['dashboard_port'] = None
         self.settings['replication_role'] = None
         self.settings['replication_leader_url'] = None
         self.settings['replication_token'] = None
@@ -59,6 +61,8 @@ class KmipServerConfig(object):
             'database_path',
             'health_host',
             'health_port',
+            'dashboard_host',
+            'dashboard_port',
             'replication_role',
             'replication_leader_url',
             'replication_token',
@@ -111,6 +115,10 @@ class KmipServerConfig(object):
             self._set_health_host(value)
         elif setting == 'health_port':
             self._set_health_port(value)
+        elif setting == 'dashboard_host':
+            self._set_dashboard_host(value)
+        elif setting == 'dashboard_port':
+            self._set_dashboard_port(value)
         elif setting == 'replication_role':
             self._set_replication_role(value)
         elif setting == 'replication_leader_url':
@@ -213,6 +221,10 @@ class KmipServerConfig(object):
             self._set_health_host(parser.get('server', 'health_host'))
         if parser.has_option('server', 'health_port'):
             self._set_health_port(parser.getint('server', 'health_port'))
+        if parser.has_option('server', 'dashboard_host'):
+            self._set_dashboard_host(parser.get('server', 'dashboard_host'))
+        if parser.has_option('server', 'dashboard_port'):
+            self._set_dashboard_port(parser.getint('server', 'dashboard_port'))
         if parser.has_option('server', 'replication_role'):
             self._set_replication_role(
                 parser.get('server', 'replication_role')
@@ -427,6 +439,36 @@ class KmipServerConfig(object):
         else:
             raise exceptions.ConfigurationError(
                 "The health port value must be an integer in the range "
+                "1 - 65535."
+            )
+
+    def _set_dashboard_host(self, value):
+        if not value:
+            self.settings['dashboard_host'] = None
+        elif isinstance(value, str):
+            self.settings['dashboard_host'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The dashboard host value must be a string."
+            )
+
+    def _set_dashboard_port(self, value):
+        if value is None:
+            self.settings['dashboard_port'] = None
+            return
+        if isinstance(value, int):
+            if value == 0:
+                self.settings['dashboard_port'] = None
+            elif 0 < value < 65535:
+                self.settings['dashboard_port'] = value
+            else:
+                raise exceptions.ConfigurationError(
+                    "The dashboard port value must be an integer in the "
+                    "range 1 - 65535."
+                )
+        else:
+            raise exceptions.ConfigurationError(
+                "The dashboard port value must be an integer in the range "
                 "1 - 65535."
             )
 

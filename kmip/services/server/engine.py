@@ -181,6 +181,10 @@ class KmipEngine(object):
         """Return diagnostic information for the storage backend."""
         return self._storage_backend.get_connection_info()
 
+    def get_session_factory(self):
+        """Return a callable that creates SQLAlchemy sessions."""
+        return self._data_store_session_factory
+
     def create_storage_backup(self, destination=None):
         """Create a backend snapshot for replication."""
         return self._storage_backend.backup(destination)

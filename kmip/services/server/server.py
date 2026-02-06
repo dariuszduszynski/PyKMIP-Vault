@@ -120,6 +120,8 @@ class KmipServer(object):
             database_path=None,
             health_host=None,
             health_port=None,
+            dashboard_host=None,
+            dashboard_port=None,
             replication_role=None,
             replication_leader_url=None,
             replication_token=None,
@@ -194,6 +196,10 @@ class KmipServer(object):
                 Optional, defaults to None.
             health_port (int): The port for the HTTP health service. Optional,
                 defaults to None.
+            dashboard_host (string): The host address for the dashboard
+                service. Optional, defaults to None.
+            dashboard_port (int): The port for the dashboard service.
+                Optional, defaults to None.
             replication_role (string): Replication role, either 'leader' or
                 'follower'. Optional, defaults to None.
             replication_leader_url (string): URL for leader replication backup
@@ -224,6 +230,8 @@ class KmipServer(object):
             database_path,
             health_host,
             health_port,
+            dashboard_host,
+            dashboard_port,
             replication_role,
             replication_leader_url,
             replication_token,
@@ -244,6 +252,7 @@ class KmipServer(object):
         self._session_id = 1
         self._is_serving = False
         self._http_service = None
+        self._dashboard_service = None
         self._replication_manager = None
 
     def _setup_logging(self, path):
@@ -283,6 +292,8 @@ class KmipServer(object):
             database_path=None,
             health_host=None,
             health_port=None,
+            dashboard_host=None,
+            dashboard_port=None,
             replication_role=None,
             replication_leader_url=None,
             replication_token=None,
@@ -324,6 +335,10 @@ class KmipServer(object):
             self.config.set_setting('health_host', health_host)
         if health_port is not None:
             self.config.set_setting('health_port', health_port)
+        if dashboard_host:
+            self.config.set_setting('dashboard_host', dashboard_host)
+        if dashboard_port is not None:
+            self.config.set_setting('dashboard_port', dashboard_port)
         if replication_role:
             self.config.set_setting('replication_role', replication_role)
         if replication_leader_url:
@@ -404,6 +419,28 @@ class KmipServer(object):
                 logger=self._logger
             )
             self._http_service.start()
+
+        dashboard_port = self.config.settings.get('dashboard_port')
+        if dashboard_port:
+            try:
+                from kmip.services.server import dashboard as dashboard_service
+            except ModuleNotFoundError as exc:
+                raise exceptions.ConfigurationError(
+                    "Dashboard requires Flask. Install 'flask' or disable "
+                    "dashboard_port."
+                ) from exc
+            dashboard_host = self.config.settings.get('dashboard_host')
+            if not dashboard_host:
+                dashboard_host = self.config.settings.get('hostname')
+            self._dashboard_service = dashboard_service.KmipDashboardService(
+                dashboard_host,
+                int(dashboard_port),
+                session_factory=self._engine.get_session_factory(),
+                status_provider=self._build_health_status,
+                policy_provider=self._get_policy_snapshot,
+                logger=self._logger
+            )
+            self._dashboard_service.start()
 
         self._logger.info("Starting server socket handler.")
 
@@ -528,6 +565,15 @@ class KmipServer(object):
                 self._logger.exception(e)
                 raise exceptions.ShutdownError(
                     "Server failed to stop the health service."
+                )
+
+        if self._dashboard_service:
+            try:
+                self._dashboard_service.stop()
+            except Exception as e:
+                self._logger.exception(e)
+                raise exceptions.ShutdownError(
+                    "Server failed to stop the dashboard service."
                 )
 
         if self._replication_manager:
@@ -660,6 +706,12 @@ class KmipServer(object):
             },
             "replication": replication_status
         }
+
+    def _get_policy_snapshot(self):
+        try:
+            return copy.deepcopy(self.policies)
+        except Exception:
+            return operation_policy.policies
 
     def __enter__(self):
         self.start()
