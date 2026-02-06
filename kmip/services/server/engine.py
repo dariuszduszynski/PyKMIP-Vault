@@ -1306,6 +1306,8 @@ class KmipEngine(object):
             return self._process_delete_attribute(payload)
         elif operation == enums.Operation.REGISTER:
             return self._process_register(payload)
+        elif operation == enums.Operation.REKEY:
+            return self._process_rekey(payload)
         elif operation == enums.Operation.DERIVE_KEY:
             return self._process_derive_key(payload)
         elif operation == enums.Operation.LOCATE:
@@ -1318,12 +1320,18 @@ class KmipEngine(object):
             return self._process_get_attribute_list(payload)
         elif operation == enums.Operation.ACTIVATE:
             return self._process_activate(payload)
+        elif operation == enums.Operation.ARCHIVE:
+            return self._process_archive(payload)
+        elif operation == enums.Operation.RECOVER:
+            return self._process_recover(payload)
         elif operation == enums.Operation.REVOKE:
             return self._process_revoke(payload)
         elif operation == enums.Operation.DESTROY:
             return self._process_destroy(payload)
         elif operation == enums.Operation.QUERY:
             return self._process_query(payload)
+        elif operation == enums.Operation.REKEY_KEY_PAIR:
+            return self._process_rekey_key_pair(payload)
         elif operation == enums.Operation.DISCOVER_VERSIONS:
             return self._process_discover_versions(payload)
         elif operation == enums.Operation.ENCRYPT:
@@ -1431,6 +1439,76 @@ class KmipEngine(object):
 
         response_payload = payloads.CreateResponsePayload(
             object_type=payload.object_type,
+            unique_identifier=str(managed_object.unique_identifier),
+            template_attribute=None
+        )
+
+        self._id_placeholder = str(managed_object.unique_identifier)
+
+        return response_payload
+
+    @_kmip_version_supported('1.0')
+    def _process_rekey(self, payload):
+        """
+        Rekey an existing symmetric key in place.
+        """
+        self._logger.info("Processing operation: Rekey")
+
+        unique_identifier = self._id_placeholder
+        if payload.unique_identifier:
+            unique_identifier = payload.unique_identifier
+
+        if unique_identifier is None:
+            raise exceptions.InvalidField(
+                "A unique identifier must be specified for Rekey."
+            )
+
+        managed_object = self._get_object_with_access_controls(
+            unique_identifier,
+            enums.Operation.REKEY
+        )
+
+        if managed_object._object_type != enums.ObjectType.SYMMETRIC_KEY:
+            raise exceptions.IllegalOperation(
+                "Rekey is only supported for SymmetricKey objects."
+            )
+        if not hasattr(managed_object, 'state'):
+            raise exceptions.IllegalOperation(
+                "The requested object has no state and cannot be rekeyed."
+            )
+
+        algorithm = managed_object.cryptographic_algorithm
+        length = managed_object.cryptographic_length
+        if (algorithm is None) or (length is None):
+            raise exceptions.InvalidField(
+                "The managed object is missing cryptographic attributes."
+            )
+
+        # Generate new key material while preserving all existing attributes.
+        result = self._cryptography_engine.create_symmetric_key(
+            algorithm,
+            length
+        )
+        managed_object.value = result.get('value')
+        if result.get('format') is not None:
+            managed_object.key_format_type = result.get('format')
+
+        managed_object.state = enums.State.PRE_ACTIVE
+        managed_object.initial_date = int(time.time())
+
+        if payload.template_attribute:
+            # Only new attributes are applied; existing values are preserved.
+            attributes = self._process_template_attribute(
+                payload.template_attribute
+            )
+            self._set_attributes_on_managed_object(
+                managed_object,
+                attributes
+            )
+
+        self._data_session.commit()
+
+        response_payload = payloads.RekeyResponsePayload(
             unique_identifier=str(managed_object.unique_identifier),
             template_attribute=None
         )
@@ -1609,6 +1687,263 @@ class KmipEngine(object):
         )
 
         self._id_placeholder = str(private_key.unique_identifier)
+        return response_payload
+
+    @_kmip_version_supported('1.1')
+    def _process_rekey_key_pair(self, payload):
+        """
+        Rekey an existing asymmetric key pair.
+        """
+        self._logger.info("Processing operation: RekeyKeyPair")
+
+        private_key_uuid = self._id_placeholder
+        if payload.private_key_uuid:
+            private_key_uuid = payload.private_key_uuid.value
+
+        if private_key_uuid is None:
+            raise exceptions.InvalidField(
+                "A private key unique identifier must be specified."
+            )
+
+        private_key = self._get_object_with_access_controls(
+            private_key_uuid,
+            enums.Operation.REKEY_KEY_PAIR
+        )
+        if private_key._object_type != enums.ObjectType.PRIVATE_KEY:
+            raise exceptions.IllegalOperation(
+                "RekeyKeyPair requires a PrivateKey object."
+            )
+
+        # Best-effort lookup of the associated public key. The model does not
+        # persist Link attributes, so use creation metadata as a heuristic.
+        public_key = None
+        try:
+            candidate = self._data_session.query(objects.PublicKey).filter(
+                objects.PublicKey._owner == private_key._owner,
+                objects.PublicKey.initial_date == private_key.initial_date,
+                objects.PublicKey.cryptographic_algorithm ==
+                private_key.cryptographic_algorithm,
+                objects.PublicKey.cryptographic_length ==
+                private_key.cryptographic_length
+            ).one()
+            public_key = self._get_object_with_access_controls(
+                candidate.unique_identifier,
+                enums.Operation.REKEY_KEY_PAIR
+            )
+        except exc.NoResultFound:
+            self._logger.warning(
+                "No associated public key found for private key: {0}".format(
+                    private_key_uuid
+                )
+            )
+        except exc.MultipleResultsFound:
+            self._logger.warning(
+                "Multiple public keys found for private key: {0}".format(
+                    private_key_uuid
+                )
+            )
+
+        attribute_names = [
+            'Name',
+            'Cryptographic Algorithm',
+            'Cryptographic Length',
+            'Cryptographic Usage Mask',
+            'Operation Policy Name',
+            'Sensitive',
+            'Application Specific Information',
+            'Object Group'
+        ]
+
+        def _collect_attributes(source_object):
+            collected = {}
+            if source_object is None:
+                return collected
+            for attribute in self._get_attributes_from_managed_object(
+                source_object,
+                attribute_names
+            ):
+                name = attribute.attribute_name.value
+                if self._attribute_policy.is_attribute_multivalued(name):
+                    collected.setdefault(name, []).append(
+                        attribute.attribute_value
+                    )
+                else:
+                    collected[name] = attribute.attribute_value
+            return collected
+
+        def _merge_attributes(base, extra):
+            for name, value in extra.items():
+                if self._attribute_policy.is_attribute_multivalued(name):
+                    existing = base.get(name, [])
+                    if isinstance(value, list):
+                        existing.extend(value)
+                    else:
+                        existing.append(value)
+                    base[name] = existing
+                else:
+                    # Allow template attributes to override copied values.
+                    base[name] = value
+
+        def _get_attribute_value(attribute_map, name):
+            value = attribute_map.get(name)
+            if value is None:
+                return None
+            return value.value
+
+        private_key_attributes = _collect_attributes(private_key)
+        public_key_attributes = _collect_attributes(public_key)
+
+        public_template_attributes = {}
+        private_template_attributes = {}
+        common_template_attributes = {}
+        if payload.public_key_template_attribute:
+            public_template_attributes = self._process_template_attribute(
+                payload.public_key_template_attribute
+            )
+        if payload.private_key_template_attribute:
+            private_template_attributes = self._process_template_attribute(
+                payload.private_key_template_attribute
+            )
+        if payload.common_template_attribute:
+            common_template_attributes = self._process_template_attribute(
+                payload.common_template_attribute
+            )
+
+        _merge_attributes(private_key_attributes, common_template_attributes)
+        _merge_attributes(public_key_attributes, common_template_attributes)
+        _merge_attributes(private_key_attributes, private_template_attributes)
+        _merge_attributes(public_key_attributes, public_template_attributes)
+
+        # Validate algorithm/length consistency and preserve existing values.
+        algorithm = _get_attribute_value(
+            private_key_attributes,
+            'Cryptographic Algorithm'
+        )
+        if algorithm is None:
+            algorithm = _get_attribute_value(
+                public_key_attributes,
+                'Cryptographic Algorithm'
+            )
+        if algorithm is None:
+            raise exceptions.InvalidField(
+                "Cryptographic algorithm must be specified for RekeyKeyPair."
+            )
+        if (private_key.cryptographic_algorithm is not None and
+                algorithm != private_key.cryptographic_algorithm):
+            raise exceptions.InvalidField(
+                "The cryptographic algorithm must match the existing "
+                "private key."
+            )
+        public_algorithm = _get_attribute_value(
+            public_key_attributes,
+            'Cryptographic Algorithm'
+        )
+        if public_algorithm and public_algorithm != algorithm:
+            raise exceptions.InvalidField(
+                "The public and private key algorithms must match."
+            )
+
+        length = _get_attribute_value(
+            private_key_attributes,
+            'Cryptographic Length'
+        )
+        if length is None:
+            length = _get_attribute_value(
+                public_key_attributes,
+                'Cryptographic Length'
+            )
+        if length is None:
+            raise exceptions.InvalidField(
+                "Cryptographic length must be specified for RekeyKeyPair."
+            )
+        if (private_key.cryptographic_length is not None and
+                length != private_key.cryptographic_length):
+            raise exceptions.InvalidField(
+                "The cryptographic length must match the existing "
+                "private key."
+            )
+        public_length = _get_attribute_value(
+            public_key_attributes,
+            'Cryptographic Length'
+        )
+        if public_length and public_length != length:
+            raise exceptions.InvalidField(
+                "The public and private key lengths must match."
+            )
+
+        if 'Cryptographic Usage Mask' not in private_key_attributes:
+            raise exceptions.InvalidField(
+                "The cryptographic usage mask must be specified for the "
+                "private key."
+            )
+        if ('Cryptographic Usage Mask' not in public_key_attributes and
+                public_key is None):
+            raise exceptions.InvalidField(
+                "The cryptographic usage mask must be specified for the "
+                "public key."
+            )
+
+        public, private = self._cryptography_engine.create_asymmetric_key_pair(
+            algorithm,
+            length
+        )
+
+        new_public_key = objects.PublicKey(
+            algorithm,
+            length,
+            public.get('value'),
+            public.get('format')
+        )
+        new_private_key = objects.PrivateKey(
+            algorithm,
+            length,
+            private.get('value'),
+            private.get('format')
+        )
+        new_public_key.names = []
+        new_private_key.names = []
+
+        self._set_attributes_on_managed_object(
+            new_public_key,
+            public_key_attributes
+        )
+        self._set_attributes_on_managed_object(
+            new_private_key,
+            private_key_attributes
+        )
+
+        # Preserve ownership and set a fresh initialization date.
+        now = int(time.time())
+        new_public_key._owner = private_key._owner
+        new_private_key._owner = private_key._owner
+        new_public_key.initial_date = now
+        new_private_key.initial_date = now
+
+        self._data_session.add(new_public_key)
+        self._data_session.add(new_private_key)
+
+        # NOTE (peterhamilton) SQLAlchemy will *not* assign an ID until
+        # commit is called. This makes future support for UNDO problematic.
+        self._data_session.commit()
+
+        self._logger.info(
+            "Rekeyed PublicKey with ID: {0}".format(
+                new_public_key.unique_identifier
+            )
+        )
+        self._logger.info(
+            "Rekeyed PrivateKey with ID: {0}".format(
+                new_private_key.unique_identifier
+            )
+        )
+
+        response_payload = payloads.RekeyKeyPairResponsePayload(
+            private_key_uuid=str(new_private_key.unique_identifier),
+            public_key_uuid=str(new_public_key.unique_identifier)
+        )
+
+        self._id_placeholder = str(new_private_key.unique_identifier)
+
         return response_payload
 
     @_kmip_version_supported('1.0')
@@ -2848,6 +3183,100 @@ class KmipEngine(object):
         return response_payload
 
     @_kmip_version_supported('1.0')
+    def _process_archive(self, payload):
+        """
+        Archive a managed object by updating its state.
+        """
+        self._logger.info("Processing operation: Archive")
+
+        if payload.unique_identifier:
+            unique_identifier = payload.unique_identifier
+        else:
+            unique_identifier = self._id_placeholder
+
+        if unique_identifier is None:
+            raise exceptions.InvalidField(
+                "A unique identifier must be specified for Archive."
+            )
+
+        managed_object = self._get_object_with_access_controls(
+            unique_identifier,
+            enums.Operation.ARCHIVE
+        )
+        object_type = managed_object._object_type
+        if not hasattr(managed_object, 'state'):
+            raise exceptions.IllegalOperation(
+                "An {0} object has no state and cannot be archived.".format(
+                    ''.join(
+                        [x.capitalize() for x in object_type.name.split('_')]
+                    )
+                )
+            )
+
+        if managed_object.state in [
+            enums.State.DESTROYED,
+            enums.State.DESTROYED_COMPROMISED
+        ]:
+            raise exceptions.IllegalOperation(
+                "Destroyed objects cannot be archived."
+            )
+
+        managed_object.state = enums.State.ARCHIVED
+        self._data_session.commit()
+
+        response_payload = payloads.ArchiveResponsePayload(
+            unique_identifier=unique_identifier
+        )
+
+        return response_payload
+
+    @_kmip_version_supported('1.0')
+    def _process_recover(self, payload):
+        """
+        Recover an archived managed object by restoring its state.
+        """
+        self._logger.info("Processing operation: Recover")
+
+        if payload.unique_identifier:
+            unique_identifier = payload.unique_identifier
+        else:
+            unique_identifier = self._id_placeholder
+
+        if unique_identifier is None:
+            raise exceptions.InvalidField(
+                "A unique identifier must be specified for Recover."
+            )
+
+        managed_object = self._get_object_with_access_controls(
+            unique_identifier,
+            enums.Operation.RECOVER
+        )
+        object_type = managed_object._object_type
+        if not hasattr(managed_object, 'state'):
+            raise exceptions.IllegalOperation(
+                "An {0} object has no state and cannot be recovered.".format(
+                    ''.join(
+                        [x.capitalize() for x in object_type.name.split('_')]
+                    )
+                )
+            )
+
+        if managed_object.state != enums.State.ARCHIVED:
+            raise exceptions.IllegalOperation(
+                "Only archived objects can be recovered."
+            )
+
+        # The previous state is not persisted, so default to Active.
+        managed_object.state = enums.State.ACTIVE
+        self._data_session.commit()
+
+        response_payload = payloads.RecoverResponsePayload(
+            unique_identifier=unique_identifier
+        )
+
+        return response_payload
+
+    @_kmip_version_supported('1.0')
     def _process_query(self, payload):
         self._logger.info("Processing operation: Query")
 
@@ -2865,12 +3294,15 @@ class KmipEngine(object):
                 enums.Operation.CREATE,
                 enums.Operation.CREATE_KEY_PAIR,
                 enums.Operation.REGISTER,
+                enums.Operation.REKEY,
                 enums.Operation.DERIVE_KEY,
                 enums.Operation.LOCATE,
                 enums.Operation.GET,
                 enums.Operation.GET_ATTRIBUTES,
                 enums.Operation.GET_ATTRIBUTE_LIST,
                 enums.Operation.ACTIVATE,
+                enums.Operation.ARCHIVE,
+                enums.Operation.RECOVER,
                 enums.Operation.REVOKE,
                 enums.Operation.DESTROY,
                 enums.Operation.QUERY
@@ -2878,6 +3310,7 @@ class KmipEngine(object):
 
             if self._protocol_version >= contents.ProtocolVersion(1, 1):
                 operations.extend([
+                    enums.Operation.REKEY_KEY_PAIR,
                     enums.Operation.DISCOVER_VERSIONS
                 ])
             if self._protocol_version >= contents.ProtocolVersion(1, 2):

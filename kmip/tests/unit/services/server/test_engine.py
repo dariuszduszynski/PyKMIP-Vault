@@ -9936,7 +9936,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.info.assert_called_once_with("Processing operation: Query")
         self.assertIsInstance(result, payloads.QueryResponsePayload)
         self.assertIsInstance(result.operations, list)
-        self.assertEqual(12, len(result.operations))
+        self.assertEqual(15, len(result.operations))
         self.assertEqual(
             enums.Operation.CREATE,
             result.operations[0]
@@ -9950,40 +9950,52 @@ class TestKmipEngine(testtools.TestCase):
             result.operations[2]
         )
         self.assertEqual(
-            enums.Operation.DERIVE_KEY,
+            enums.Operation.REKEY,
             result.operations[3]
         )
         self.assertEqual(
-            enums.Operation.LOCATE,
+            enums.Operation.DERIVE_KEY,
             result.operations[4]
         )
         self.assertEqual(
-            enums.Operation.GET,
+            enums.Operation.LOCATE,
             result.operations[5]
         )
         self.assertEqual(
-            enums.Operation.GET_ATTRIBUTES,
+            enums.Operation.GET,
             result.operations[6]
         )
         self.assertEqual(
-            enums.Operation.GET_ATTRIBUTE_LIST,
+            enums.Operation.GET_ATTRIBUTES,
             result.operations[7]
         )
         self.assertEqual(
-            enums.Operation.ACTIVATE,
+            enums.Operation.GET_ATTRIBUTE_LIST,
             result.operations[8]
         )
         self.assertEqual(
-            enums.Operation.REVOKE,
+            enums.Operation.ACTIVATE,
             result.operations[9]
         )
         self.assertEqual(
-            enums.Operation.DESTROY,
+            enums.Operation.ARCHIVE,
             result.operations[10]
         )
         self.assertEqual(
-            enums.Operation.QUERY,
+            enums.Operation.RECOVER,
             result.operations[11]
+        )
+        self.assertEqual(
+            enums.Operation.REVOKE,
+            result.operations[12]
+        )
+        self.assertEqual(
+            enums.Operation.DESTROY,
+            result.operations[13]
+        )
+        self.assertEqual(
+            enums.Operation.QUERY,
+            result.operations[14]
         )
         self.assertIsNone(result.object_types)
         self.assertIsNotNone(result.vendor_identification)
@@ -10020,7 +10032,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.info.assert_called_once_with("Processing operation: Query")
         self.assertIsInstance(result, payloads.QueryResponsePayload)
         self.assertIsInstance(result.operations, list)
-        self.assertEqual(13, len(result.operations))
+        self.assertEqual(17, len(result.operations))
         self.assertEqual(
             enums.Operation.CREATE,
             result.operations[0]
@@ -10034,44 +10046,60 @@ class TestKmipEngine(testtools.TestCase):
             result.operations[2]
         )
         self.assertEqual(
-            enums.Operation.DERIVE_KEY,
+            enums.Operation.REKEY,
             result.operations[3]
         )
         self.assertEqual(
-            enums.Operation.LOCATE,
+            enums.Operation.DERIVE_KEY,
             result.operations[4]
         )
         self.assertEqual(
-            enums.Operation.GET,
+            enums.Operation.LOCATE,
             result.operations[5]
         )
         self.assertEqual(
-            enums.Operation.GET_ATTRIBUTES,
+            enums.Operation.GET,
             result.operations[6]
         )
         self.assertEqual(
-            enums.Operation.GET_ATTRIBUTE_LIST,
+            enums.Operation.GET_ATTRIBUTES,
             result.operations[7]
         )
         self.assertEqual(
-            enums.Operation.ACTIVATE,
+            enums.Operation.GET_ATTRIBUTE_LIST,
             result.operations[8]
         )
         self.assertEqual(
-            enums.Operation.REVOKE,
+            enums.Operation.ACTIVATE,
             result.operations[9]
         )
         self.assertEqual(
-            enums.Operation.DESTROY,
+            enums.Operation.ARCHIVE,
             result.operations[10]
         )
         self.assertEqual(
-            enums.Operation.QUERY,
+            enums.Operation.RECOVER,
             result.operations[11]
         )
         self.assertEqual(
-            enums.Operation.DISCOVER_VERSIONS,
+            enums.Operation.REVOKE,
             result.operations[12]
+        )
+        self.assertEqual(
+            enums.Operation.DESTROY,
+            result.operations[13]
+        )
+        self.assertEqual(
+            enums.Operation.QUERY,
+            result.operations[14]
+        )
+        self.assertEqual(
+            enums.Operation.REKEY_KEY_PAIR,
+            result.operations[15]
+        )
+        self.assertEqual(
+            enums.Operation.DISCOVER_VERSIONS,
+            result.operations[16]
         )
         self.assertIsNone(result.object_types)
         self.assertIsNotNone(result.vendor_identification)
@@ -10108,7 +10136,7 @@ class TestKmipEngine(testtools.TestCase):
         e._logger.info.assert_called_once_with("Processing operation: Query")
         self.assertIsInstance(result, payloads.QueryResponsePayload)
         self.assertIsInstance(result.operations, list)
-        self.assertEqual(18, len(result.operations))
+        self.assertEqual(22, len(result.operations))
         self.assertEqual(
             enums.Operation.CREATE,
             result.operations[0]
@@ -10122,64 +10150,80 @@ class TestKmipEngine(testtools.TestCase):
             result.operations[2]
         )
         self.assertEqual(
-            enums.Operation.DERIVE_KEY,
+            enums.Operation.REKEY,
             result.operations[3]
         )
         self.assertEqual(
-            enums.Operation.LOCATE,
+            enums.Operation.DERIVE_KEY,
             result.operations[4]
         )
         self.assertEqual(
-            enums.Operation.GET,
+            enums.Operation.LOCATE,
             result.operations[5]
         )
         self.assertEqual(
-            enums.Operation.GET_ATTRIBUTES,
+            enums.Operation.GET,
             result.operations[6]
         )
         self.assertEqual(
-            enums.Operation.GET_ATTRIBUTE_LIST,
+            enums.Operation.GET_ATTRIBUTES,
             result.operations[7]
         )
         self.assertEqual(
-            enums.Operation.ACTIVATE,
+            enums.Operation.GET_ATTRIBUTE_LIST,
             result.operations[8]
         )
         self.assertEqual(
-            enums.Operation.REVOKE,
+            enums.Operation.ACTIVATE,
             result.operations[9]
         )
         self.assertEqual(
-            enums.Operation.DESTROY,
+            enums.Operation.ARCHIVE,
             result.operations[10]
         )
         self.assertEqual(
-            enums.Operation.QUERY,
+            enums.Operation.RECOVER,
             result.operations[11]
         )
         self.assertEqual(
-            enums.Operation.DISCOVER_VERSIONS,
+            enums.Operation.REVOKE,
             result.operations[12]
         )
         self.assertEqual(
-            enums.Operation.ENCRYPT,
+            enums.Operation.DESTROY,
             result.operations[13]
         )
         self.assertEqual(
-            enums.Operation.DECRYPT,
+            enums.Operation.QUERY,
             result.operations[14]
         )
         self.assertEqual(
-            enums.Operation.SIGN,
+            enums.Operation.REKEY_KEY_PAIR,
             result.operations[15]
         )
         self.assertEqual(
-            enums.Operation.SIGNATURE_VERIFY,
+            enums.Operation.DISCOVER_VERSIONS,
             result.operations[16]
         )
         self.assertEqual(
-            enums.Operation.MAC,
+            enums.Operation.ENCRYPT,
             result.operations[17]
+        )
+        self.assertEqual(
+            enums.Operation.DECRYPT,
+            result.operations[18]
+        )
+        self.assertEqual(
+            enums.Operation.SIGN,
+            result.operations[19]
+        )
+        self.assertEqual(
+            enums.Operation.SIGNATURE_VERIFY,
+            result.operations[20]
+        )
+        self.assertEqual(
+            enums.Operation.MAC,
+            result.operations[21]
         )
         self.assertIsNone(result.object_types)
         self.assertIsNotNone(result.vendor_identification)
