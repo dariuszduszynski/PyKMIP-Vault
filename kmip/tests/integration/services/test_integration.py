@@ -994,7 +994,7 @@ class TestIntegration(testtools.TestCase):
                                                         mask_flags)
 
         name = Attribute.AttributeName('Name')
-        pass_name = 'Integration Test - Register-Get-Destroy Passphrase'
+        pass_name = 'Integration Test - Register-Get-Destroy Passphrase'  # nosec B105
 
         pass_name_value = Name.NameValue(pass_name)
 

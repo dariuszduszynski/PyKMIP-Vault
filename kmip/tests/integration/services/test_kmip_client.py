@@ -17,7 +17,7 @@ import pytest
 
 from testtools import TestCase
 
-from subprocess import Popen
+from subprocess import Popen  # nosec B404
 
 import os
 import sys
@@ -74,7 +74,7 @@ class TestKMIPClientIntegration(TestCase):
         # Set up the KMIP server process
         path = os.path.join(os.path.dirname(__file__), os.path.pardir,
                             'utils', 'server.py')
-        self.server = Popen(['python', '{0}'.format(path), '-p',
+        self.server = Popen([sys.executable, '{0}'.format(path), '-p',  # nosec B603
                              '{0}'.format(self.KMIP_PORT)], stderr=sys.stdout)
 
         time.sleep(self.STARTUP_TIME)

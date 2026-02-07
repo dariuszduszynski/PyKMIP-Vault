@@ -1541,8 +1541,8 @@ def test_encrypt_symmetric(symmetric_parameters):
             None
         )
 
-    assert symmetric_parameters.get('cipher_text') == result.get('cipher_text')
-    assert symmetric_parameters.get('auth_tag') == result.get('auth_tag')
+    assert symmetric_parameters.get('cipher_text') == result.get('cipher_text')  # nosec B101
+    assert symmetric_parameters.get('auth_tag') == result.get('auth_tag')  # nosec B101
 
 def test_decrypt_symmetric(symmetric_parameters):
     """
@@ -1575,7 +1575,7 @@ def test_decrypt_symmetric(symmetric_parameters):
             undo_padding=True
         )
 
-    assert symmetric_parameters.get('plain_text') == result
+    assert symmetric_parameters.get('plain_text') == result  # nosec B101
 
 # Most of these test vectors were obtained from the pyca/cryptography test
 # suite:
@@ -1763,7 +1763,7 @@ def test_encrypt_decrypt_asymmetric(asymmetric_parameters):
         hashing_algorithm=asymmetric_parameters.get('hashing_algorithm')
     )
 
-    assert asymmetric_parameters.get('plain_text') == result
+    assert asymmetric_parameters.get('plain_text') == result  # nosec B101
 
 @pytest.fixture(
     scope='function',
@@ -1797,7 +1797,7 @@ def test_handle_symmetric_padding(symmetric_padding_parameters):
         symmetric_padding_parameters.get('padding_method')
     )
 
-    assert result == symmetric_padding_parameters.get('padded_text')
+    assert result == symmetric_padding_parameters.get('padded_text')  # nosec B101
 
 def test_handle_symmetric_padding_undo(symmetric_padding_parameters):
     """
@@ -1813,7 +1813,7 @@ def test_handle_symmetric_padding_undo(symmetric_padding_parameters):
         undo_padding=True
     )
 
-    assert result == symmetric_padding_parameters.get('plain_text')
+    assert result == symmetric_padding_parameters.get('plain_text')  # nosec B101
 
 # PBKDF2 test vectors were obtained from IETF RFC 6070:
 #
@@ -2440,7 +2440,7 @@ def test_derive_key(derivation_parameters):
         iv_nonce=derivation_parameters.get('iv_nonce')
     )
 
-    assert derivation_parameters.get('derived_data') == result
+    assert derivation_parameters.get('derived_data') == result  # nosec B101
 
 # AES Key Wrap test vectors were obtained from IETF RFC 3394:
 #
@@ -2573,7 +2573,7 @@ def test_wrap_key(wrapping_parameters):
         wrapping_parameters.get('encryption_key')
     )
 
-    assert wrapping_parameters.get('wrapped_data') == result
+    assert wrapping_parameters.get('wrapped_data') == result  # nosec B101
 
 # Test vectors obtained from pyca/cryptography
 # https://cryptography.io/en/latest/
@@ -2682,17 +2682,17 @@ SIGN_TEST_DATA = (b'\x01\x02\x03\x04\x05\x06\x07\x08'
          'padding': enums.PaddingMethod.PSS,
          'key': DER_RSA_KEY,
          'verify_args': (padding.PSS(
-                             mgf=padding.MGF1(hashes.MD5()),
+                             mgf=padding.MGF1(hashes.MD5()),  # nosec B303
                              salt_length=padding.PSS.MAX_LENGTH
                          ),
-                         hashes.MD5())},
+                         hashes.MD5())},  # nosec B303
         {'digital_signature_algorithm':
             enums.DigitalSignatureAlgorithm.SHA1_WITH_RSA_ENCRYPTION,
          'crypto_alg': None,
          'hash_algorithm': None,
          'padding': enums.PaddingMethod.PKCS1v15,
          'key': PEM_RSA_KEY,
-         'verify_args': (padding.PKCS1v15(), hashes.SHA1())},
+         'verify_args': (padding.PKCS1v15(), hashes.SHA1())},  # nosec B303
         {'digital_signature_algorithm':
             enums.DigitalSignatureAlgorithm.SHA224_WITH_RSA_ENCRYPTION,
          'crypto_alg': None,
@@ -2931,4 +2931,4 @@ def test_verify_signature(signature_parameters):
         )
     )
 
-    assert result
+    assert result  # nosec B101

@@ -19,6 +19,8 @@ from __future__ import annotations
 
 import datetime
 import logging
+import os
+import secrets
 import threading
 from typing import Any, Callable, Mapping
 
@@ -539,6 +541,13 @@ def _safe_status(status_provider: StatusProvider | None) -> dict[str, Any]:
         return {}
 
 
+def _get_dashboard_secret() -> str:
+    secret = os.environ.get("PYKMIP_DASHBOARD_SECRET_KEY")
+    if secret:
+        return secret
+    return secrets.token_hex(32)
+
+
 def _normalize_policy_source(source: Mapping[str, Any] | None) -> Mapping[str, Any]:
     if source is None:
         return {}
@@ -634,7 +643,7 @@ def create_app(
     policy_provider: PolicyProvider | None = None,
 ) -> Flask:
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "pykmip-dashboard"
+    app.config["SECRET_KEY"] = _get_dashboard_secret()
     app.jinja_loader = DictLoader(TEMPLATES)
 
     def _base_context(active: str, subtitle: str, notice: str | None = None):

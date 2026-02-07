@@ -376,7 +376,7 @@ class TestExtensionInformation(TestCase):
         self.assertEqual(expected, observed, msg)
 
         expected = extension_information
-        observed = eval(repr(extension_information))
+        observed = eval(repr(extension_information))  # nosec B307
 
         msg = "expected {0}, observed {1}".format(expected, observed)
         self.assertEqual(expected, observed, msg)
@@ -402,7 +402,7 @@ class TestExtensionInformation(TestCase):
         self.assertEqual(expected, observed, msg)
 
         expected = extension_information
-        observed = eval(repr(extension_information))
+        observed = eval(repr(extension_information))  # nosec B307
 
         msg = "expected {0}, observed {1}".format(expected, observed)
         self.assertEqual(expected, observed, msg)

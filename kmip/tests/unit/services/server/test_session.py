@@ -500,7 +500,7 @@ class TestKmipSession(testtools.TestCase):
         fake_version = contents.ProtocolVersion(1, 2)
         fake_credential = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="John Doe",
                 password="secret"
             )
@@ -749,7 +749,7 @@ class TestKmipSession(testtools.TestCase):
         kmip_session._logger = mock.MagicMock()
         fake_credential = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="John Doe",
                 password="secret"
             )
@@ -807,7 +807,7 @@ class TestKmipSession(testtools.TestCase):
         kmip_session._logger = mock.MagicMock()
         fake_credential = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="John Doe",
                 password="secret"
             )

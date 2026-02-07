@@ -148,7 +148,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="John",
                         password="abc123"
                     )
@@ -160,7 +160,7 @@ class TestAuthentication(testtools.TestCase):
         self.assertEqual(
             objects.Credential(
                 credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                credential_value=objects.UsernamePasswordCredential(
+                credential_value=objects.UsernamePasswordCredential(  # nosec B106
                     username="John",
                     password="abc123"
                 )
@@ -199,7 +199,7 @@ class TestAuthentication(testtools.TestCase):
             'credentials': [
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="John",
                         password="abc123"
                     )
@@ -222,7 +222,7 @@ class TestAuthentication(testtools.TestCase):
             [
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="John",
                         password="abc123"
                     )
@@ -253,7 +253,7 @@ class TestAuthentication(testtools.TestCase):
         self.assertEqual(
             objects.Credential(
                 credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                credential_value=objects.UsernamePasswordCredential(
+                credential_value=objects.UsernamePasswordCredential(  # nosec B106
                     username="Fred",
                     password="password1"
                 )
@@ -272,7 +272,7 @@ class TestAuthentication(testtools.TestCase):
         self.assertEqual(
             objects.Credential(
                 credential_type=enums.CredentialType.DEVICE,
-                credential_value=objects.DeviceCredential(
+                credential_value=objects.DeviceCredential(  # nosec B106
                     device_serial_number="serNum123456",
                     password="secret",
                     device_identifier="devID2233",
@@ -295,7 +295,7 @@ class TestAuthentication(testtools.TestCase):
         self.assertEqual(
             objects.Credential(
                 credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                credential_value=objects.UsernamePasswordCredential(
+                credential_value=objects.UsernamePasswordCredential(  # nosec B106
                     username="Fred",
                     password="password1"
                 )
@@ -305,7 +305,7 @@ class TestAuthentication(testtools.TestCase):
         self.assertEqual(
             objects.Credential(
                 credential_type=enums.CredentialType.DEVICE,
-                credential_value=objects.DeviceCredential(
+                credential_value=objects.DeviceCredential(  # nosec B106
                     device_serial_number="serNum123456",
                     password="secret",
                     device_identifier="devID2233",
@@ -343,7 +343,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
@@ -362,7 +362,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -385,14 +385,14 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
                 ),
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -442,7 +442,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
@@ -453,7 +453,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
@@ -469,7 +469,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -484,7 +484,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -504,14 +504,14 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
                 ),
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -526,14 +526,14 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
                 ),
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -557,7 +557,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
@@ -568,7 +568,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -610,7 +610,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
@@ -621,7 +621,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
@@ -637,7 +637,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -652,7 +652,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -672,14 +672,14 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
                 ),
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -694,14 +694,14 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
                 ),
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -725,7 +725,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
@@ -736,7 +736,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -771,7 +771,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
@@ -796,7 +796,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -829,14 +829,14 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
                 ),
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -878,7 +878,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
@@ -906,7 +906,7 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",
@@ -941,14 +941,14 @@ class TestAuthentication(testtools.TestCase):
             credentials=[
                 objects.Credential(
                     credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-                    credential_value=objects.UsernamePasswordCredential(
+                    credential_value=objects.UsernamePasswordCredential(  # nosec B106
                         username="Fred",
                         password="password1"
                     )
                 ),
                 objects.Credential(
                     credential_type=enums.CredentialType.DEVICE,
-                    credential_value=objects.DeviceCredential(
+                    credential_value=objects.DeviceCredential(  # nosec B106
                         device_serial_number="serNum123456",
                         password="secret",
                         device_identifier="devID2233",

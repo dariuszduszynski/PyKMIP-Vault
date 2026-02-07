@@ -199,7 +199,7 @@ class TestKMIPClient(TestCase):
     # TODO (peter-hamilton) Modify for credential type and/or add new test
     def test_build_credential(self):
         username = 'username'
-        password = 'password'
+        password = 'password'  # nosec B105
         self.client.username = username
         self.client.password = password
 
@@ -214,7 +214,7 @@ class TestKMIPClient(TestCase):
 
     def test_build_credential_no_username(self):
         username = None
-        password = 'password'
+        password = 'password'  # nosec B105
         self.client.username = username
         self.client.password = password
 

@@ -211,7 +211,7 @@ class TestServerInformation(TestCase):
         self.assertEqual(expected, observed, msg)
 
         expected = server_information
-        observed = eval(observed)
+        observed = eval(observed)  # nosec B307
 
         msg = "expected {0}, observed {1}".format(expected, observed)
         self.assertEqual(expected, observed, msg)

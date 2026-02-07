@@ -134,7 +134,7 @@ class TestSLUGSAuthenticationAndAccessControl(testtools.TestCase):
 
             self.assertRaises(exceptions.KmipOperationFailure, c.destroy, uid)
 
-        with open("/tmp/pykmip/policies/policy_overwrite.json", "w") as f:
+        with open("/tmp/pykmip/policies/policy_overwrite.json", "w") as f:  # nosec B108
             f.write('{\n')
             f.write('  "policy_1": {\n')
             f.write('    "groups": {\n')
@@ -173,7 +173,7 @@ class TestSLUGSAuthenticationAndAccessControl(testtools.TestCase):
             self.assertRaises(
                 exceptions.KmipOperationFailure, c.destroy, uid)
 
-        os.remove("/tmp/pykmip/policies/policy_overwrite.json")
+        os.remove("/tmp/pykmip/policies/policy_overwrite.json")  # nosec B108
         time.sleep(1)
 
     def test_policy_caching(self):
@@ -200,7 +200,7 @@ class TestSLUGSAuthenticationAndAccessControl(testtools.TestCase):
                 enums.CryptographicAlgorithm.AES)
             self.assertEqual(key.cryptographic_length, 256)
 
-            with open("/tmp/pykmip/policies/policy_caching.json", "w") as f:
+            with open("/tmp/pykmip/policies/policy_caching.json", "w") as f:  # nosec B108
                 f.write('{\n')
                 f.write('  "policy_1": {\n')
                 f.write('    "groups": {\n')
@@ -218,7 +218,7 @@ class TestSLUGSAuthenticationAndAccessControl(testtools.TestCase):
             self.assertRaises(exceptions.KmipOperationFailure, c.get, uid)
             self.assertRaises(exceptions.KmipOperationFailure, c.destroy, uid)
 
-            os.remove("/tmp/pykmip/policies/policy_caching.json")
+            os.remove("/tmp/pykmip/policies/policy_caching.json")  # nosec B108
             time.sleep(1)
 
             key = c.get(uid)
@@ -238,7 +238,7 @@ class TestSLUGSAuthenticationAndAccessControl(testtools.TestCase):
         """
         Test that an unrecognized user is blocked from submitting a request.
         """
-        with open("/tmp/slugs/user_group_mapping.csv", "w") as f:
+        with open("/tmp/slugs/user_group_mapping.csv", "w") as f:  # nosec B108
             f.write('Jane Doe,Group A\n')
             f.write('Jane Doe,Group B\n')
             f.write('John Smith,Group B\n')
@@ -254,7 +254,7 @@ class TestSLUGSAuthenticationAndAccessControl(testtools.TestCase):
                 **kwargs
             )
 
-        with open("/tmp/slugs/user_group_mapping.csv", "w") as f:
+        with open("/tmp/slugs/user_group_mapping.csv", "w") as f:  # nosec B108
             f.write('John Doe,Group A\n')
             f.write('Jane Doe,Group A\n')
             f.write('Jane Doe,Group B\n')

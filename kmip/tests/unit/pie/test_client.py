@@ -58,13 +58,13 @@ class TestProxyKmipClient(testtools.TestCase):
         """
         Test that a ProxyKmipClient can be constructed with valid arguments.
         """
-        ProxyKmipClient(
+        ProxyKmipClient(  # nosec B106
             hostname='127.0.0.1',
             port=5696,
             cert='/example/path/to/cert',
             key='/example/path/to/key',
             ca='/example/path/to/ca',
-            ssl_version=ssl.PROTOCOL_TLSv1,
+            ssl_version=ssl.PROTOCOL_TLSv1,  # nosec B502
             username='username',
             password='password',
             config='test')

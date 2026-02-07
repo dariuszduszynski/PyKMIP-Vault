@@ -448,7 +448,7 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         Test that a UsernamePasswordCredential struct can be constructed with
         arguments.
         """
-        credential = objects.UsernamePasswordCredential(
+        credential = objects.UsernamePasswordCredential(  # nosec B106
             username="John",
             password="abc123"
         )
@@ -554,7 +554,7 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         Test that a UsernamePasswordCredential struct can be written to a
         data stream.
         """
-        credential = objects.UsernamePasswordCredential(
+        credential = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
@@ -571,7 +571,7 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         UsernamePasswordCredential struct missing username data to a data
         stream.
         """
-        credential = objects.UsernamePasswordCredential(
+        credential = objects.UsernamePasswordCredential(  # nosec B106
             password="password1"
         )
         stream = utils.BytearrayStream()
@@ -610,11 +610,11 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         self.assertTrue(a == b)
         self.assertTrue(b == a)
 
-        a = objects.UsernamePasswordCredential(
+        a = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
-        b = objects.UsernamePasswordCredential(
+        b = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
@@ -627,11 +627,11 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         Test that the equality operator returns False when comparing two
         UsernamePasswordCredential structs with different usernames.
         """
-        a = objects.UsernamePasswordCredential(
+        a = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
-        b = objects.UsernamePasswordCredential(
+        b = objects.UsernamePasswordCredential(  # nosec B106
             username="Wilma",
             password="password1"
         )
@@ -644,11 +644,11 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         Test that the equality operator returns False when comparing two
         UsernamePasswordCredential structs with different passwords.
         """
-        a = objects.UsernamePasswordCredential(
+        a = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
-        b = objects.UsernamePasswordCredential(
+        b = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="1password"
         )
@@ -678,11 +678,11 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         self.assertFalse(a != b)
         self.assertFalse(b != a)
 
-        a = objects.UsernamePasswordCredential(
+        a = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
-        b = objects.UsernamePasswordCredential(
+        b = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
@@ -695,11 +695,11 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         Test that the inequality operator returns True when comparing two
         UsernamePasswordCredential structs with different usernames.
         """
-        a = objects.UsernamePasswordCredential(
+        a = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
-        b = objects.UsernamePasswordCredential(
+        b = objects.UsernamePasswordCredential(  # nosec B106
             username="Wilma",
             password="password1"
         )
@@ -712,11 +712,11 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         Test that the inequality operator returns True when comparing two
         UsernamePasswordCredential structs with different passwords.
         """
-        a = objects.UsernamePasswordCredential(
+        a = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
-        b = objects.UsernamePasswordCredential(
+        b = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="1password"
         )
@@ -739,7 +739,7 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         """
         Test that repr can be applied to a UsernamePasswordCredential struct.
         """
-        credential = objects.UsernamePasswordCredential(
+        credential = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
@@ -756,7 +756,7 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         """
         Test that str can be applied to a UsernamePasswordCredential struct.
         """
-        credential = objects.UsernamePasswordCredential(
+        credential = objects.UsernamePasswordCredential(  # nosec B106
             username="Fred",
             password="password1"
         )
@@ -901,7 +901,7 @@ class TestDeviceCredential(testtools.TestCase):
         """
         Test that a DeviceCredential struct can be constructed with arguments.
         """
-        credential = objects.DeviceCredential(
+        credential = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1236,7 +1236,7 @@ class TestDeviceCredential(testtools.TestCase):
         """
         Test that a DeviceCredential struct can be written to a data stream.
         """
-        credential = objects.DeviceCredential(
+        credential = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1256,7 +1256,7 @@ class TestDeviceCredential(testtools.TestCase):
         Test that a DeviceCredential struct missing device serial number data
         can be written to a data stream.
         """
-        credential = objects.DeviceCredential(
+        credential = objects.DeviceCredential(  # nosec B106
             password="secret",
             device_identifier="devID2233",
             network_identifier="netID9000",
@@ -1300,7 +1300,7 @@ class TestDeviceCredential(testtools.TestCase):
         Test that a DeviceCredential struct missing device identifier data can
         be written to a data stream.
         """
-        credential = objects.DeviceCredential(
+        credential = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             network_identifier="netID9000",
@@ -1325,7 +1325,7 @@ class TestDeviceCredential(testtools.TestCase):
         Test that a DeviceCredential struct missing network identifier data
         can be written to a data stream.
         """
-        credential = objects.DeviceCredential(
+        credential = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1350,7 +1350,7 @@ class TestDeviceCredential(testtools.TestCase):
         Test that a DeviceCredential struct missing machine identifier data
         can be written to a data stream.
         """
-        credential = objects.DeviceCredential(
+        credential = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1375,7 +1375,7 @@ class TestDeviceCredential(testtools.TestCase):
         Test that a DeviceCredential struct missing media identifier data can
         be written to a data stream.
         """
-        credential = objects.DeviceCredential(
+        credential = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1406,7 +1406,7 @@ class TestDeviceCredential(testtools.TestCase):
         self.assertTrue(a == b)
         self.assertTrue(b == a)
 
-        a = objects.DeviceCredential(
+        a = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1414,7 +1414,7 @@ class TestDeviceCredential(testtools.TestCase):
             machine_identifier="machineID1",
             media_identifier="mediaID313"
         )
-        b = objects.DeviceCredential(
+        b = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1446,10 +1446,10 @@ class TestDeviceCredential(testtools.TestCase):
         Test that the equality operator returns False when comparing two
         DeviceCredential structs with different passwords.
         """
-        a = objects.DeviceCredential(
+        a = objects.DeviceCredential(  # nosec B106
             password="secret"
         )
-        b = objects.DeviceCredential(
+        b = objects.DeviceCredential(  # nosec B106
             password="public"
         )
 
@@ -1538,7 +1538,7 @@ class TestDeviceCredential(testtools.TestCase):
         self.assertFalse(a != b)
         self.assertFalse(b != a)
 
-        a = objects.DeviceCredential(
+        a = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1546,7 +1546,7 @@ class TestDeviceCredential(testtools.TestCase):
             machine_identifier="machineID1",
             media_identifier="mediaID313"
         )
-        b = objects.DeviceCredential(
+        b = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1578,10 +1578,10 @@ class TestDeviceCredential(testtools.TestCase):
         Test that the inequality operator returns True when comparing two
         DeviceCredential structs with different passwords.
         """
-        a = objects.DeviceCredential(
+        a = objects.DeviceCredential(  # nosec B106
             password="secret"
         )
-        b = objects.DeviceCredential(
+        b = objects.DeviceCredential(  # nosec B106
             password="public"
         )
 
@@ -1663,7 +1663,7 @@ class TestDeviceCredential(testtools.TestCase):
         """
         Test that repr can be applied to a DeviceCredential struct.
         """
-        credential = objects.DeviceCredential(
+        credential = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -1688,7 +1688,7 @@ class TestDeviceCredential(testtools.TestCase):
         """
         Test that str can be applied to a DeviceCredential struct.
         """
-        credential = objects.DeviceCredential(
+        credential = objects.DeviceCredential(  # nosec B106
             device_serial_number="serNum123456",
             password="secret",
             device_identifier="devID2233",
@@ -2586,7 +2586,7 @@ class TestCredential(testtools.TestCase):
         """
         credential = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="John",
                 password="abc123"
             )
@@ -2597,7 +2597,7 @@ class TestCredential(testtools.TestCase):
             credential.credential_type
         )
         self.assertEqual(
-            objects.UsernamePasswordCredential(
+            objects.UsernamePasswordCredential(  # nosec B106
                 username="John",
                 password="abc123"
             ),
@@ -2665,7 +2665,7 @@ class TestCredential(testtools.TestCase):
             credential.credential_type
         )
         self.assertEqual(
-            objects.UsernamePasswordCredential(
+            objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             ),
@@ -2685,7 +2685,7 @@ class TestCredential(testtools.TestCase):
             credential.credential_type
         )
         self.assertEqual(
-            objects.DeviceCredential(
+            objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
@@ -2767,7 +2767,7 @@ class TestCredential(testtools.TestCase):
         # Test with a UsernamePasswordCredential.
         credential = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
@@ -2782,7 +2782,7 @@ class TestCredential(testtools.TestCase):
         # Test with a DeviceCredential.
         credential = objects.Credential(
             credential_type=enums.CredentialType.DEVICE,
-            credential_value=objects.DeviceCredential(
+            credential_value=objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
@@ -2804,7 +2804,7 @@ class TestCredential(testtools.TestCase):
         Credential struct missing credential type data to a data stream.
         """
         credential = objects.Credential(
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
@@ -2851,14 +2851,14 @@ class TestCredential(testtools.TestCase):
         # Test with a UsernamePasswordCredential.
         a = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
         )
         b = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
@@ -2870,7 +2870,7 @@ class TestCredential(testtools.TestCase):
         # Test with a DeviceCredential.
         a = objects.Credential(
             credential_type=enums.CredentialType.DEVICE,
-            credential_value=objects.DeviceCredential(
+            credential_value=objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
@@ -2881,7 +2881,7 @@ class TestCredential(testtools.TestCase):
         )
         b = objects.Credential(
             credential_type=enums.CredentialType.DEVICE,
-            credential_value=objects.DeviceCredential(
+            credential_value=objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
@@ -2915,13 +2915,13 @@ class TestCredential(testtools.TestCase):
         Credential structs with different credential values.
         """
         a = objects.Credential(
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
         )
         b = objects.Credential(
-            credential_value=objects.DeviceCredential(
+            credential_value=objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
@@ -2959,14 +2959,14 @@ class TestCredential(testtools.TestCase):
         # Test with a UsernamePasswordCredential.
         a = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
         )
         b = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
@@ -2978,7 +2978,7 @@ class TestCredential(testtools.TestCase):
         # Test with a DeviceCredential.
         a = objects.Credential(
             credential_type=enums.CredentialType.DEVICE,
-            credential_value=objects.DeviceCredential(
+            credential_value=objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
@@ -2989,7 +2989,7 @@ class TestCredential(testtools.TestCase):
         )
         b = objects.Credential(
             credential_type=enums.CredentialType.DEVICE,
-            credential_value=objects.DeviceCredential(
+            credential_value=objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
@@ -3023,13 +3023,13 @@ class TestCredential(testtools.TestCase):
         Credential structs with different credential values.
         """
         a = objects.Credential(
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
         )
         b = objects.Credential(
-            credential_value=objects.DeviceCredential(
+            credential_value=objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
@@ -3060,7 +3060,7 @@ class TestCredential(testtools.TestCase):
         # Test with a UsernamePasswordCredential.
         credential = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
@@ -3079,7 +3079,7 @@ class TestCredential(testtools.TestCase):
         # Test with a DeviceCredential.
         credential = objects.Credential(
             credential_type=enums.CredentialType.DEVICE,
-            credential_value=objects.DeviceCredential(
+            credential_value=objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
@@ -3110,7 +3110,7 @@ class TestCredential(testtools.TestCase):
         # Test with a UsernamePasswordCredential.
         credential = objects.Credential(
             credential_type=enums.CredentialType.USERNAME_AND_PASSWORD,
-            credential_value=objects.UsernamePasswordCredential(
+            credential_value=objects.UsernamePasswordCredential(  # nosec B106
                 username="Fred",
                 password="password1"
             )
@@ -3129,7 +3129,7 @@ class TestCredential(testtools.TestCase):
         # Test with a DeviceCredential.
         credential = objects.Credential(
             credential_type=enums.CredentialType.DEVICE,
-            credential_value=objects.DeviceCredential(
+            credential_value=objects.DeviceCredential(  # nosec B106
                 device_serial_number="serNum123456",
                 password="secret",
                 device_identifier="devID2233",
