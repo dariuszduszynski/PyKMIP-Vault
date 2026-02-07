@@ -496,7 +496,7 @@ class KmipEngine(object):
                 response_payload
             )
             audit_event = {
-                "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                "timestamp": datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z"),
                 "client_identity": client_identity,
                 "client_ip": client_ip,
                 "operation": operation_name,
