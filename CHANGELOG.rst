@@ -2,6 +2,19 @@
 Changelog
 =========
 
+.. _v0.11.0.dev2:
+
+0.11.0.dev2 - February 7, 2026
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* Replace deprecated UTC timestamp generation in the server engine with
+  timezone-aware UTC values
+* Remove deprecated Sphinx RTD theme path usage from docs configuration
+* Clean up duplicated payload tests flagged by Ruff
+* Make the dashboard secret key configurable via environment and generate a
+  secure default
+* Use the active Python executable when starting the integration test server
+* Silence Bandit false positives in test fixtures and helpers
+
 .. _v0.10:
 
 0.10 - February 25, 2020
