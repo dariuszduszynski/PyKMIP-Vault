@@ -15,7 +15,6 @@
 
 import sqlalchemy
 import testtools
-import time
 
 from unittest import mock
 

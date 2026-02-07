@@ -16,7 +16,6 @@
 
 import enum
 import struct
-import time
 
 import testtools
 from unittest import mock

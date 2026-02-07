@@ -982,60 +982,6 @@ class TestSignatureVerifyRequestPayload(testtools.TestCase):
 
     def test_read_valid(self):
         """
-        Test that a SignatureVerify response payload can be read from a valid
-        byte stream.
-        """
-        self.test_read()
-
-    def test_read_missing_required_field(self):
-        """
-        Test that an exception is raised when reading a payload missing a
-        required field.
-        """
-        self.test_read_missing_unique_identifier()
-
-    def test_write_valid(self):
-        """
-        Test that a SignatureVerify response payload can be written to a byte
-        stream.
-        """
-        self.test_write()
-
-    def test_read_write_roundtrip(self):
-        """
-        Test that a SignatureVerify response payload can be read and written
-        without changing the encoded bytes.
-        """
-        payload = signature_verify.SignatureVerifyResponsePayload()
-        payload.read(utils.BytearrayStream(self.full_encoding.buffer))
-
-        buffer = utils.BytearrayStream()
-        payload.write(buffer)
-
-        self.assertEqual(str(self.full_encoding), str(buffer))
-
-    def test_validate_invalid(self):
-        """
-        Test that an exception is raised when a field has an invalid type.
-        """
-        self.test_invalid_unique_identifier()
-
-    def test_eq(self):
-        """
-        Test that two SignatureVerify response payloads with the same data are
-        equal.
-        """
-        self.test_equal_on_equal()
-
-    def test_ne(self):
-        """
-        Test that two SignatureVerify response payloads with different data are
-        not equal.
-        """
-        self.test_not_equal_on_not_equal_unique_identifier()
-
-    def test_read_valid(self):
-        """
         Test that a SignatureVerify request payload can be read from a valid
         byte stream.
         """

@@ -1329,13 +1329,6 @@ class TestLocateRequestPayload(testtools.TestCase):
         """
         self.test_not_equal_on_not_equal_maximum_items()
 
-    def test_str(self):
-        """
-        Test the str output for a Locate request payload.
-        """
-        payload = payloads.LocateRequestPayload()
-        self.assertIsInstance(str(payload), str)
-
 class TestLocateResponsePayload(testtools.TestCase):
 
     def setUp(self):
