@@ -30,8 +30,13 @@ class TestKmipServerExtended(testtools.TestCase):
 
     def setUp(self):
         super(TestKmipServerExtended, self).setUp()
+        self._audit_logging_patch = mock.patch(
+            'kmip.services.server.server.KmipServer._setup_audit_logging'
+        )
+        self._audit_logging_patch.start()
 
     def tearDown(self):
+        self._audit_logging_patch.stop()
         super(TestKmipServerExtended, self).tearDown()
 
     def _build_server_for_start(self):

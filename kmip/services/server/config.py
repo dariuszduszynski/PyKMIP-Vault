@@ -39,6 +39,7 @@ class KmipServerConfig(object):
         self.settings['health_port'] = None
         self.settings['dashboard_host'] = None
         self.settings['dashboard_port'] = None
+        self.settings['audit_log_path'] = '/var/log/pykmip/audit.log'
         self.settings['replication_role'] = None
         self.settings['replication_leader_url'] = None
         self.settings['replication_token'] = None
@@ -63,6 +64,7 @@ class KmipServerConfig(object):
             'health_port',
             'dashboard_host',
             'dashboard_port',
+            'audit_log_path',
             'replication_role',
             'replication_leader_url',
             'replication_token',
@@ -119,6 +121,8 @@ class KmipServerConfig(object):
             self._set_dashboard_host(value)
         elif setting == 'dashboard_port':
             self._set_dashboard_port(value)
+        elif setting == 'audit_log_path':
+            self._set_audit_log_path(value)
         elif setting == 'replication_role':
             self._set_replication_role(value)
         elif setting == 'replication_leader_url':
@@ -225,6 +229,8 @@ class KmipServerConfig(object):
             self._set_dashboard_host(parser.get('server', 'dashboard_host'))
         if parser.has_option('server', 'dashboard_port'):
             self._set_dashboard_port(parser.getint('server', 'dashboard_port'))
+        if parser.has_option('server', 'audit_log_path'):
+            self._set_audit_log_path(parser.get('server', 'audit_log_path'))
         if parser.has_option('server', 'replication_role'):
             self._set_replication_role(
                 parser.get('server', 'replication_role')
@@ -470,6 +476,16 @@ class KmipServerConfig(object):
             raise exceptions.ConfigurationError(
                 "The dashboard port value must be an integer in the range "
                 "1 - 65535."
+            )
+
+    def _set_audit_log_path(self, value):
+        if not value:
+            self.settings['audit_log_path'] = None
+        elif isinstance(value, str):
+            self.settings['audit_log_path'] = value
+        else:
+            raise exceptions.ConfigurationError(
+                "The audit log path must be a string."
             )
 
     def _set_replication_role(self, value):

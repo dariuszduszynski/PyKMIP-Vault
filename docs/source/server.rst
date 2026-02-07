@@ -37,6 +37,7 @@ as found in the configuration file, is shown below:
         TLS_RSA_WITH_AES_256_CBC_SHA256
         TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
     logging_level=DEBUG
+    audit_log_path=/var/log/pykmip/audit.log
     database_path=/tmp/pykmip.db
     health_host=127.0.0.1
     health_port=5697
@@ -62,6 +63,7 @@ different configuration values:
     ...     auth_suite='Basic',
     ...     config_path='/etc/pykmip/server.conf',
     ...     log_path='/var/log/pykmip/server.log',
+    ...     audit_log_path='/var/log/pykmip/audit.log',
     ...     policy_path='/etc/pykmip/policies',
     ...     enable_tls_client_auth=True,
     ...     tls_cipher_suites=[
@@ -112,6 +114,11 @@ The different configuration options are defined below:
     A string representing a path to a log file. The server will set up a
     rotating file logger on this file. Only set via the ``KmipServer``
     constructor. Defaults to ``/var/log/pykmip/server.log``.
+* ``audit_log_path``
+    A string representing a path to the audit log file. Audit events are
+    written as JSON lines to support SIEM ingestion. This can be set in the
+    server configuration file or via the ``KmipServer`` constructor. Defaults
+    to ``/var/log/pykmip/audit.log``.
 * ``policy_path``
     A string representing a path to the filesystem directory containing
     PyKMIP server operation policy JSON files.

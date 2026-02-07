@@ -122,6 +122,7 @@ class KmipServer(object):
             health_port=None,
             dashboard_host=None,
             dashboard_port=None,
+            audit_log_path=None,
             replication_role=None,
             replication_leader_url=None,
             replication_token=None,
@@ -200,6 +201,9 @@ class KmipServer(object):
                 service. Optional, defaults to None.
             dashboard_port (int): The port for the dashboard service.
                 Optional, defaults to None.
+            audit_log_path (string): The path to the base audit log file
+                (e.g., '/var/log/pykmip/audit.log'). Optional, defaults to
+                None.
             replication_role (string): Replication role, either 'leader' or
                 'follower'. Optional, defaults to None.
             replication_leader_url (string): URL for leader replication backup
@@ -232,6 +236,7 @@ class KmipServer(object):
             health_port,
             dashboard_host,
             dashboard_port,
+            audit_log_path,
             replication_role,
             replication_leader_url,
             replication_token,
@@ -242,6 +247,7 @@ class KmipServer(object):
         self.policies = {}
 
         self._logger.setLevel(self.config.settings.get('logging_level'))
+        self._setup_audit_logging(self.config.settings.get('audit_log_path'))
 
         cipher_suites = self.config.settings.get('tls_cipher_suites')
         if self.config.settings.get('auth_suite') == 'TLS1.2':
@@ -276,6 +282,28 @@ class KmipServer(object):
         self._logger.addHandler(handler)
         self._logger.setLevel(logging.DEBUG)
 
+    def _setup_audit_logging(self, path):
+        if not path:
+            return
+
+        if not os.path.exists(path):
+            if not os.path.isdir(os.path.dirname(path)):
+                os.makedirs(os.path.dirname(path))
+            open(path, 'w').close()
+
+        audit_logger = logging.getLogger('kmip.audit')
+        audit_logger.setLevel(logging.INFO)
+        audit_logger.propagate = False
+
+        handler = handlers.RotatingFileHandler(
+            path,
+            mode='a',
+            maxBytes=1000000,
+            backupCount=5
+        )
+        handler.setFormatter(logging.Formatter("%(message)s"))
+        audit_logger.addHandler(handler)
+
     def _setup_configuration(
             self,
             path=None,
@@ -294,6 +322,7 @@ class KmipServer(object):
             health_port=None,
             dashboard_host=None,
             dashboard_port=None,
+            audit_log_path=None,
             replication_role=None,
             replication_leader_url=None,
             replication_token=None,
@@ -339,6 +368,8 @@ class KmipServer(object):
             self.config.set_setting('dashboard_host', dashboard_host)
         if dashboard_port is not None:
             self.config.set_setting('dashboard_port', dashboard_port)
+        if audit_log_path is not None:
+            self.config.set_setting('audit_log_path', audit_log_path)
         if replication_role:
             self.config.set_setting('replication_role', replication_role)
         if replication_leader_url:
@@ -824,6 +855,17 @@ def build_argument_parser():
         ),
     )
     parser.add_option(
+        "--audit_log_path",
+        action="store",
+        type="str",
+        default=None,
+        dest="audit_log_path",
+        help=(
+            "A string representing a path to an audit log file. Defaults "
+            "to None."
+        ),
+    )
+    parser.add_option(
         "-o",
         "--policy_path",
         action="store",
@@ -896,6 +938,8 @@ def main(args=None):
         kwargs['config_path'] = opts.config_path
     if opts.log_path:
         kwargs['log_path'] = opts.log_path
+    if opts.audit_log_path:
+        kwargs['audit_log_path'] = opts.audit_log_path
     if opts.policy_path:
         kwargs['policy_path'] = opts.policy_path
     if opts.ignore_tls_client_auth:

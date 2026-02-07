@@ -14,6 +14,8 @@
 # under the License.
 
 import copy
+import datetime
+import json
 import logging
 from sqlalchemy.orm import exc
 
@@ -80,6 +82,9 @@ class KmipEngine(object):
                 If none, database path defaults to '/tmp/pykmip.database'.
         """
         self._logger = logging.getLogger('kmip.server.engine')
+        self._audit_logger = logging.getLogger('kmip.audit')
+        if not self._audit_logger.handlers:
+            self._audit_logger.addHandler(logging.NullHandler())
 
         self._cryptography_engine = engine.CryptographyEngine()
 
@@ -197,7 +202,7 @@ class KmipEngine(object):
             self._data_store_session_factory = self._storage_backend.get_session
 
     @_synchronize
-    def process_request(self, request, credential=None):
+    def process_request(self, request, credential=None, client_ip=None):
         """
         Process a KMIP request message.
 
@@ -316,7 +321,8 @@ class KmipEngine(object):
         response_batch = self._process_batch(
             request.batch_items,
             batch_error_option,
-            batch_order_option
+            batch_order_option,
+            client_ip=client_ip
         )
         response = self._build_response(
             header.protocol_version,
@@ -362,7 +368,13 @@ class KmipEngine(object):
         )
         return self._build_response(version, [batch_item])
 
-    def _process_batch(self, request_batch, batch_handling, batch_order):
+    def _process_batch(
+            self,
+            request_batch,
+            batch_handling,
+            batch_order,
+            client_ip=None
+    ):
         response_batch = list()
 
         with self._data_store_session_factory() as session:
@@ -372,7 +384,7 @@ class KmipEngine(object):
                 error_occurred = False
 
                 response_payload = None
-                result_status = None
+                result_status_enum = None
                 result_reason = None
                 result_message = None
 
@@ -399,10 +411,10 @@ class KmipEngine(object):
                         request_payload
                     )
 
-                    result_status = enums.ResultStatus.SUCCESS
+                    result_status_enum = enums.ResultStatus.SUCCESS
                 except exceptions.KmipError as e:
                     error_occurred = True
-                    result_status = e.status
+                    result_status_enum = e.status
                     result_reason = e.reason
                     result_message = str(e)
                 except Exception as e:
@@ -412,7 +424,7 @@ class KmipEngine(object):
                     self._logger.exception(e)
 
                     error_occurred = True
-                    result_status = enums.ResultStatus.OPERATION_FAILED
+                    result_status_enum = enums.ResultStatus.OPERATION_FAILED
                     result_reason = enums.ResultReason.GENERAL_FAILURE
                     result_message = (
                         "Operation failed. See the server logs for more "
@@ -420,7 +432,13 @@ class KmipEngine(object):
                     )
 
                 # Compose operation result.
-                result_status = contents.ResultStatus(result_status)
+                if result_status_enum is None:
+                    result_status_enum = enums.ResultStatus.OPERATION_FAILED
+
+                result_reason_enum = result_reason
+                result_message_text = result_message
+
+                result_status = contents.ResultStatus(result_status_enum)
                 if result_reason:
                     result_reason = contents.ResultReason(result_reason)
                 if result_message:
@@ -435,6 +453,15 @@ class KmipEngine(object):
                     response_payload=response_payload
                 )
                 response_batch.append(batch_item)
+                self._log_audit_event(
+                    operation,
+                    request_payload,
+                    response_payload,
+                    result_status_enum,
+                    result_reason_enum,
+                    result_message_text,
+                    client_ip
+                )
 
                 # Handle batch error if necessary.
                 if error_occurred:
@@ -442,6 +469,116 @@ class KmipEngine(object):
                         break
 
         return response_batch
+
+    def _log_audit_event(
+            self,
+            operation,
+            request_payload,
+            response_payload,
+            result_status,
+            result_reason,
+            result_message,
+            client_ip
+    ):
+        try:
+            operation_enum = operation.value if hasattr(operation, 'value') else operation
+            operation_name = (
+                operation_enum.name
+                if hasattr(operation_enum, 'name') else str(operation_enum)
+            )
+            client_identity = None
+            if isinstance(self._client_identity, (list, tuple)):
+                client_identity = self._client_identity[0]
+            elif self._client_identity is not None:
+                client_identity = self._client_identity
+            unique_identifier = self._extract_unique_identifier(
+                request_payload,
+                response_payload
+            )
+            audit_event = {
+                "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                "client_identity": client_identity,
+                "client_ip": client_ip,
+                "operation": operation_name,
+                "unique_identifier": unique_identifier,
+                "result": (
+                    "success"
+                    if result_status == enums.ResultStatus.SUCCESS
+                    else "failure"
+                ),
+                "result_status": (
+                    result_status.name
+                    if hasattr(result_status, 'name') else str(result_status)
+                )
+            }
+            if result_reason is not None:
+                audit_event["result_reason"] = (
+                    result_reason.name
+                    if hasattr(result_reason, 'name') else str(result_reason)
+                )
+            if result_message is not None:
+                audit_event["result_message"] = str(result_message)
+
+            self._audit_logger.info(
+                json.dumps(audit_event, separators=(",", ":"), ensure_ascii=True)
+            )
+        except Exception:
+            self._logger.exception("Failed to write audit log entry.")
+
+    def _extract_unique_identifier(self, request_payload, response_payload):
+        unique_identifier = self._get_payload_identifier(response_payload)
+        if unique_identifier is not None:
+            return unique_identifier
+        return self._get_payload_identifier(request_payload)
+
+    def _get_payload_identifier(self, payload):
+        if payload is None:
+            return None
+
+        for attr in ('unique_identifier', 'uid', 'unique_identifiers', 'uuids'):
+            if hasattr(payload, attr):
+                value = self._normalize_unique_identifier(getattr(payload, attr))
+                if value:
+                    return value
+
+        private_uid = None
+        public_uid = None
+        for attr in ('private_key_unique_identifier', 'private_key_uuid'):
+            if hasattr(payload, attr):
+                private_uid = self._normalize_unique_identifier(
+                    getattr(payload, attr)
+                )
+                if private_uid is not None:
+                    break
+
+        for attr in ('public_key_unique_identifier', 'public_key_uuid'):
+            if hasattr(payload, attr):
+                public_uid = self._normalize_unique_identifier(
+                    getattr(payload, attr)
+                )
+                if public_uid is not None:
+                    break
+
+        if private_uid is not None or public_uid is not None:
+            unique_ids = [
+                uid for uid in (private_uid, public_uid) if uid is not None
+            ]
+            return unique_ids if unique_ids else None
+
+        return None
+
+    def _normalize_unique_identifier(self, value):
+        if value is None:
+            return None
+        if isinstance(value, list):
+            normalized = [
+                self._normalize_unique_identifier(item) for item in value
+            ]
+            normalized = [item for item in normalized if item is not None]
+            return normalized if normalized else None
+        if hasattr(value, 'value'):
+            return value.value
+        return value
 
     def _get_object_type(self, unique_identifier):
         try:

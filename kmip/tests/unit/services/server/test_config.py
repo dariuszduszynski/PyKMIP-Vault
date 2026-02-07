@@ -66,6 +66,7 @@ class TestKmipServerConfig(testtools.TestCase):
         c._set_tls_cipher_suites = mock.MagicMock()
         c._set_logging_level = mock.MagicMock()
         c._set_database_path = mock.MagicMock()
+        c._set_audit_log_path = mock.MagicMock()
 
         # Test the right error is generated when setting an unsupported
         # setting.
@@ -115,6 +116,11 @@ class TestKmipServerConfig(testtools.TestCase):
 
         c.set_setting('database_path', '/var/pykmip/pykmip.db')
         c._set_database_path.assert_called_once_with('/var/pykmip/pykmip.db')
+
+        c.set_setting('audit_log_path', '/var/log/pykmip/audit.log')
+        c._set_audit_log_path.assert_called_once_with(
+            '/var/log/pykmip/audit.log'
+        )
 
     def test_load_settings(self):
         """

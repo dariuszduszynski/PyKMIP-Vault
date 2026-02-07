@@ -207,7 +207,8 @@ class KmipSession(threading.Thread):
                 try:
                     results = self._engine.process_request(
                         request,
-                        client_identity
+                        client_identity,
+                        client_ip=self._address[0] if self._address else None
                     )
                     response, max_response_size, protocol_version = results
                     kmip_version = contents.protocol_version_to_kmip_version(
