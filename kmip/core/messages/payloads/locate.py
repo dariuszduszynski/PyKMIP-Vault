@@ -366,16 +366,13 @@ class LocateRequestPayload(base.RequestPayload):
 
         attributes = []
         for attribute in self.attributes:
+            name = _format_attribute_value(attribute.attribute_name)
+            index = _format_attribute_value(attribute.attribute_index)
+            value = _format_attribute_value(attribute.attribute_value)
             attributes.append(
-                '{'
-                '"attribute_name": {}, '
-                '"attribute_index": {}, '
-                '"attribute_value": {}'
-                '}'.format(
-                    _format_attribute_value(attribute.attribute_name),
-                    _format_attribute_value(attribute.attribute_index),
-                    _format_attribute_value(attribute.attribute_value)
-                )
+                '{"attribute_name": ' + name + ', '
+                '"attribute_index": ' + index + ', '
+                '"attribute_value": ' + value + '}'
             )
 
         value = ", ".join(
