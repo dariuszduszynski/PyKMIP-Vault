@@ -19,6 +19,7 @@ import logging.handlers as handlers
 import multiprocessing
 import optparse
 import os
+import ntpath
 import signal
 
 import socket
@@ -265,8 +266,11 @@ class KmipServer(object):
     def _setup_logging(self, path):
         # Create the logging directory/file if it doesn't exist.
         if not os.path.exists(path):
-            if not os.path.isdir(os.path.dirname(path)):
-                os.makedirs(os.path.dirname(path))
+            directory = os.path.dirname(path)
+            if not directory and '\\' in path:
+                directory = ntpath.dirname(path)
+            if directory and not os.path.isdir(directory):
+                os.makedirs(directory)
             open(path, 'w').close()
 
         handler = handlers.RotatingFileHandler(
@@ -288,8 +292,11 @@ class KmipServer(object):
             return
 
         if not os.path.exists(path):
-            if not os.path.isdir(os.path.dirname(path)):
-                os.makedirs(os.path.dirname(path))
+            directory = os.path.dirname(path)
+            if not directory and '\\' in path:
+                directory = ntpath.dirname(path)
+            if directory and not os.path.isdir(directory):
+                os.makedirs(directory)
             open(path, 'w').close()
 
         audit_logger = logging.getLogger('kmip.audit')

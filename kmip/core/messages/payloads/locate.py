@@ -353,15 +353,38 @@ class LocateRequestPayload(base.RequestPayload):
         return "LocateRequestPayload({})".format(args)
 
     def __str__(self):
+        def _format_attribute_value(value):
+            if value is None:
+                return "None"
+            if isinstance(value, primitives.TextString):
+                return '"{}"'.format(value.value)
+            if isinstance(value, primitives.Integer):
+                return str(value.value)
+            if isinstance(value, primitives.Enumeration):
+                return str(value)
+            return str(value)
+
+        attributes = []
+        for attribute in self.attributes:
+            attributes.append(
+                '{'
+                '"attribute_name": {}, '
+                '"attribute_index": {}, '
+                '"attribute_value": {}'
+                '}'.format(
+                    _format_attribute_value(attribute.attribute_name),
+                    _format_attribute_value(attribute.attribute_index),
+                    _format_attribute_value(attribute.attribute_value)
+                )
+            )
+
         value = ", ".join(
             [
                 '"maximum_items": {}'.format(self.maximum_items),
                 '"offset_items": {}'.format(self.offset_items),
                 '"storage_status_mask": {}'.format(self.storage_status_mask),
                 '"object_group_member": {}'.format(self.object_group_member),
-                '"attributes": {}'.format(
-                    [str(attribute) for attribute in self.attributes]
-                )
+                '"attributes=[' + ", ".join(attributes) + ']'
             ]
         )
         return '{' + value + '}'
