@@ -38,6 +38,7 @@ from kmip.core import enums
 from kmip.core import exceptions
 from kmip.services.server.crypto import api
 
+
 class CryptographyEngine(api.CryptographicEngine):
     """
     A cryptographic engine that uses pyca/cryptography to generate
@@ -54,12 +55,12 @@ class CryptographyEngine(api.CryptographicEngine):
         # supported by certain backends, like OpenSSL.
         self._symmetric_key_algorithms = {
             enums.CryptographicAlgorithm.TRIPLE_DES: decrepit_algorithms.TripleDES,
-            enums.CryptographicAlgorithm.AES:        algorithms.AES,
-            enums.CryptographicAlgorithm.BLOWFISH:   algorithms.Blowfish,
-            enums.CryptographicAlgorithm.CAMELLIA:   algorithms.Camellia,
-            enums.CryptographicAlgorithm.CAST5:      algorithms.CAST5,
-            enums.CryptographicAlgorithm.IDEA:       algorithms.IDEA,
-            enums.CryptographicAlgorithm.RC4:        decrepit_algorithms.ARC4
+            enums.CryptographicAlgorithm.AES: algorithms.AES,
+            enums.CryptographicAlgorithm.BLOWFISH: algorithms.Blowfish,
+            enums.CryptographicAlgorithm.CAMELLIA: algorithms.Camellia,
+            enums.CryptographicAlgorithm.CAST5: algorithms.CAST5,
+            enums.CryptographicAlgorithm.IDEA: algorithms.IDEA,
+            enums.CryptographicAlgorithm.RC4: decrepit_algorithms.ARC4
         }
         self._asymmetric_key_algorithms = {
             enums.CryptographicAlgorithm.RSA: self._create_rsa_key_pair
@@ -75,8 +76,8 @@ class CryptographyEngine(api.CryptographicEngine):
 
         # TODO(peter-hamilton): Consider merging above hash dict and this one
         self._encryption_hash_algorithms = {
-            enums.HashingAlgorithm.MD5:     hashes.MD5,
-            enums.HashingAlgorithm.SHA_1:   hashes.SHA1,
+            enums.HashingAlgorithm.MD5: hashes.MD5,
+            enums.HashingAlgorithm.SHA_1: hashes.SHA1,
             enums.HashingAlgorithm.SHA_224: hashes.SHA224,
             enums.HashingAlgorithm.SHA_256: hashes.SHA256,
             enums.HashingAlgorithm.SHA_384: hashes.SHA384,
@@ -92,13 +93,13 @@ class CryptographyEngine(api.CryptographicEngine):
             enums.BlockCipherMode.GCM: modes.GCM
         }
         self._asymmetric_padding_methods = {
-             enums.PaddingMethod.OAEP:     asymmetric_padding.OAEP,
-             enums.PaddingMethod.PKCS1v15: asymmetric_padding.PKCS1v15,
-             enums.PaddingMethod.PSS:      asymmetric_padding.PSS
+            enums.PaddingMethod.OAEP: asymmetric_padding.OAEP,
+            enums.PaddingMethod.PKCS1v15: asymmetric_padding.PKCS1v15,
+            enums.PaddingMethod.PSS: asymmetric_padding.PSS
         }
         self._symmetric_padding_methods = {
             enums.PaddingMethod.ANSI_X923: symmetric_padding.ANSIX923,
-            enums.PaddingMethod.PKCS5:     symmetric_padding.PKCS7
+            enums.PaddingMethod.PKCS5: symmetric_padding.PKCS7
         }
         self._no_mode_needed = [
             enums.CryptographicAlgorithm.RC4
@@ -1339,8 +1340,8 @@ class CryptographyEngine(api.CryptographicEngine):
 
         if digital_signature_algorithm:
             (hash_alg, crypto_alg) = self._digital_signature_algorithms.get(
-                                         digital_signature_algorithm,
-                                         (None, None)
+                digital_signature_algorithm,
+                (None, None)
             )
 
         elif crypto_alg and hash_algorithm:

@@ -32,12 +32,14 @@ from kmip.pie import objects as pobjects
 
 from kmip.services.kmip_client import KMIPProxy
 
+
 def is_connected(function):
     def wrapper(self, *args, **kwargs):
         if not self._is_open:
             raise exceptions.ClientConnectionNotOpen()
         return function(self, *args, **kwargs)
     return wrapper
+
 
 class ProxyKmipClient(object):
     """
@@ -51,6 +53,7 @@ class ProxyKmipClient(object):
 
     Like the KMIPProxy, the ProxyKmipClient is not thread-safe.
     """
+
     def __init__(self,
                  hostname=None,
                  port=None,
@@ -197,7 +200,13 @@ class ProxyKmipClient(object):
                 raise
 
     @is_connected
-    def create(self, algorithm, length, operation_policy_name=None, name=None, cryptographic_usage_mask=None):
+    def create(
+            self,
+            algorithm,
+            length,
+            operation_policy_name=None,
+            name=None,
+            cryptographic_usage_mask=None):
         """
         Create a symmetric key on a KMIP appliance.
 
@@ -226,17 +235,19 @@ class ProxyKmipClient(object):
         from kmip.core.enums import CryptographicAlgorithm as CoreAlgorithm
 
         if not (
-        isinstance(algorithm, enums.CryptographicAlgorithm) or isinstance(algorithm, CoreAlgorithm)
-        ):
+            isinstance(
+                algorithm,
+                enums.CryptographicAlgorithm) or isinstance(
+                algorithm,
+                CoreAlgorithm)):
             raise TypeError(
-                f"algorithm must be a CryptographicAlgorithm enumeration, got {type(algorithm)}"
-            )
-    
+                f"algorithm must be a CryptographicAlgorithm enumeration, got {
+                    type(algorithm)}")
 
-        #if not isinstance(algorithm, enums.CryptographicAlgorithm):
+        # if not isinstance(algorithm, enums.CryptographicAlgorithm):
         #    raise TypeError(
         #        "algorithm must be a CryptographicAlgorithm enumeration")
-        
+
         elif not isinstance(length, int) or length <= 0:
             raise TypeError("length must be a positive integer")
         if cryptographic_usage_mask is not None:
@@ -252,7 +263,7 @@ class ProxyKmipClient(object):
             operation_policy_name
         )
         key_attributes = self._build_key_attributes(
-                            algorithm, length, cryptographic_usage_mask)
+            algorithm, length, cryptographic_usage_mask)
         key_attributes.extend(common_attributes)
 
         if name:

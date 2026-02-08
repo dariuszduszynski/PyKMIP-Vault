@@ -18,12 +18,14 @@ import pytest
 from kmip.services import kmip_client
 from kmip.pie import client as pclient
 
+
 def pytest_addoption(parser):
     parser.addoption(
         "--config",
         action="store",
         default="client",
         help="Config file section name for client configuration settings")
+
 
 @pytest.fixture(scope="class")
 def client(request):
@@ -37,6 +39,7 @@ def client(request):
 
     request.addfinalizer(finalize)
     request.cls.client = client
+
 
 @pytest.fixture(scope="class")
 def simple(request):

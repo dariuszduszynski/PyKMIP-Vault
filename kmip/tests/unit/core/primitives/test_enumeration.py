@@ -22,12 +22,15 @@ from kmip.core import primitives
 from kmip.core import utils
 
 # flake8: noqa
+
+
 class DummyEnumeration(enumeration.Enum):
-    SMALL     = primitives.Enumeration.MIN
+    SMALL = primitives.Enumeration.MIN
     TOO_SMALL = primitives.Enumeration.MIN - 1
-    LARGE     = primitives.Enumeration.MAX
+    LARGE = primitives.Enumeration.MAX
     TOO_LARGE = primitives.Enumeration.MAX + 1
-    INVALID   = 'invalid'
+    INVALID = 'invalid'
+
 
 class TestEnumeration(testtools.TestCase):
 

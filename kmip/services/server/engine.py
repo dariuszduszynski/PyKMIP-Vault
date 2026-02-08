@@ -43,6 +43,7 @@ from kmip.services.server import policy
 from kmip.services.server.crypto import engine
 from kmip.services.server.storage.sqlite_backend import SQLiteBackend
 
+
 class KmipEngine(object):
     """
     A KMIP request processor that acts as the core of the KmipServer.
@@ -480,7 +481,8 @@ class KmipEngine(object):
             client_ip
     ):
         try:
-            operation_enum = operation.value if hasattr(operation, 'value') else operation
+            operation_enum = operation.value if hasattr(
+                operation, 'value') else operation
             operation_name = (
                 operation_enum.name
                 if hasattr(operation_enum, 'name') else str(operation_enum)
@@ -495,7 +497,10 @@ class KmipEngine(object):
                 response_payload
             )
             audit_event = {
-                "timestamp": datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z"),
+                "timestamp": datetime.datetime.now(
+                    datetime.UTC).isoformat().replace(
+                    "+00:00",
+                    "Z"),
                 "client_identity": client_identity,
                 "client_ip": client_ip,
                 "operation": operation_name,
@@ -506,10 +511,9 @@ class KmipEngine(object):
                     else "failure"
                 ),
                 "result_status": (
-                    result_status.name
-                    if hasattr(result_status, 'name') else str(result_status)
-                )
-            }
+                    result_status.name if hasattr(
+                        result_status,
+                        'name') else str(result_status))}
             if result_reason is not None:
                 audit_event["result_reason"] = (
                     result_reason.name
@@ -2680,7 +2684,7 @@ class KmipEngine(object):
         self._logger.info("Processing operation: Locate")
 
         managed_objects = self._list_objects_with_access_controls(
-                                enums.Operation.LOCATE)
+            enums.Operation.LOCATE)
 
         # TODO (ph) Do a single pass on the provided attributes and preprocess
         # them as needed (e.g., tracking multiple 'Initial Date' values, etc).

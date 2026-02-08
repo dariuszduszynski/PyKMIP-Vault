@@ -219,12 +219,11 @@ class TestKmipEngineProcessExtended(testtools.TestCase):
     def test_process_create_invalid_length(self):
         """Test Create propagates invalid cryptographic length errors."""
         e = self.engine
-        e._process_template_attribute = mock.Mock(return_value=
-            _build_attribute_dict(
-                algorithm=enums.CryptographicAlgorithm.AES,
-                length=999,
-                usage_masks=[enums.CryptographicUsageMask.ENCRYPT]
-            )
+        e._process_template_attribute = mock.Mock(return_value=_build_attribute_dict(
+            algorithm=enums.CryptographicAlgorithm.AES,
+            length=999,
+            usage_masks=[enums.CryptographicUsageMask.ENCRYPT]
+        )
         )
 
         e._cryptography_engine.create_symmetric_key.side_effect = \
@@ -273,9 +272,15 @@ class TestKmipEngineProcessExtended(testtools.TestCase):
                     common_attrs
                 ]
                 payload = payloads.CreateKeyPairRequestPayload(
-                    common_template_attribute=core_objects.CommonTemplateAttribute(),
-                    private_key_template_attribute=core_objects.PrivateKeyTemplateAttribute(),
-                    public_key_template_attribute=core_objects.PublicKeyTemplateAttribute()
+                    common_template_attribute=(
+                        core_objects.CommonTemplateAttribute()
+                    ),
+                    private_key_template_attribute=(
+                        core_objects.PrivateKeyTemplateAttribute()
+                    ),
+                    public_key_template_attribute=(
+                        core_objects.PublicKeyTemplateAttribute()
+                    ),
                 )
                 response = e._process_create_key_pair(payload)
                 self.assertIsNotNone(response.public_key_unique_identifier)
@@ -1708,8 +1713,9 @@ class TestKmipEngineProcessExtended(testtools.TestCase):
             cryptographic_algorithm=enums.CryptographicAlgorithm.RSA,
             hashing_algorithm=enums.HashingAlgorithm.SHA_256,
             padding_method=enums.PaddingMethod.PKCS1v15,
-            digital_signature_algorithm=
+            digital_signature_algorithm=(
                 enums.DigitalSignatureAlgorithm.SHA256_WITH_RSA_ENCRYPTION
+            )
         )
         payload = payloads.SignRequestPayload(
             unique_identifier='1',
@@ -1736,8 +1742,9 @@ class TestKmipEngineProcessExtended(testtools.TestCase):
             cryptographic_algorithm=enums.CryptographicAlgorithm.RSA,
             hashing_algorithm=enums.HashingAlgorithm.SHA_256,
             padding_method=enums.PaddingMethod.PKCS1v15,
-            digital_signature_algorithm=
+            digital_signature_algorithm=(
                 enums.DigitalSignatureAlgorithm.SHA256_WITH_RSA_ENCRYPTION
+            )
         )
 
         e._cryptography_engine.verify_signature.return_value = True
@@ -1790,8 +1797,9 @@ class TestKmipEngineProcessExtended(testtools.TestCase):
             cryptographic_algorithm=enums.CryptographicAlgorithm.RSA,
             hashing_algorithm=enums.HashingAlgorithm.SHA_256,
             padding_method=enums.PaddingMethod.PKCS1v15,
-            digital_signature_algorithm=
+            digital_signature_algorithm=(
                 enums.DigitalSignatureAlgorithm.SHA256_WITH_RSA_ENCRYPTION
+            )
         )
         payload = payloads.SignatureVerifyRequestPayload(
             unique_identifier='1',

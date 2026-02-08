@@ -22,6 +22,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestGetAttributeListRequestPayload(testtools.TestCase):
     """
     Test suite for the GetAttributeList request payload.
@@ -368,6 +369,7 @@ class TestGetAttributeListRequestPayload(testtools.TestCase):
         not equal.
         """
         self.test_not_equal_on_not_equal_unique_identifier()
+
 
 class TestGetAttributeListResponsePayload(testtools.TestCase):
     """

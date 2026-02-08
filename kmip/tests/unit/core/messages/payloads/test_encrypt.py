@@ -21,6 +21,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestEncryptRequestPayload(testtools.TestCase):
     """
     Test suite for the Encrypt request payload.
@@ -776,6 +777,7 @@ class TestEncryptRequestPayload(testtools.TestCase):
         equal.
         """
         self.test_not_equal_on_not_equal_unique_identifier()
+
 
 class TestEncryptResponsePayload(testtools.TestCase):
     """

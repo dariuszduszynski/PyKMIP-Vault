@@ -24,6 +24,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestGetRequestPayload(testtools.TestCase):
     """
     Test suite for the Get request payload.
@@ -810,6 +811,7 @@ class TestGetRequestPayload(testtools.TestCase):
         """
         self.test_not_equal_on_not_equal_unique_identifier()
 
+
 class TestGetResponsePayload(testtools.TestCase):
     """
     Test suite for the Get response payload.
@@ -1247,23 +1249,23 @@ class TestGetResponsePayload(testtools.TestCase):
         # TODO (peter-hamilton): Update this once equality is supported for
         # SymmetricKeys.
         secret = secrets.SymmetricKey(
-                key_block=objects.KeyBlock(
-                    key_format_type=misc.KeyFormatType(
-                        enums.KeyFormatType.RAW
-                    ),
-                    key_value=objects.KeyValue(
-                        key_material=objects.KeyMaterial(
-                            b'\x73\x67\x57\x80\x51\x01\x2A\x6D'
-                            b'\x13\x4A\x85\x5E\x25\xC8\xCD\x5E'
-                            b'\x4C\xA1\x31\x45\x57\x29\xD3\xC8'
-                        )
-                    ),
-                    cryptographic_algorithm=attributes.CryptographicAlgorithm(
-                        enums.CryptographicAlgorithm.TRIPLE_DES
-                    ),
-                    cryptographic_length=attributes.CryptographicLength(168)
-                )
+            key_block=objects.KeyBlock(
+                key_format_type=misc.KeyFormatType(
+                    enums.KeyFormatType.RAW
+                ),
+                key_value=objects.KeyValue(
+                    key_material=objects.KeyMaterial(
+                        b'\x73\x67\x57\x80\x51\x01\x2A\x6D'
+                        b'\x13\x4A\x85\x5E\x25\xC8\xCD\x5E'
+                        b'\x4C\xA1\x31\x45\x57\x29\xD3\xC8'
+                    )
+                ),
+                cryptographic_algorithm=attributes.CryptographicAlgorithm(
+                    enums.CryptographicAlgorithm.TRIPLE_DES
+                ),
+                cryptographic_length=attributes.CryptographicLength(168)
             )
+        )
 
         a = payloads.GetResponsePayload(
             object_type=enums.ObjectType.SYMMETRIC_KEY,

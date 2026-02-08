@@ -21,6 +21,7 @@ from kmip.core import utils
 
 from kmip.core.messages.payloads import signature_verify
 
+
 class TestSignatureVerifyRequestPayload(testtools.TestCase):
     """
     Test suite for the SignatureVerify request payload.
@@ -1034,6 +1035,7 @@ class TestSignatureVerifyRequestPayload(testtools.TestCase):
         not equal.
         """
         self.test_not_equal_on_not_equal_unique_identifier()
+
 
 class TestSignatureVerifyResponsePayload(testtools.TestCase):
     """

@@ -18,6 +18,7 @@ import testtools
 from kmip.core import utils
 from kmip.core.messages import payloads
 
+
 class TestObtainLeaseRequestPayload(testtools.TestCase):
     """
     Test suite for the ObtainLease request payload.
@@ -325,6 +326,7 @@ class TestObtainLeaseRequestPayload(testtools.TestCase):
         equal.
         """
         self.test_not_equal_on_not_equal_unique_identifier()
+
 
 class TestObtainLeaseResponsePayload(testtools.TestCase):
     """
@@ -763,6 +765,7 @@ class TestObtainLeaseResponsePayload(testtools.TestCase):
         observed = str(payload)
 
         self.assertEqual(expected, observed)
+
     def test_read_valid(self):
         """
         Test that an ObtainLease response payload can be read from a valid

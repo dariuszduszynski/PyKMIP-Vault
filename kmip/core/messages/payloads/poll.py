@@ -18,6 +18,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class PollRequestPayload(base.RequestPayload):
     """
     A request payload for the Poll operation.

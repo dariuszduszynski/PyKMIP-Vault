@@ -18,6 +18,7 @@ import testtools
 from kmip.core import utils
 from kmip.core.messages import payloads
 
+
 class TestGetUsageAllocationRequestPayload(testtools.TestCase):
     """
     Test suite for the GetUsageAllocation request payload.
@@ -433,6 +434,7 @@ class TestGetUsageAllocationRequestPayload(testtools.TestCase):
         """
         self.test_not_equal_on_not_equal_unique_identifier()
 
+
 class TestGetUsageAllocationResponsePayload(testtools.TestCase):
     """
     Test suite for the GetUsageAllocation response payload.
@@ -685,6 +687,7 @@ class TestGetUsageAllocationResponsePayload(testtools.TestCase):
         observed = str(payload)
 
         self.assertEqual(expected, observed)
+
     def test_read_valid(self):
         """
         Test that a GetUsageAllocation response payload can be read from a

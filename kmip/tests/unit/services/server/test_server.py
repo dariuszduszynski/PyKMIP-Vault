@@ -28,6 +28,7 @@ from kmip.core import exceptions
 from kmip.services import auth
 from kmip.services.server import server
 
+
 class TestKmipServer(testtools.TestCase):
     """
     A test suite for the KmipServer.

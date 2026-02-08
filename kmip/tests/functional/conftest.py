@@ -15,12 +15,14 @@
 
 import pytest
 
+
 def pytest_addoption(parser):
     parser.addoption(
         "--config-file",
         action="store",
         help="Config file path for client configuration settings"
     )
+
 
 @pytest.fixture(scope="class")
 def config_file(request):

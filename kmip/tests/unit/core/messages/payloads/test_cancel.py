@@ -19,6 +19,7 @@ from kmip import enums
 from kmip.core import utils
 from kmip.core.messages import payloads
 
+
 class TestCancelRequestPayload(testtools.TestCase):
     """
     Test suite for the Cancel request payload.
@@ -263,6 +264,7 @@ class TestCancelRequestPayload(testtools.TestCase):
         observed = str(payload)
 
         self.assertEqual(expected, observed)
+
 
 class TestCancelResponsePayload(testtools.TestCase):
     """

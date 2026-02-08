@@ -18,6 +18,7 @@ import testtools
 from kmip.core import primitives
 from kmip.core import utils
 
+
 class TestDateTime(testtools.TestCase):
     """
     Test suite for the DateTime primitive.

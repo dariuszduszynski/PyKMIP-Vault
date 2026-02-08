@@ -17,6 +17,7 @@ from testtools import TestCase
 
 from kmip.pie.objects import Key
 
+
 class DummyKey(Key):
     """
     A dummy Key subclass for testing purposes.
@@ -44,6 +45,7 @@ class DummyKey(Key):
 
     def __ne__(self, other):
         return False
+
 
 class TestKey(TestCase):
     """

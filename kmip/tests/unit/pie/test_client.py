@@ -40,6 +40,7 @@ from kmip.pie.exceptions import KmipOperationFailure
 from kmip.pie import factory
 from kmip.pie import objects
 
+
 class TestProxyKmipClient(testtools.TestCase):
     """
     Test suite for the ProxyKmipClient.
@@ -348,15 +349,15 @@ class TestProxyKmipClient(testtools.TestCase):
 
         key_name = "symmetrickey"
         name_attribute = self.attribute_factory.create_attribute(
-                enums.AttributeType.NAME,
-                key_name)
+            enums.AttributeType.NAME,
+            key_name)
 
         key_attributes = [
             algorithm_attribute,
             length_attribute,
             mask_attribute,
             name_attribute
-            ]
+        ]
 
         template = obj.TemplateAttribute(attributes=key_attributes)
 
@@ -485,7 +486,7 @@ class TestProxyKmipClient(testtools.TestCase):
             algorithm_attribute,
             length_attribute,
             mask_attribute,
-            ]
+        ]
 
         template = obj.TemplateAttribute(attributes=key_attributes)
 
@@ -2790,9 +2791,9 @@ class TestProxyKmipClient(testtools.TestCase):
             b'\x01\x02\x03\x04\x05\x06\x07\x08',
             uid='1',
             cryptographic_parameters={
-                 'padding_method': enums.PaddingMethod.PSS,
-                 'cryptographic_algorithm':
-                 enums.CryptographicAlgorithm.RSA
+                'padding_method': enums.PaddingMethod.PSS,
+                'cryptographic_algorithm':
+                enums.CryptographicAlgorithm.RSA
             }
         )
 
@@ -3302,7 +3303,7 @@ class TestProxyKmipClient(testtools.TestCase):
         args = [maximum_items, storage_status_mask,
                 object_group_member, attributes]
         self.assertRaises(
-           ClientConnectionNotOpen, client.locate, *args)
+            ClientConnectionNotOpen, client.locate, *args)
 
     def test_build_cryptographic_parameters_with_none(self):
         """

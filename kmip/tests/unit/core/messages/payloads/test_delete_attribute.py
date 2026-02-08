@@ -23,6 +23,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestDeleteAttributeRequestPayload(testtools.TestCase):
     """
     A unit test suite for the DeleteAttribute request payload.
@@ -828,6 +829,7 @@ class TestDeleteAttributeRequestPayload(testtools.TestCase):
             unique_identifier="11111111-2222-3333-4444-555555555555"
         )
         self.assertTrue(a != b)
+
 
 class TestDeleteAttributeResponsePayload(testtools.TestCase):
     """

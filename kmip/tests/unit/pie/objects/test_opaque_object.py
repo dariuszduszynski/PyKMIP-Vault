@@ -22,10 +22,12 @@ from kmip.pie import sqltypes
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+
 class TestOpaqueObject(testtools.TestCase):
     """
     Test suite for OpaqueObject.
     """
+
     def setUp(self):
         super(TestOpaqueObject, self).setUp()
 
@@ -231,7 +233,7 @@ class TestOpaqueObject(testtools.TestCase):
         session = Session()
         get_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(1, len(get_obj.names))
         self.assertEqual([test_name], get_obj.names)
@@ -266,7 +268,7 @@ class TestOpaqueObject(testtools.TestCase):
         session = Session()
         get_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_mo_names, get_obj._names)
 
@@ -302,7 +304,7 @@ class TestOpaqueObject(testtools.TestCase):
         session = Session()
         get_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -341,7 +343,7 @@ class TestOpaqueObject(testtools.TestCase):
         session = Session()
         get_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -375,14 +377,14 @@ class TestOpaqueObject(testtools.TestCase):
         session = Session()
         update_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         update_obj.names.append(added_name)
         session.commit()
 
         session = Session()
         get_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -416,14 +418,14 @@ class TestOpaqueObject(testtools.TestCase):
         session = Session()
         update_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         update_obj.names.pop(remove_index)
         session.commit()
 
         session = Session()
         get_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -451,7 +453,7 @@ class TestOpaqueObject(testtools.TestCase):
         session = Session()
         update_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         update_obj.names.pop()
         update_obj.names.pop()
         update_obj.names.append('dog')
@@ -467,7 +469,7 @@ class TestOpaqueObject(testtools.TestCase):
         session = Session()
         get_obj = session.query(OpaqueObject).filter(
             ManagedObject.unique_identifier == obj.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)

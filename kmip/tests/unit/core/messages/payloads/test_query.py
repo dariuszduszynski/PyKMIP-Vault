@@ -24,6 +24,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestQueryRequestPayload(testtools.TestCase):
     """
     Test suite for the QueryRequestPayload class.
@@ -406,6 +407,7 @@ class TestQueryRequestPayload(testtools.TestCase):
         equal.
         """
         self.test_not_equal_on_not_equal_query_functions()
+
 
 class TestQueryResponsePayload(testtools.TestCase):
     """

@@ -21,6 +21,7 @@ from kmip.core import utils
 
 from kmip.core.messages.payloads import sign
 
+
 class TestSignRequestPayload(testtools.TestCase):
     """
     Test suite for the Sign request payload.
@@ -451,7 +452,7 @@ class TestSignRequestPayload(testtools.TestCase):
         Test that str can be applied to a Sign request payload.
         """
         crypto_params = attributes.CryptographicParameters(
-             cryptographic_algorithm=enums.CryptographicAlgorithm.ECDSA
+            cryptographic_algorithm=enums.CryptographicAlgorithm.ECDSA
         )
         payload = sign.SignRequestPayload(
             unique_identifier='b4faee10-aa2a-4446-8ad4-0881f3422959',
@@ -517,6 +518,7 @@ class TestSignRequestPayload(testtools.TestCase):
         Test that two Sign request payloads with different data are not equal.
         """
         self.test_not_equal_on_not_equal_unique_identifier()
+
 
 class TestSignResponsePayload(testtools.TestCase):
     """
@@ -806,7 +808,7 @@ class TestSignResponsePayload(testtools.TestCase):
         expected = (
             "SignResponsePayload("
             "unique_identifier='00000000-1111-2222-3333-444444444444', "
-            "signature_data="+str(b'\x01\x02\x03') + ")"
+            "signature_data=" + str(b'\x01\x02\x03') + ")"
         )
 
         observed = repr(payload)

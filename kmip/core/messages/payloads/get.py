@@ -21,6 +21,7 @@ from kmip.core import utils
 from kmip.core.factories import secrets as secret_factory
 from kmip.core.messages.payloads import base
 
+
 class GetRequestPayload(base.RequestPayload):
     """
     A request payload for the Get operation.
@@ -294,6 +295,7 @@ class GetRequestPayload(base.RequestPayload):
             'key_compression_type': self.key_compression_type,
             'key_wrapping_specification': self.key_wrapping_specification
         })
+
 
 class GetResponsePayload(base.ResponsePayload):
     """

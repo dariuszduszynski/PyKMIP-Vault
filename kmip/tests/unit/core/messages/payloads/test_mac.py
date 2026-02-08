@@ -22,6 +22,7 @@ from kmip.core import exceptions
 
 from kmip.core.messages import payloads
 
+
 class TestMACRequestPayload(TestCase):
 
     def setUp(self):
@@ -189,6 +190,7 @@ class TestMACRequestPayload(TestCase):
         payload = payloads.MACRequestPayload()
         self.assertIsInstance(str(payload), str)
 
+
 class TestMACResponsePayload(TestCase):
 
     def setUp(self):
@@ -200,7 +202,7 @@ class TestMACResponsePayload(TestCase):
             b'\x6a\xc4\xed\x97\x6e\xac\x99\xe5\x21\x53\xc4\x19\x28\xf2\x2a\x5b'
             b'\xef\x79\xa4\xbe\x05\x3b\x31\x49\x19\xe0\x75\x23\xb9\xbe\xc8\x23'
             b'\x35\x60\x7e\x49\xba\xa9\x7e\xe0\x9e\x6b\x3d\x55\xf4\x51\xff\x7c'
-            )
+        )
         )
 
         self.encoding_full = utils.BytearrayStream((

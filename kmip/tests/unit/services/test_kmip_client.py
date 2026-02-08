@@ -29,7 +29,7 @@ from kmip.core.enums import ResultReason as ResultReasonEnum
 from kmip.core.enums import Operation as OperationEnum
 from kmip.core.enums import QueryFunction as QueryFunctionEnum
 from kmip.core.enums import CryptographicAlgorithm as \
-                            CryptographicAlgorithmEnum
+    CryptographicAlgorithmEnum
 
 from kmip.core import exceptions
 
@@ -71,6 +71,7 @@ import mock
 import os
 import socket
 import ssl
+
 
 class TestKMIPClient(TestCase):
 
@@ -1648,6 +1649,7 @@ class TestKMIPClient(TestCase):
         result = self.client.mac(data, uuid, cryptographic_parameters)
         self.assertEqual(result.uuid, None)
         self.assertEqual(result.mac_data, None)
+
 
 class TestClientProfileInformation(TestCase):
     """

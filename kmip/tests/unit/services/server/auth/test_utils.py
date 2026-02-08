@@ -26,6 +26,7 @@ import testtools
 from kmip.core import exceptions
 from kmip.services.server.auth import utils
 
+
 class TestUtils(testtools.TestCase):
     """
     Test suite for authentication utilities.

@@ -26,6 +26,7 @@ from kmip.core.primitives import TextString
 
 from kmip.core.utils import BytearrayStream
 
+
 class CertificateValue(ByteString):
     """
     The bytes of a DER-encoded X.509 public key certificate.
@@ -46,6 +47,7 @@ class CertificateValue(ByteString):
         """
         super(CertificateValue, self).__init__(value, Tags.CERTIFICATE_VALUE)
 
+
 class Offset(Interval):
     """
     An integer representing a positive change in time.
@@ -65,6 +67,7 @@ class Offset(Interval):
                 Optional, defaults to None.
         """
         super(Offset, self).__init__(value, Tags.OFFSET)
+
 
 class QueryFunction(Enumeration):
     """
@@ -87,6 +90,7 @@ class QueryFunction(Enumeration):
         super(QueryFunction, self).__init__(
             QueryFunctionEnum, value, Tags.QUERY_FUNCTION)
 
+
 class VendorIdentification(TextString):
     """
     A text string uniquely identifying a KMIP vendor.
@@ -106,6 +110,7 @@ class VendorIdentification(TextString):
         """
         super(VendorIdentification, self).__init__(
             value, Tags.VENDOR_IDENTIFICATION)
+
 
 class ServerInformation(Struct):
     """
@@ -210,6 +215,7 @@ class ServerInformation(Struct):
 
     def __str__(self):
         return str(self.data)
+
 
 class KeyFormatType(Enumeration):
     """

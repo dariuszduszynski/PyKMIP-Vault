@@ -18,6 +18,7 @@ import testtools
 from kmip.core import utils
 from kmip.core.messages import payloads
 
+
 class TestArchiveRequestPayload(testtools.TestCase):
     """
     Test suite for the Archive request payload.
@@ -268,6 +269,7 @@ class TestArchiveRequestPayload(testtools.TestCase):
         observed = str(payload)
 
         self.assertEqual(expected, observed)
+
 
 class TestArchiveResponsePayload(testtools.TestCase):
     """

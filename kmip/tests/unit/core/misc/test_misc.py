@@ -24,6 +24,8 @@ from kmip.core.misc import QueryFunction
 from kmip.core.misc import VendorIdentification
 
 # TODO (peter-hamilton) Replace with generic ByteString subclass test suite.
+
+
 class TestCertificateValue(TestCase):
     """
     A test suite for the CertificateValue class.
@@ -64,6 +66,7 @@ class TestCertificateValue(TestCase):
         byte-string value.
         """
         self._test_init(b'\x00\x01\x02')
+
 
 class TestQueryFunction(TestCase):
     """
@@ -109,6 +112,7 @@ class TestQueryFunction(TestCase):
         enumeration value is used to construct a QueryFunction object.
         """
         self._test_init("invalid")
+
 
 class TestVendorIdentification(TestCase):
     """
@@ -157,6 +161,7 @@ class TestVendorIdentification(TestCase):
         used to construct a VendorIdentification object.
         """
         self._test_init(0)
+
 
 class TestKeyFormatType(TestCase):
     """

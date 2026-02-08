@@ -20,6 +20,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class GetAttributeListRequestPayload(base.RequestPayload):
     """
     A request payload for the GetAttributeList operation.
@@ -148,6 +149,7 @@ class GetAttributeListRequestPayload(base.RequestPayload):
             return not self.__eq__(other)
         else:
             return NotImplemented
+
 
 class GetAttributeListResponsePayload(base.ResponsePayload):
     """

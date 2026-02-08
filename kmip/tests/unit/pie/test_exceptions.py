@@ -22,6 +22,7 @@ from kmip.pie.exceptions import ClientConnectionFailure
 from kmip.pie.exceptions import ClientConnectionNotOpen
 from kmip.pie.exceptions import KmipOperationFailure
 
+
 class TestClientConnectionFailure(TestCase):
     """
     Test suite for ClientConnectionFailure.
@@ -48,6 +49,7 @@ class TestClientConnectionFailure(TestCase):
         exc = ClientConnectionFailure("test message")
         self.assertEqual("test message", str(exc))
 
+
 class TestClientConnectionNotOpen(TestCase):
     """
     Test suite for ClientConnectionNotOpen.
@@ -66,6 +68,7 @@ class TestClientConnectionNotOpen(TestCase):
         exc = ClientConnectionNotOpen()
         self.assertIsInstance(exc, Exception)
         self.assertEqual("client connection not open", str(exc))
+
 
 class TestKmipOperationFailure(TestCase):
     """

@@ -32,7 +32,13 @@ class ThreadingHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
 
 
 class KmipHTTPService(threading.Thread):
-    def __init__(self, host, port, status_provider, replication_manager=None, logger=None):
+    def __init__(
+            self,
+            host,
+            port,
+            status_provider,
+            replication_manager=None,
+            logger=None):
         super(KmipHTTPService, self).__init__(daemon=True)
         self._logger = logger or logging.getLogger("kmip.server.http")
         self._server = ThreadingHTTPServer(
@@ -44,7 +50,9 @@ class KmipHTTPService(threading.Thread):
         self._server.logger = self._logger
 
     def run(self) -> None:
-        self._logger.info("Starting HTTP service on %s:%s", *self._server.server_address)
+        self._logger.info(
+            "Starting HTTP service on %s:%s",
+            *self._server.server_address)
         self._server.serve_forever(poll_interval=0.5)
 
     def stop(self) -> None:
@@ -80,7 +88,11 @@ class KmipHTTPHandler(http.server.BaseHTTPRequestHandler):
 
     def _handle_health(self, head_only: bool = False) -> None:
         try:
-            payload = self.server.status_provider() if self.server.status_provider else {}
+            payload = (
+                self.server.status_provider()
+                if self.server.status_provider
+                else {}
+            )
             body = json.dumps(payload, sort_keys=True).encode("utf-8")
         except Exception as exc:
             self.send_error(500, "Health check failed")

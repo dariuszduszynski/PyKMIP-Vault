@@ -20,6 +20,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class SetAttributeRequestPayload(base.RequestPayload):
     """
     A request payload for the SetAttribute operation.
@@ -231,6 +232,7 @@ class SetAttributeRequestPayload(base.RequestPayload):
             return not self.__eq__(other)
         else:
             return NotImplemented
+
 
 class SetAttributeResponsePayload(base.ResponsePayload):
     """

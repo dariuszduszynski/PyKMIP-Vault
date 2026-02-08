@@ -19,6 +19,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class DecryptRequestPayload(base.RequestPayload):
     """
     A request payload for the Decrypt operation.
@@ -386,6 +387,7 @@ class DecryptRequestPayload(base.RequestPayload):
             'auth_additional_data': self.auth_additional_data,
             'auth_tag': self.auth_tag
         })
+
 
 class DecryptResponsePayload(base.ResponsePayload):
     """

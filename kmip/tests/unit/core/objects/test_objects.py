@@ -41,6 +41,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.utils import BytearrayStream
 
+
 class TestAttributeClass(TestCase):
     """
     A test suite for the Attribute class
@@ -132,6 +133,7 @@ class TestAttributeClass(TestCase):
 
     def test_not_equal_on_not_equal(self):
         self.assertTrue(self.attributeObj_a != self.attributeObj_b)
+
 
 class TestAttributeReference(testtools.TestCase):
 
@@ -521,6 +523,7 @@ class TestAttributeReference(testtools.TestCase):
 
         self.assertTrue(a != b)
         self.assertTrue(b != a)
+
 
 class TestAttributes(TestCase):
 
@@ -1166,6 +1169,7 @@ class TestAttributes(TestCase):
         self.assertTrue(a != b)
         self.assertTrue(b != a)
 
+
 class TestAttributeUtilities(testtools.TestCase):
 
     def setUp(self):
@@ -1467,6 +1471,7 @@ class TestAttributeUtilities(testtools.TestCase):
             *args
         )
 
+
 class TestKeyMaterialStruct(TestCase):
     """
     A test suite for the KeyMaterialStruct.
@@ -1488,6 +1493,7 @@ class TestKeyMaterialStruct(TestCase):
         struct = KeyMaterialStruct()
 
         self.assertEqual(Tags.KEY_MATERIAL, struct.tag)
+
 
 class TestExtensionName(TestCase):
     """
@@ -1537,6 +1543,7 @@ class TestExtensionName(TestCase):
         """
         self._test_init(0)
 
+
 class TestExtensionTag(TestCase):
     """
     A test suite for the ExtensionTag class.
@@ -1585,6 +1592,7 @@ class TestExtensionTag(TestCase):
         """
         self._test_init("invalid")
 
+
 class TestExtensionType(TestCase):
     """
     A test suite for the ExtensionType class.
@@ -1632,6 +1640,7 @@ class TestExtensionType(TestCase):
         used to construct an ExtensionType object.
         """
         self._test_init("invalid")
+
 
 class TestEncryptionKeyInformation(testtools.TestCase):
     """
@@ -2100,6 +2109,7 @@ class TestEncryptionKeyInformation(testtools.TestCase):
         observed = str(encryption_key_information)
 
         self.assertEqual(expected, observed)
+
 
 class TestMACSignatureKeyInformation(testtools.TestCase):
     """
@@ -2576,6 +2586,7 @@ class TestMACSignatureKeyInformation(testtools.TestCase):
         observed = str(mac_signature_key_information)
 
         self.assertEqual(expected, observed)
+
 
 class TestKeyWrappingData(testtools.TestCase):
     """
@@ -3584,6 +3595,7 @@ class TestKeyWrappingData(testtools.TestCase):
 
         self.assertEqual(expected, observed)
 
+
 class TestKeyWrappingSpecification(testtools.TestCase):
     """
     Test suite for the KeyWrappingSpecification struct.
@@ -4510,6 +4522,7 @@ class TestKeyWrappingSpecification(testtools.TestCase):
 
         self.assertEqual(expected, observed)
 
+
 class TestObjectDefaults(testtools.TestCase):
 
     def setUp(self):
@@ -5130,6 +5143,7 @@ class TestObjectDefaults(testtools.TestCase):
         self.assertTrue(a != b)
         self.assertTrue(b != a)
 
+
 class TestDefaultsInformation(testtools.TestCase):
 
     def setUp(self):
@@ -5707,6 +5721,7 @@ class TestDefaultsInformation(testtools.TestCase):
 
         self.assertTrue(a != b)
         self.assertTrue(b != a)
+
 
 class TestRNGParameters(testtools.TestCase):
 
@@ -6498,6 +6513,7 @@ class TestRNGParameters(testtools.TestCase):
         self.assertTrue(a != b)
         self.assertTrue(b != a)
 
+
 class TestProfileInformation(testtools.TestCase):
 
     def setUp(self):
@@ -6951,6 +6967,7 @@ class TestProfileInformation(testtools.TestCase):
 
         self.assertTrue(a != b)
         self.assertTrue(b != a)
+
 
 class TestValidationInformation(testtools.TestCase):
 
@@ -8427,6 +8444,7 @@ class TestValidationInformation(testtools.TestCase):
         self.assertTrue(a != b)
         self.assertTrue(b != a)
 
+
 class TestCapabilityInformation(testtools.TestCase):
 
     def setUp(self):
@@ -9352,6 +9370,7 @@ class TestCapabilityInformation(testtools.TestCase):
 
         self.assertTrue(a != b)
         self.assertTrue(b != a)
+
 
 class TestProtectionStorageMasks(testtools.TestCase):
 

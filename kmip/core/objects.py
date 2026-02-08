@@ -42,6 +42,8 @@ from kmip.core.utils import BytearrayStream
 
 # 2.1
 # 2.1.1
+
+
 class Attribute(Struct):
 
     class AttributeName(TextString):
@@ -171,6 +173,7 @@ class Attribute(Struct):
             return not self.__eq__(other)
         else:
             return NotImplemented
+
 
 class CurrentAttribute(primitives.Struct):
     """
@@ -352,6 +355,7 @@ class CurrentAttribute(primitives.Struct):
         else:
             return NotImplemented
 
+
 class NewAttribute(primitives.Struct):
     """
     A structure containing a single attribute.
@@ -531,6 +535,7 @@ class NewAttribute(primitives.Struct):
             return not (self == other)
         else:
             return NotImplemented
+
 
 class AttributeReference(primitives.Struct):
     """
@@ -761,6 +766,7 @@ class AttributeReference(primitives.Struct):
         else:
             return NotImplemented
 
+
 class Attributes(primitives.Struct):
     """
     A collection of KMIP attributes.
@@ -955,6 +961,7 @@ class Attributes(primitives.Struct):
         else:
             return NotImplemented
 
+
 class Nonce(primitives.Struct):
     """
     A struct representing a Nonce object.
@@ -1126,11 +1133,13 @@ class Nonce(primitives.Struct):
         ])
         return "{" + body + "}"
 
+
 class CredentialValue(primitives.Struct, metaclass=abc.ABCMeta):
     """
     An empty, abstract base class to be used by Credential objects to easily
     group and type-check credential values.
     """
+
 
 class UsernamePasswordCredential(CredentialValue):
     """
@@ -1303,6 +1312,7 @@ class UsernamePasswordCredential(CredentialValue):
             "username": self.username,
             "password": self.password
         })
+
 
 class DeviceCredential(CredentialValue):
     """
@@ -1640,6 +1650,7 @@ class DeviceCredential(CredentialValue):
             "media_identifier": self.media_identifier
         })
 
+
 class AttestationCredential(CredentialValue):
     """
     A struct representing an AttestationCredential object.
@@ -1937,6 +1948,7 @@ class AttestationCredential(CredentialValue):
                "'attestation_assertion': " + \
                str(self.attestation_assertion) + "}"
 
+
 class Credential(primitives.Struct):
     """
     A struct representing a Credential object.
@@ -2133,6 +2145,7 @@ class Credential(primitives.Struct):
             "credential_value": str(self.credential_value)
         })
 
+
 class KeyBlock(Struct):
 
     class KeyCompressionType(Enumeration):
@@ -2241,12 +2254,16 @@ class KeyBlock(Struct):
                 raise TypeError(msg)
 
 # 2.1.4
+
+
 class KeyMaterial(ByteString):
 
     def __init__(self, value=None):
         super(KeyMaterial, self).__init__(value, Tags.KEY_MATERIAL)
 
 # TODO (peter-hamilton) Get rid of this and replace with a KeyMaterial factory.
+
+
 class KeyMaterialStruct(Struct):
 
     def __init__(self):
@@ -2282,6 +2299,7 @@ class KeyMaterialStruct(Struct):
     def __validate(self):
         # NOTE (peter-hamilton): Intentional pass, no way to validate data.
         pass
+
 
 class KeyValue(Struct):
 
@@ -2358,6 +2376,7 @@ class KeyValue(Struct):
             msg += "; expected {0}, received {1}".format(
                 list, self.attributes)
             raise TypeError(msg)
+
 
 class EncryptionKeyInformation(Struct):
     """
@@ -2540,6 +2559,7 @@ class EncryptionKeyInformation(Struct):
             'cryptographic_parameters': self.cryptographic_parameters
         })
 
+
 class MACSignatureKeyInformation(primitives.Struct):
     """
     A set of values detailing how an MAC/signed value was MAC/signed.
@@ -2720,6 +2740,7 @@ class MACSignatureKeyInformation(primitives.Struct):
             'unique_identifier': self.unique_identifier,
             'cryptographic_parameters': self.cryptographic_parameters
         })
+
 
 class KeyWrappingData(Struct):
     """
@@ -3083,6 +3104,7 @@ class KeyWrappingData(Struct):
             'encoding_option': self.encoding_option
         })
 
+
 class KeyWrappingSpecification(primitives.Struct):
     """
     A set of values needed for key wrapping functionality.
@@ -3414,6 +3436,7 @@ class KeyWrappingSpecification(primitives.Struct):
             'encoding_option': self.encoding_option
         })
 
+
 class TemplateAttribute(Struct):
 
     def __init__(self,
@@ -3516,6 +3539,7 @@ class TemplateAttribute(Struct):
         else:
             return NotImplemented
 
+
 class CommonTemplateAttribute(TemplateAttribute):
 
     def __init__(self,
@@ -3523,6 +3547,7 @@ class CommonTemplateAttribute(TemplateAttribute):
                  attributes=None):
         super(CommonTemplateAttribute, self).__init__(
             names, attributes, Tags.COMMON_TEMPLATE_ATTRIBUTE)
+
 
 class PrivateKeyTemplateAttribute(TemplateAttribute):
 
@@ -3532,6 +3557,7 @@ class PrivateKeyTemplateAttribute(TemplateAttribute):
         super(PrivateKeyTemplateAttribute, self).__init__(
             names, attributes, Tags.PRIVATE_KEY_TEMPLATE_ATTRIBUTE)
 
+
 class PublicKeyTemplateAttribute(TemplateAttribute):
 
     def __init__(self,
@@ -3539,6 +3565,7 @@ class PublicKeyTemplateAttribute(TemplateAttribute):
                  attributes=None):
         super(PublicKeyTemplateAttribute, self).__init__(
             names, attributes, Tags.PUBLIC_KEY_TEMPLATE_ATTRIBUTE)
+
 
 def convert_template_attribute_to_attributes(value):
     if not isinstance(value, TemplateAttribute):
@@ -3562,6 +3589,7 @@ def convert_template_attribute_to_attributes(value):
         attribute_values.append(attribute_value)
 
     return Attributes(attributes=attribute_values, tag=tag)
+
 
 def convert_attributes_to_template_attribute(value):
     if not isinstance(value, Attributes):
@@ -3593,6 +3621,8 @@ def convert_attributes_to_template_attribute(value):
     )
 
 # 2.1.9
+
+
 class ExtensionName(TextString):
     """
     The name of an extended Object.
@@ -3604,6 +3634,7 @@ class ExtensionName(TextString):
     Attributes:
         value: The string data representing the extension name.
     """
+
     def __init__(self, value=''):
         """
         Construct an ExtensionName object.
@@ -3613,6 +3644,7 @@ class ExtensionName(TextString):
                 Optional, defaults to the empty string.
         """
         super(ExtensionName, self).__init__(value, Tags.EXTENSION_NAME)
+
 
 class ExtensionTag(Integer):
     """
@@ -3624,6 +3656,7 @@ class ExtensionTag(Integer):
     Attributes:
         value: The tag number identifying the extended object.
     """
+
     def __init__(self, value=0):
         """
         Construct an ExtensionTag object.
@@ -3633,6 +3666,7 @@ class ExtensionTag(Integer):
                 displayed in hex format. Optional, defaults to 0.
         """
         super(ExtensionTag, self).__init__(value, Tags.EXTENSION_TAG)
+
 
 class ExtensionType(Integer):
     """
@@ -3645,6 +3679,7 @@ class ExtensionType(Integer):
     Attributes:
         value: The type enumeration for the extended object.
     """
+
     def __init__(self, value=None):
         """
         Construct an ExtensionType object.
@@ -3655,6 +3690,7 @@ class ExtensionType(Integer):
                 to None.
         """
         super(ExtensionType, self).__init__(value, Tags.EXTENSION_TYPE)
+
 
 class ExtensionInformation(Struct):
     """
@@ -3670,6 +3706,7 @@ class ExtensionInformation(Struct):
         extension_tag: The tag of the extended Object.
         extension_type: The type of the extended Object.
     """
+
     def __init__(self, extension_name=None, extension_tag=None,
                  extension_type=None):
         """
@@ -3842,18 +3879,24 @@ class ExtensionInformation(Struct):
             extension_type=extension_type)
 
 # 2.1.10
+
+
 class Data(ByteString):
 
     def __init__(self, value=None):
         super(Data, self).__init__(value, Tags.DATA)
 
 # 2.1.13
+
+
 class MACData(ByteString):
 
     def __init__(self, value=None):
         super(MACData, self).__init__(value, Tags.MAC_DATA)
 
 # 3.31, 9.1.3.2.19
+
+
 class RevocationReasonCode(Enumeration):
 
     def __init__(self, value=enums.RevocationReasonCode.UNSPECIFIED):
@@ -3862,6 +3905,8 @@ class RevocationReasonCode(Enumeration):
             tag=Tags.REVOCATION_REASON_CODE)
 
 # 3.31
+
+
 class RevocationReason(Struct):
     """
     A structure describing  the reason for a revocation operation.
@@ -3955,6 +4000,7 @@ class RevocationReason(Struct):
             if not isinstance(self.revocation_message, TextString):
                 msg = "TextString expect"
                 raise TypeError(msg)
+
 
 class ObjectDefaults(primitives.Struct):
     """
@@ -4166,6 +4212,7 @@ class ObjectDefaults(primitives.Struct):
         else:
             return NotImplemented
 
+
 class DefaultsInformation(primitives.Struct):
     """
     """
@@ -4326,6 +4373,7 @@ class DefaultsInformation(primitives.Struct):
             return not (self == other)
         else:
             return NotImplemented
+
 
 class RNGParameters(primitives.Struct):
     """
@@ -4824,6 +4872,7 @@ class RNGParameters(primitives.Struct):
         else:
             return NotImplemented
 
+
 class ProfileInformation(primitives.Struct):
     """
     A structure containing details of supported KMIP profiles.
@@ -5063,6 +5112,7 @@ class ProfileInformation(primitives.Struct):
             return not (self == other)
         else:
             return NotImplemented
+
 
 class ValidationInformation(primitives.Struct):
     """
@@ -5469,7 +5519,7 @@ class ValidationInformation(primitives.Struct):
         if self.is_tag_next(enums.Tags.VALIDATION_AUTHORITY_URI, local_buffer):
             validation_authority_uri = primitives.TextString(
                 tag=enums.Tags.VALIDATION_AUTHORITY_URI
-                )
+            )
             validation_authority_uri.read(
                 local_buffer,
                 kmip_version=kmip_version
@@ -5820,6 +5870,7 @@ class ValidationInformation(primitives.Struct):
             return not (self == other)
         else:
             return NotImplemented
+
 
 class CapabilityInformation(primitives.Struct):
     """
@@ -6366,6 +6417,7 @@ class CapabilityInformation(primitives.Struct):
             return not (self == other)
         else:
             return NotImplemented
+
 
 class ProtectionStorageMasks(primitives.Struct):
     """

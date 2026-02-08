@@ -29,6 +29,7 @@ from kmip.core.enums import NameType
 
 from kmip.core.utils import BytearrayStream
 
+
 class TestNameValue(TestCase):
 
     def setUp(self):
@@ -75,6 +76,7 @@ class TestNameValue(TestCase):
         self.assertEqual(self.stringName1, str(name_val))
         self.assertEqual(repr_name, repr(name_val))
 
+
 class TestNameType(TestCase):
 
     def setUp(self):
@@ -120,11 +122,12 @@ class TestNameType(TestCase):
         type_uri = Name.NameType(self.enum_uri)
         str_uri = "{0}".format(self.enum_uri)
         repr_uri = "NameType(value=<{0}: {1}>)".format(
-                self.enum_uri,
-                self.enum_uri.value)
+            self.enum_uri,
+            self.enum_uri.value)
 
         self.assertEqual(str_uri, str(type_uri))
         self.assertEqual(repr_uri, repr(type_uri))
+
 
 class TestName(TestCase):
 
@@ -209,13 +212,14 @@ class TestName(TestCase):
     def test__str(self):
         name_obj = Name.create(self.stringName1, self.enumNameType)
         repr_name = (
-                "Name(type=NameType(value="
-                "<NameType.UNINTERPRETED_TEXT_STRING: {0}>),"
-                "value=NameValue(value='{1}'))"
-                ).format(self.enumNameType.value, self.stringName1)
+            "Name(type=NameType(value="
+            "<NameType.UNINTERPRETED_TEXT_STRING: {0}>),"
+            "value=NameValue(value='{1}'))"
+        ).format(self.enumNameType.value, self.stringName1)
 
         self.assertEqual(self.stringName1, str(name_obj))
         self.assertEqual(repr_name, repr(name_obj))
+
 
 class TestOperationPolicyName(TestCase):
 
@@ -239,6 +243,7 @@ class TestOperationPolicyName(TestCase):
 
     def test_operation_policy_name_on_none(self):
         self._test_operation_policy_name(None)
+
 
 class TestHashingAlgorithm(TestCase):
     """
@@ -286,6 +291,8 @@ class TestHashingAlgorithm(TestCase):
         self._test_init("invalid")
 
 # TODO (peter-hamilton) Replace with generic Enumeration subclass test suite.
+
+
 class TestCertificateType(TestCase):
     """
     A test suite for the CertificateType class.
@@ -328,6 +335,7 @@ class TestCertificateType(TestCase):
         """
         self._test_init(enums.CertificateType.PGP)
 
+
 class TestDigestValue(TestCase):
     """
     A test suite for the DigestValue class.
@@ -367,6 +375,7 @@ class TestDigestValue(TestCase):
         Test that a DigestValue object can be constructed with valid byte data.
         """
         self._test_init(b'\x00\x01\x02\x03')
+
 
 class TestCryptographicParameters(TestCase):
     """
@@ -1522,6 +1531,7 @@ class TestCryptographicParameters(TestCase):
         observed = str(cryptographic_parameters)
 
         self.assertEqual(expected, observed)
+
 
 class TestDerivationParameters(TestCase):
     """

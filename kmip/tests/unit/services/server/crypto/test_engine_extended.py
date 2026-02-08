@@ -560,8 +560,9 @@ class TestCryptographyEngineExtended(testtools.TestCase):
         """Test sign/verify roundtrip with RSA."""
         data = b'kmip-sign-verify'
         signature = self.engine.sign(
-            digital_signature_algorithm=
-                enums.DigitalSignatureAlgorithm.SHA256_WITH_RSA_ENCRYPTION,
+            digital_signature_algorithm=(
+                enums.DigitalSignatureAlgorithm.SHA256_WITH_RSA_ENCRYPTION
+            ),
             crypto_alg=None,
             hash_algorithm=None,
             padding=enums.PaddingMethod.PKCS1v15,
@@ -573,8 +574,9 @@ class TestCryptographyEngineExtended(testtools.TestCase):
             message=data,
             signature=signature,
             padding_method=enums.PaddingMethod.PKCS1v15,
-            digital_signature_algorithm=
+            digital_signature_algorithm=(
                 enums.DigitalSignatureAlgorithm.SHA256_WITH_RSA_ENCRYPTION
+            )
         )
         self.assertTrue(result)
 

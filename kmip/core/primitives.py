@@ -26,6 +26,7 @@ from kmip.core import enums
 from kmip.core import exceptions
 from kmip.core import utils
 
+
 class Base(object):
     TAG_SIZE = 3
     TYPE_SIZE = 1
@@ -168,6 +169,7 @@ class Base(object):
         else:
             return False
 
+
 class Struct(Base):
 
     def __init__(self, tag=enums.Tags.DEFAULT):
@@ -176,6 +178,7 @@ class Struct(Base):
     # NOTE (peter-hamilton) If seen, should indicate repr needs to be defined
     def __repr__(self):
         return "Struct()"
+
 
 class Integer(Base):
     LENGTH = 4
@@ -294,6 +297,7 @@ class Integer(Base):
         else:
             return NotImplemented
 
+
 class LongInteger(Base):
     """
     An encodeable object representing a long integer value.
@@ -405,6 +409,7 @@ class LongInteger(Base):
             return not self.__eq__(other)
         else:
             return NotImplemented
+
 
 class BigInteger(Base):
     """
@@ -540,6 +545,7 @@ class BigInteger(Base):
         else:
             return NotImplemented
 
+
 class Enumeration(Base):
     """
     An encodeable object representing an enumeration.
@@ -672,6 +678,7 @@ class Enumeration(Base):
             return not self.__eq__(other)
         else:
             return NotImplemented
+
 
 class Boolean(Base):
     """
@@ -806,6 +813,7 @@ class Boolean(Base):
         else:
             return NotImplemented
 
+
 class TextString(Base):
     PADDING_SIZE = 8
     BYTE_FORMAT = '!c'
@@ -900,6 +908,7 @@ class TextString(Base):
             return not (self == other)
         else:
             return NotImplemented
+
 
 class ByteString(Base):
     PADDING_SIZE = 8
@@ -997,6 +1006,7 @@ class ByteString(Base):
         else:
             return NotImplemented
 
+
 class DateTime(LongInteger):
     """
     An encodeable object representing a date/time value.
@@ -1028,6 +1038,7 @@ class DateTime(LongInteger):
 
     def __str__(self):
         return time.asctime(time.gmtime(self.value))
+
 
 class Interval(Base):
     """

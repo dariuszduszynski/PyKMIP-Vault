@@ -66,6 +66,7 @@ object_group_map = sqlalchemy.Table(
     )
 )
 
+
 class ManagedObject(sql.Base):
     """
     The abstract base class of the simplified KMIP object hierarchy.
@@ -200,6 +201,7 @@ class ManagedObject(sql.Base):
     def __ne__(self, other):
         pass
 
+
 class CryptographicObject(ManagedObject):
     """
     The abstract base class of all ManagedObjects related to cryptography.
@@ -255,6 +257,7 @@ class CryptographicObject(ManagedObject):
         self._lease_time = None
         self._links = list()
         self._revocation_reason = None
+
 
 class Key(CryptographicObject):
     """
@@ -618,6 +621,7 @@ class Key(CryptographicObject):
         self._kdw_iv_counter_nonce = value.get('iv_counter_nonce')
         self._kdw_encoding_option = value.get('encoding_option')
 
+
 class SymmetricKey(Key):
     """
     The SymmetricKey class of the simplified KMIP object hierarchy.
@@ -782,8 +786,10 @@ class SymmetricKey(Key):
         else:
             return NotImplemented
 
+
 event.listen(SymmetricKey._names, 'append',
              sql.attribute_append_factory("name_index"), retval=False)
+
 
 class PublicKey(Key):
     """
@@ -952,8 +958,10 @@ class PublicKey(Key):
         else:
             return NotImplemented
 
+
 event.listen(PublicKey._names, 'append',
              sql.attribute_append_factory("name_index"), retval=False)
+
 
 class PrivateKey(Key):
     """
@@ -1121,8 +1129,10 @@ class PrivateKey(Key):
         else:
             return NotImplemented
 
+
 event.listen(PrivateKey._names, 'append',
              sql.attribute_append_factory("name_index"), retval=False)
+
 
 class SplitKey(Key):
     """
@@ -1373,12 +1383,14 @@ class SplitKey(Key):
         else:
             return NotImplemented
 
+
 event.listen(
     SplitKey._names,
     "append",
     sql.attribute_append_factory("name_index"),
     retval=False
 )
+
 
 class Certificate(CryptographicObject):
     """
@@ -1482,6 +1494,7 @@ class Certificate(CryptographicObject):
     def __str__(self):
         return str(binascii.hexlify(self.value))
 
+
 class X509Certificate(Certificate):
     """
     The X509Certificate class of the simplified KMIP object hierarchy.
@@ -1554,8 +1567,10 @@ class X509Certificate(Certificate):
         else:
             return NotImplemented
 
+
 event.listen(X509Certificate._names, 'append',
              sql.attribute_append_factory("name_index"), retval=False)
+
 
 class SecretData(CryptographicObject):
     """
@@ -1677,8 +1692,10 @@ class SecretData(CryptographicObject):
         else:
             return NotImplemented
 
+
 event.listen(SecretData._names, 'append',
              sql.attribute_append_factory("name_index"), retval=False)
+
 
 class OpaqueObject(ManagedObject):
     """
@@ -1782,8 +1799,10 @@ class OpaqueObject(ManagedObject):
         else:
             return NotImplemented
 
+
 event.listen(OpaqueObject._names, 'append',
              sql.attribute_append_factory("name_index"), retval=False)
+
 
 class ApplicationSpecificInformation(sql.Base):
     __tablename__ = "app_specific_info"
@@ -1882,6 +1901,7 @@ class ApplicationSpecificInformation(sql.Base):
             return not (self == other)
         else:
             return NotImplemented
+
 
 class ObjectGroup(sql.Base):
     __tablename__ = "object_groups"

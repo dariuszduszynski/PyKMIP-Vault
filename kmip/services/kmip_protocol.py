@@ -20,6 +20,7 @@ import logging
 
 from kmip.core.utils import BytearrayStream
 
+
 class KMIPProtocol(object):
     HEADER_SIZE = 8
 
@@ -70,16 +71,19 @@ class KMIPProtocol(object):
 
         return total_msg
 
+
 class KMIPProtocolFactory(object):
 
     def getProtocol(self, socket):
         return KMIPProtocol(socket)
+
 
 class RequestLengthMismatch(Exception):
     """
     This exception raised when the request read from stream has unexpected
     length.
     """
+
     def __init__(self, expected, received, message="KMIPProtocol read error"):
         super(RequestLengthMismatch, self).__init__(message)
         self.message = message
@@ -88,7 +92,7 @@ class RequestLengthMismatch(Exception):
 
     def __str__(self):
         return "{0}: expected {1}, received {2}".format(
-                self.message, self.expected, self.received)
+            self.message, self.expected, self.received)
 
     def __repr__(self):
         return self.__str__()

@@ -19,6 +19,7 @@ import testtools
 from kmip.pie import objects
 from kmip.pie import sqltypes
 
+
 class TestApplicationSpecificInformation(testtools.TestCase):
     """
     Test suite for ApplicationSpecificInformation.

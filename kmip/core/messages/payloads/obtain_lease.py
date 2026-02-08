@@ -18,6 +18,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class ObtainLeaseRequestPayload(base.RequestPayload):
     """
     A request payload for the ObtainLease operation.
@@ -146,6 +147,7 @@ class ObtainLeaseRequestPayload(base.RequestPayload):
         return str({
             'unique_identifier': self.unique_identifier
         })
+
 
 class ObtainLeaseResponsePayload(base.ResponsePayload):
     """

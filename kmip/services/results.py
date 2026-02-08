@@ -31,6 +31,7 @@ class OperationResult(object):
         else:
             self.result_message = None
 
+
 class CreateResult(OperationResult):
 
     def __init__(self,
@@ -57,6 +58,7 @@ class CreateResult(OperationResult):
         else:
             self.template_attribute = None
 
+
 class CreateKeyPairResult(OperationResult):
 
     def __init__(self,
@@ -74,6 +76,7 @@ class CreateKeyPairResult(OperationResult):
         self.private_key_template_attribute = private_key_template_attribute
         self.public_key_template_attribute = public_key_template_attribute
 
+
 class ActivateResult(OperationResult):
 
     def __init__(self,
@@ -88,6 +91,7 @@ class ActivateResult(OperationResult):
             self.uuid = uuid
         else:
             self.uuid = None
+
 
 class RegisterResult(OperationResult):
 
@@ -109,6 +113,7 @@ class RegisterResult(OperationResult):
         else:
             self.template_attribute = None
 
+
 class RekeyKeyPairResult(CreateKeyPairResult):
 
     def __init__(self,
@@ -123,6 +128,7 @@ class RekeyKeyPairResult(CreateKeyPairResult):
             result_status, result_reason, result_message, private_key_uuid,
             public_key_uuid, private_key_template_attribute,
             public_key_template_attribute)
+
 
 class GetResult(OperationResult):
 
@@ -150,6 +156,7 @@ class GetResult(OperationResult):
         else:
             self.secret = None
 
+
 class GetAttributesResult(OperationResult):
 
     def __init__(
@@ -168,6 +175,7 @@ class GetAttributesResult(OperationResult):
         self.uuid = uuid
         self.attributes = attributes
 
+
 class GetAttributeListResult(OperationResult):
 
     def __init__(
@@ -181,6 +189,7 @@ class GetAttributeListResult(OperationResult):
             result_status, result_reason, result_message)
         self.uid = uid
         self.names = names
+
 
 class DestroyResult(OperationResult):
 
@@ -196,6 +205,7 @@ class DestroyResult(OperationResult):
         else:
             self.uuid = None
 
+
 class LocateResult(OperationResult):
 
     def __init__(self,
@@ -206,6 +216,7 @@ class LocateResult(OperationResult):
         super(LocateResult, self).__init__(
             result_status, result_reason, result_message)
         self.uuids = uuids
+
 
 class QueryResult(OperationResult):
     """
@@ -260,6 +271,7 @@ class QueryResult(OperationResult):
         else:
             self.extension_information = extension_information
 
+
 class DiscoverVersionsResult(OperationResult):
 
     def __init__(self,
@@ -271,6 +283,7 @@ class DiscoverVersionsResult(OperationResult):
             result_status, result_reason, result_message)
         self.protocol_versions = protocol_versions
 
+
 class RevokeResult(OperationResult):
 
     def __init__(self,
@@ -281,6 +294,7 @@ class RevokeResult(OperationResult):
         super(RevokeResult, self).__init__(
             result_status, result_reason, result_message)
         self.unique_identifier = unique_identifier
+
 
 class MACResult(OperationResult):
 

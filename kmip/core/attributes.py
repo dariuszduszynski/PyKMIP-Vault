@@ -35,11 +35,14 @@ from kmip.core.utils import BytearrayStream
 
 from enum import Enum
 
+
 # 3.1
+
 class UniqueIdentifier(TextString):
 
     def __init__(self, value=None, tag=Tags.UNIQUE_IDENTIFIER):
         super(UniqueIdentifier, self).__init__(value, tag)
+
 
 class PrivateKeyUniqueIdentifier(UniqueIdentifier):
 
@@ -47,13 +50,16 @@ class PrivateKeyUniqueIdentifier(UniqueIdentifier):
         super(PrivateKeyUniqueIdentifier, self).__init__(
             value, Tags.PRIVATE_KEY_UNIQUE_IDENTIFIER)
 
+
 class PublicKeyUniqueIdentifier(UniqueIdentifier):
 
     def __init__(self, value=None):
         super(PublicKeyUniqueIdentifier, self).__init__(
             value, Tags.PUBLIC_KEY_UNIQUE_IDENTIFIER)
 
+
 # 3.2
+
 class Name(Struct):
 
     class NameValue(TextString):
@@ -72,7 +78,7 @@ class Name(Struct):
 
         def __repr__(self):
             return "{0}(value={1})".format(
-                    type(self).__name__, repr(self.value))
+                type(self).__name__, repr(self.value))
 
         def __str__(self):
             return "{0}".format(self.value)
@@ -94,7 +100,7 @@ class Name(Struct):
 
         def __repr__(self):
             return "{0}(value={1})".format(
-                    type(self).__name__, repr(self.value))
+                type(self).__name__, repr(self.value))
 
         def __str__(self):
             return "{0}".format(self.value)
@@ -184,9 +190,9 @@ class Name(Struct):
 
     def __repr__(self):
         return "{0}(type={1},value={2})".format(
-                type(self).__name__,
-                repr(self.name_type),
-                repr(self.name_value))
+            type(self).__name__,
+            repr(self.name_type),
+            repr(self.name_value))
 
     def __str__(self):
         return "{0}".format(self.name_value.value)
@@ -194,7 +200,7 @@ class Name(Struct):
     def __eq__(self, other):
         if isinstance(other, Name):
             if self.name_value == other.name_value and \
-                        self.name_type == other.name_type:
+                    self.name_type == other.name_type:
                 return True
             else:
                 return False
@@ -205,6 +211,8 @@ class Name(Struct):
         return not self.__eq__(other)
 
 # 3.3
+
+
 class ObjectType(Enumeration):
 
     def __init__(self, value=None):
@@ -212,6 +220,8 @@ class ObjectType(Enumeration):
             enums.ObjectType, value, Tags.OBJECT_TYPE)
 
 # 3.4
+
+
 class CryptographicAlgorithm(Enumeration):
 
     def __init__(self, value=None):
@@ -219,6 +229,8 @@ class CryptographicAlgorithm(Enumeration):
             enums.CryptographicAlgorithm, value, Tags.CRYPTOGRAPHIC_ALGORITHM)
 
 # 3.5
+
+
 class CryptographicLength(Integer):
 
     def __init__(self, value=None):
@@ -226,6 +238,8 @@ class CryptographicLength(Integer):
             value, Tags.CRYPTOGRAPHIC_LENGTH)
 
 # 3.6
+
+
 class HashingAlgorithm(Enumeration):
     """
     An encodeable wrapper for the HashingAlgorithm enumeration.
@@ -246,6 +260,7 @@ class HashingAlgorithm(Enumeration):
         """
         super(HashingAlgorithm, self).__init__(
             enums.HashingAlgorithm, value, Tags.HASHING_ALGORITHM)
+
 
 class CryptographicParameters(Struct):
     """
@@ -791,6 +806,7 @@ class CryptographicParameters(Struct):
             'initial_counter_value': self.initial_counter_value
         })
 
+
 class CertificateType(Enumeration):
     """
     An encodeable wrapper for the CertificateType enumeration.
@@ -811,6 +827,7 @@ class CertificateType(Enumeration):
         """
         super(CertificateType, self).__init__(
             enums.CertificateType, value, Tags.CERTIFICATE_TYPE)
+
 
 class DigestValue(ByteString):
     """
@@ -834,6 +851,7 @@ class DigestValue(ByteString):
                 the empty byte string.
         """
         super(DigestValue, self).__init__(value, Tags.DIGEST_VALUE)
+
 
 class Digest(Struct):
     """
@@ -1028,6 +1046,8 @@ class Digest(Struct):
                       key_format_type=format_type)
 
 # 3.18
+
+
 class OperationPolicyName(TextString):
 
     def __init__(self, value=None):
@@ -1035,6 +1055,8 @@ class OperationPolicyName(TextString):
             value, Tags.OPERATION_POLICY_NAME)
 
 # 3.19
+
+
 class CryptographicUsageMask(Integer):
 
     ENUM_TYPE = enums.CryptographicUsageMask
@@ -1043,10 +1065,12 @@ class CryptographicUsageMask(Integer):
         super(CryptographicUsageMask, self).__init__(
             value, Tags.CRYPTOGRAPHIC_USAGE_MASK)
 
+
 class State(Enumeration):
 
     def __init__(self, value=None):
         super(State, self).__init__(enums.State, value, Tags.STATE)
+
 
 class ApplicationSpecificInformation(primitives.Struct):
     """
@@ -1248,6 +1272,8 @@ class ApplicationSpecificInformation(primitives.Struct):
             return NotImplemented
 
 # 3.37
+
+
 class ContactInformation(TextString):
 
     def __init__(self, value=None):
@@ -1258,10 +1284,13 @@ class ContactInformation(TextString):
 # TODO (peter-hamilton) A CustomAttribute TextString is not sufficient to
 # TODO (peter-hamilton) cover all potential custom attributes. This is a
 # TODO (peter-hamilton) temporary stopgap.
+
+
 class CustomAttribute(TextString):
 
     def __init__(self, value=None):
         super(CustomAttribute, self).__init__(value, Tags.ATTRIBUTE_VALUE)
+
 
 class DerivationParameters(Struct):
     """

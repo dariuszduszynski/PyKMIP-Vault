@@ -91,6 +91,7 @@ if not hasattr(ssl, 'wrap_socket'):
 
     ssl.wrap_socket = _wrap_socket
 
+
 class KmipServer(object):
     """
     The public front-end for the entire KmipServer service.
@@ -751,6 +752,7 @@ class KmipServer(object):
     def __exit__(self, exc_type, exc_value, traceback):
         self.stop()
 
+
 def build_argument_parser():
     parser = optparse.OptionParser(
         usage="%prog [options]",
@@ -916,6 +918,7 @@ def build_argument_parser():
 
     return parser
 
+
 def main(args=None):
     # Build argument parser and parser command-line arguments.
     parser = build_argument_parser()
@@ -955,6 +958,7 @@ def main(args=None):
     s = KmipServer(**kwargs)
     with s:
         s.serve()
+
 
 if __name__ == '__main__':
     main()

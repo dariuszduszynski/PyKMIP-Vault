@@ -23,6 +23,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestCreateRequestPayload(testtools.TestCase):
 
     def setUp(self):
@@ -1212,6 +1213,7 @@ class TestCreateRequestPayload(testtools.TestCase):
 
         self.assertTrue(a != b)
         self.assertTrue(b != a)
+
 
 class TestCreateResponsePayload(testtools.TestCase):
 

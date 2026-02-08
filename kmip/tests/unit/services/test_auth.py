@@ -19,6 +19,7 @@ import testtools
 
 from kmip.services import auth
 
+
 class TestBasicAuthenticationSuite(testtools.TestCase):
     """
     A test suite for the BasicAuthenticationSuite.
@@ -116,6 +117,7 @@ class TestBasicAuthenticationSuite(testtools.TestCase):
         self.assertIn('DH-RSA-AES256-SHA', suites)
         self.assertIn('DHE-DSS-AES256-SHA', suites)
         self.assertIn('DHE-RSA-AES256-SHA', suites)
+
 
 @pytest.mark.skipif(not hasattr(ssl, 'PROTOCOL_TLSv1_2'),
                     reason="Requires ssl.PROTOCOL_TLSv1_2")

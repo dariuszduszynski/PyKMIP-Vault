@@ -26,6 +26,7 @@ from kmip.core.primitives import TextString
 from kmip.core.primitives import ByteString
 from kmip.core.primitives import DateTime
 
+
 class ProtocolVersion(primitives.Struct):
     """
     A struct representing a ProtocolVersion number.
@@ -245,6 +246,7 @@ class ProtocolVersion(primitives.Struct):
     def __str__(self):
         return "{}.{}".format(self.major, self.minor)
 
+
 def protocol_version_to_kmip_version(value):
     """
     Convert a ProtocolVersion struct to its KMIPVersion enumeration equivalent.
@@ -282,6 +284,8 @@ def protocol_version_to_kmip_version(value):
         return None
 
 # 6.2
+
+
 class Operation(Enumeration):
 
     def __init__(self, value=None):
@@ -289,21 +293,28 @@ class Operation(Enumeration):
             enums.Operation, value, enums.Tags.OPERATION)
 
 # 6.3
+
+
 class MaximumResponseSize(Integer):
     def __init__(self, value=None):
         super(MaximumResponseSize, self).\
             __init__(value, enums.Tags.MAXIMUM_RESPONSE_SIZE)
 
 # 6.4
+
+
 class UniqueBatchItemID(ByteString):
     def __init__(self, value=None):
         super(UniqueBatchItemID, self)\
             .__init__(value, enums.Tags.UNIQUE_BATCH_ITEM_ID)
 
 # 6.5
+
+
 class TimeStamp(DateTime):
     def __init__(self, value=None):
         super(TimeStamp, self).__init__(value, enums.Tags.TIME_STAMP)
+
 
 class Authentication(Struct):
     """
@@ -433,18 +444,24 @@ class Authentication(Struct):
         return "{'credentials': [" + credentials + "]}"
 
 # 6.7
+
+
 class AsynchronousIndicator(Boolean):
     def __init__(self, value=None):
         super(AsynchronousIndicator, self).\
             __init__(value, enums.Tags.ASYNCHRONOUS_INDICATOR)
 
 # 6.8
+
+
 class AsynchronousCorrelationValue(ByteString):
     def __init__(self, value=None):
         super(AsynchronousCorrelationValue, self).\
             __init__(value, enums.Tags.ASYNCHRONOUS_CORRELATION_VALUE)
 
 # 6.9
+
+
 class ResultStatus(Enumeration):
 
     def __init__(self, value=None):
@@ -452,6 +469,8 @@ class ResultStatus(Enumeration):
             enums.ResultStatus, value, enums.Tags.RESULT_STATUS)
 
 # 6.10
+
+
 class ResultReason(Enumeration):
 
     def __init__(self, value=None):
@@ -459,17 +478,23 @@ class ResultReason(Enumeration):
             enums.ResultReason, value, enums.Tags.RESULT_REASON)
 
 # 6.11
+
+
 class ResultMessage(TextString):
     def __init__(self, value=None):
         super(ResultMessage, self).__init__(value, enums.Tags.RESULT_MESSAGE)
 
 # 6.12
+
+
 class BatchOrderOption(Boolean):
     def __init__(self, value=None):
         super(BatchOrderOption, self).\
             __init__(value, enums.Tags.BATCH_ORDER_OPTION)
 
 # 6.13
+
+
 class BatchErrorContinuationOption(Enumeration):
 
     def __init__(self, value=None):
@@ -478,22 +503,30 @@ class BatchErrorContinuationOption(Enumeration):
             enums.Tags.BATCH_ERROR_CONTINUATION_OPTION)
 
 # 6.14
+
+
 class BatchCount(Integer):
     def __init__(self, value=None):
         super(BatchCount, self).__init__(value, enums.Tags.BATCH_COUNT)
 
 # 6.16
+
+
 class MessageExtension(Struct):
     def __init__(self):
         super(MessageExtension, self).__init__(enums.Tags.MESSAGE_EXTENSION)
 
 # 6.19
+
+
 class ServerCorrelationValue(TextString):
     def __init__(self, value=None):
         super(ServerCorrelationValue, self).__init__(
             value, enums.Tags.SERVER_CORRELATION_VALUE)
 
 # 9.1.3.2.2
+
+
 class KeyCompressionType(Enumeration):
 
     def __init__(self, value=None):

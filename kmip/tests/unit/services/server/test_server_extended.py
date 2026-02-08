@@ -43,7 +43,7 @@ class TestKmipServerExtended(testtools.TestCase):
         with mock.patch.object(kmip_server.KmipServer, '_setup_logging'), \
                 mock.patch.object(
                     kmip_server.auth, 'BasicAuthenticationSuite'
-                ) as basic_suite:
+        ) as basic_suite:
             basic_suite.return_value = mock.Mock(
                 ciphers='cipher1:cipher2',
                 protocol='PROTO'
@@ -138,14 +138,17 @@ class TestKmipServerExtended(testtools.TestCase):
             self.assertEqual(key_path, server.config.settings.get('key_path'))
             self.assertEqual(ca_path, server.config.settings.get('ca_path'))
             self.assertEqual('TLS1.2', server.config.settings.get('auth_suite'))
-            self.assertEqual('/tmp/policy', server.config.settings.get('policy_path'))  # nosec B108
+            self.assertEqual(
+                '/tmp/policy',
+                server.config.settings.get('policy_path'))  # nosec B108
             self.assertFalse(server.config.settings.get('enable_tls_client_auth'))
             self.assertEqual(
                 {'TLS_ONE', 'TLS_TWO'},
                 set(server.config.settings.get('tls_cipher_suites'))
             )
             self.assertEqual(logging.ERROR, server.config.settings.get('logging_level'))
-            self.assertEqual('/tmp/server.db', server.config.settings.get('database_path'))  # nosec B108
+            self.assertEqual('/tmp/server.db',
+                             server.config.settings.get('database_path'))  # nosec B108
             self.assertTrue(server.live_policies)
             self.assertTrue(tls_suite.called)
 
@@ -203,7 +206,9 @@ class TestKmipServerExtended(testtools.TestCase):
             self.assertEqual(key_path, server.config.settings.get('key_path'))
             self.assertEqual(ca_path, server.config.settings.get('ca_path'))
             self.assertEqual('TLS1.2', server.config.settings.get('auth_suite'))
-            self.assertEqual('/tmp/policy', server.config.settings.get('policy_path'))  # nosec B108
+            self.assertEqual(
+                '/tmp/policy',
+                server.config.settings.get('policy_path'))  # nosec B108
             self.assertTrue(server.config.settings.get('enable_tls_client_auth'))
             self.assertEqual(
                 {
@@ -213,7 +218,8 @@ class TestKmipServerExtended(testtools.TestCase):
                 set(server.config.settings.get('tls_cipher_suites'))
             )
             self.assertEqual(logging.DEBUG, server.config.settings.get('logging_level'))
-            self.assertEqual('/tmp/server.db', server.config.settings.get('database_path'))  # nosec B108
+            self.assertEqual('/tmp/server.db',
+                             server.config.settings.get('database_path'))  # nosec B108
             self.assertTrue(tls_suite.called)
 
     def test_init_invalid_hostname(self):
@@ -406,7 +412,7 @@ class TestKmipServerExtended(testtools.TestCase):
 
         connection = mock.MagicMock()
         address = ('127.0.0.1', 1234)
-        server._socket.accept.side_effect = [ (connection, address), KeyboardInterrupt() ]
+        server._socket.accept.side_effect = [(connection, address), KeyboardInterrupt()]
 
         with mock.patch('kmip.services.server.server.signal.signal'):
             server.serve()

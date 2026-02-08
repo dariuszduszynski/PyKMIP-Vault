@@ -22,6 +22,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestRekeyKeyPairRequestPayload(TestCase):
 
     def setUp(self):
@@ -46,7 +47,7 @@ class TestRekeyKeyPairRequestPayload(TestCase):
             b'\x30\x30\x30\x30\x00\x00\x00\x00\x42\x00\x58\x0A\x00\x00\x00\x04'
             b'\x00\x00\x00\x00\x00\x00\x00\x00\x42\x00\x1F\x01\x00\x00\x00\x00'
             b'\x42\x00\x65\x01\x00\x00\x00\x00\x42\x00\x6E\x01\x00\x00\x00\x00'
-            ))
+        ))
 
     def tearDown(self):
         super(TestRekeyKeyPairRequestPayload, self).tearDown()
@@ -186,6 +187,8 @@ class TestRekeyKeyPairRequestPayload(TestCase):
         self._test_write(stream, payload, self.encoding_full)
 
 # TODO (ph) Replicate CreateKeyPairResponsePayload test suite here
+
+
 class TestRekeyKeyPairResponsePayload(TestCase):
 
     def setUp(self):

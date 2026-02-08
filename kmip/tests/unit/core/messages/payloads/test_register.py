@@ -24,6 +24,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestRegisterRequestPayload(testtools.TestCase):
 
     def setUp(self):
@@ -1301,6 +1302,7 @@ class TestRegisterRequestPayload(testtools.TestCase):
         equal.
         """
         self.test_not_equal_on_not_equal_object_type()
+
 
 class TestRegisterResponsePayload(testtools.TestCase):
 

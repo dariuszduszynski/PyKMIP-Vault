@@ -22,6 +22,7 @@ import testtools
 from kmip.core import exceptions
 from kmip.services.server import config
 
+
 class TestKmipServerConfig(testtools.TestCase):
     """
     A test suite for the KmipServerConfig tool.

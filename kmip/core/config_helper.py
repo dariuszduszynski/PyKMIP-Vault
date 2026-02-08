@@ -25,6 +25,7 @@ CONFIG_FILE = [
     os.path.normpath(os.path.join(FILE_PATH, '../pykmip.conf')),
     os.path.normpath(os.path.join(FILE_PATH, '../kmipconfig.ini'))]
 
+
 class ConfigHelper(object):
     NONE_VALUE = 'None'
     DEFAULT_HOST = "127.0.0.1"

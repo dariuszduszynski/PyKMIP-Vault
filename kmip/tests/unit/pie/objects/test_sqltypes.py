@@ -18,6 +18,7 @@ import testtools
 from kmip.core import enums
 from kmip.pie.sqltypes import ManagedObjectName
 
+
 class TestSqlTypesManagedObjectName(testtools.TestCase):
     """
     Test suite for objects in sqltypes.py.

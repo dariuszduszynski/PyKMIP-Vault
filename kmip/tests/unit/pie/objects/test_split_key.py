@@ -22,6 +22,7 @@ from kmip.core import enums
 from kmip.pie import objects
 from kmip.pie import sqltypes
 
+
 class TestSplitKey(testtools.TestCase):
     """
     Test suite for SplitKey.

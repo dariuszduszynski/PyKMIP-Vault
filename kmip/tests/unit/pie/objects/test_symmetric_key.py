@@ -22,6 +22,7 @@ from kmip.pie.objects import ManagedObject, SymmetricKey
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+
 class TestSymmetricKey(testtools.TestCase):
     """
     Test suite for SymmetricKey.
@@ -415,7 +416,7 @@ class TestSymmetricKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(1, len(get_obj.names))
         self.assertEqual([test_name], get_obj.names)
@@ -455,7 +456,7 @@ class TestSymmetricKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_mo_names, get_obj._names)
 
@@ -492,7 +493,7 @@ class TestSymmetricKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -532,7 +533,7 @@ class TestSymmetricKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -567,14 +568,14 @@ class TestSymmetricKey(testtools.TestCase):
         session = Session()
         update_key = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         update_key.names.append(added_name)
         session.commit()
 
         session = Session()
         get_obj = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -609,14 +610,14 @@ class TestSymmetricKey(testtools.TestCase):
         session = Session()
         update_key = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         update_key.names.pop(remove_index)
         session.commit()
 
         session = Session()
         get_obj = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -645,7 +646,7 @@ class TestSymmetricKey(testtools.TestCase):
         session = Session()
         update_key = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         update_key.names.pop()
         update_key.names.pop()
         update_key.names.append('dog')
@@ -661,7 +662,7 @@ class TestSymmetricKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(SymmetricKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)

@@ -35,6 +35,7 @@ from kmip.core.messages import messages
 from kmip.services.server import engine
 from kmip.services.server import session
 
+
 def build_certificate(
         common_names,
         include_extension=True,
@@ -103,6 +104,7 @@ def build_certificate(
         )
 
     return builder.sign(private_key, hashes.SHA256(), default_backend())
+
 
 class TestKmipSession(testtools.TestCase):
     """

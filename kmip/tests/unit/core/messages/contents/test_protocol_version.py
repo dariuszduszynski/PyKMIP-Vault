@@ -19,6 +19,7 @@ from kmip.core import enums
 from kmip.core.messages import contents
 from kmip.core import utils
 
+
 class TestProtocolVersion(testtools.TestCase):
 
     def setUp(self):
@@ -347,6 +348,7 @@ class TestProtocolVersion(testtools.TestCase):
         struct = contents.ProtocolVersion(1, 0)
 
         self.assertEqual("1.0", str(struct))
+
 
 class TestContents(testtools.TestCase):
 

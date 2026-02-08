@@ -28,6 +28,7 @@ from kmip.core.primitives import Struct
 
 from kmip.core.utils import BytearrayStream
 
+
 class RequestHeader(Struct):
 
     def __init__(self,
@@ -140,6 +141,7 @@ class RequestHeader(Struct):
         )
         ostream.write(tstream.buffer)
 
+
 class ResponseHeader(Struct):
 
     def __init__(self,
@@ -244,6 +246,7 @@ class ResponseHeader(Struct):
             # TODO (peter-hamilton) conduct type check
             self.batch_count.validate()
 
+
 class RequestBatchItem(Struct):
 
     def __init__(self,
@@ -341,6 +344,7 @@ class RequestBatchItem(Struct):
             kmip_version=kmip_version
         )
         ostream.write(tstream.buffer)
+
 
 class ResponseBatchItem(Struct):
 
@@ -458,6 +462,7 @@ class ResponseBatchItem(Struct):
     def validate(self):
         pass
 
+
 class RequestMessage(Struct):
 
     def __init__(self, request_header=None, batch_items=None,):
@@ -499,6 +504,7 @@ class RequestMessage(Struct):
             kmip_version=kmip_version
         )
         ostream.write(tstream.buffer)
+
 
 class ResponseMessage(Struct):
 

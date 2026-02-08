@@ -35,6 +35,8 @@ from kmip.core.utils import BytearrayStream
 
 # 2.2
 # 2.2.1
+
+
 class Certificate(Struct):
     """
     A structure representing a DER-encoded X.509 public key certificate.
@@ -140,6 +142,8 @@ class Certificate(Struct):
         return "{0}".format(str(self.certificate_value))
 
 # 2.2.2
+
+
 class KeyBlockKey(Struct):
 
     def __init__(self, key_block=None, tag=Tags.DEFAULT):
@@ -174,6 +178,7 @@ class KeyBlockKey(Struct):
         # TODO (peter-hamilton) Finish implementation.
         pass
 
+
 class SymmetricKey(KeyBlockKey):
 
     def __init__(self, key_block=None):
@@ -188,6 +193,8 @@ class SymmetricKey(KeyBlockKey):
         pass
 
 # 2.2.3
+
+
 class PublicKey(KeyBlockKey):
 
     def __init__(self, key_block=None):
@@ -202,6 +209,8 @@ class PublicKey(KeyBlockKey):
         pass
 
 # 2.2.4
+
+
 class PrivateKey(KeyBlockKey):
 
     def __init__(self, key_block=None):
@@ -214,6 +223,7 @@ class PrivateKey(KeyBlockKey):
     def __validate(self):
         # TODO (peter-hamilton) Finish implementation.
         pass
+
 
 class SplitKey(primitives.Struct):
     """
@@ -612,6 +622,8 @@ class SplitKey(primitives.Struct):
             return NotImplemented
 
 # 2.2.6
+
+
 class Template(Struct):
 
     def __init__(self, attributes=None):
@@ -656,6 +668,8 @@ class Template(Struct):
         pass
 
 # 2.2.7
+
+
 class SecretData(Struct):
 
     class SecretDataType(Enumeration):
@@ -704,6 +718,8 @@ class SecretData(Struct):
         pass
 
 # 2.2.8
+
+
 class OpaqueObject(Struct):
 
     class OpaqueDataType(Enumeration):

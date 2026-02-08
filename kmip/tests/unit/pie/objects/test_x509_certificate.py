@@ -22,11 +22,13 @@ from kmip.pie.objects import ManagedObject, X509Certificate
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+
 class TestX509Certificate(testtools.TestCase):
     """
     Test suite for X509Certificate.
 
     """
+
     def setUp(self):
         super(TestX509Certificate, self).setUp()
 
@@ -327,7 +329,7 @@ class TestX509Certificate(testtools.TestCase):
         session = Session()
         get_obj = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(1, len(get_obj.names))
         self.assertEqual([test_name], get_obj.names)
@@ -361,7 +363,7 @@ class TestX509Certificate(testtools.TestCase):
         session = Session()
         get_obj = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_mo_names, get_obj._names)
 
@@ -396,7 +398,7 @@ class TestX509Certificate(testtools.TestCase):
         session = Session()
         get_obj = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -434,7 +436,7 @@ class TestX509Certificate(testtools.TestCase):
         session = Session()
         get_obj = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -467,14 +469,14 @@ class TestX509Certificate(testtools.TestCase):
         session = Session()
         update_cert = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         update_cert.names.append(added_name)
         session.commit()
 
         session = Session()
         get_obj = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -507,14 +509,14 @@ class TestX509Certificate(testtools.TestCase):
         session = Session()
         update_cert = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         update_cert.names.pop(remove_index)
         session.commit()
 
         session = Session()
         get_obj = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -541,7 +543,7 @@ class TestX509Certificate(testtools.TestCase):
         session = Session()
         update_cert = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         update_cert.names.pop()
         update_cert.names.pop()
         update_cert.names.append('dog')
@@ -557,7 +559,7 @@ class TestX509Certificate(testtools.TestCase):
         session = Session()
         get_obj = session.query(X509Certificate).filter(
             ManagedObject.unique_identifier == cert.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)

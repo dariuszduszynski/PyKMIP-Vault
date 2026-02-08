@@ -19,6 +19,7 @@ from kmip.core import enums
 from kmip.core.messages import contents
 from kmip.services.server import policy
 
+
 class TestAttributePolicy(testtools.TestCase):
     """
     A test engine for AttributePolicy.

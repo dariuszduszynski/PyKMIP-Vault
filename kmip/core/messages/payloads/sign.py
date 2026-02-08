@@ -19,6 +19,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class SignRequestPayload(base.RequestPayload):
     """
     A request payload for the Sign operation.
@@ -146,8 +147,8 @@ class SignRequestPayload(base.RequestPayload):
             )
 
         if self.is_tag_next(
-               enums.Tags.CRYPTOGRAPHIC_PARAMETERS,
-               local_stream
+            enums.Tags.CRYPTOGRAPHIC_PARAMETERS,
+            local_stream
         ):
             self._cryptographic_parameters = \
                 attributes.CryptographicParameters()
@@ -241,6 +242,7 @@ class SignRequestPayload(base.RequestPayload):
             'cryptographic_parameters': self.cryptographic_parameters,
             'data': self.data
         })
+
 
 class SignResponsePayload(base.ResponsePayload):
     """

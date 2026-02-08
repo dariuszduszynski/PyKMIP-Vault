@@ -19,6 +19,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class LocateRequestPayload(base.RequestPayload):
     """
     A request payload for the Locate operation.
@@ -364,6 +365,7 @@ class LocateRequestPayload(base.RequestPayload):
             ]
         )
         return '{' + value + '}'
+
 
 class LocateResponsePayload(base.ResponsePayload):
     """

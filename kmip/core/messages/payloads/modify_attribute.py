@@ -20,6 +20,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class ModifyAttributeRequestPayload(base.RequestPayload):
     """
     A request payload for the ModifyAttribute operation.
@@ -316,6 +317,7 @@ class ModifyAttributeRequestPayload(base.RequestPayload):
             return not self.__eq__(other)
         else:
             return NotImplemented
+
 
 class ModifyAttributeResponsePayload(base.ResponsePayload):
     """

@@ -23,6 +23,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestRevokeRequestPayload(TestCase):
     """
     Test suite for the RevokeRequestPayload class.
@@ -44,7 +45,7 @@ class TestRevokeRequestPayload(TestCase):
             b'\x63\x37\x34\x36\x00\x00\x00\x00\x42\x00\x81\x01\x00\x00\x00\x10'
             b'\x42\x00\x82\x05\x00\x00\x00\x04\x00\x00\x00\x02\x00\x00\x00\x00'
             b'\x42\x00\x21\x09\x00\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x06'
-            ))
+        ))
 
     def tearDown(self):
         super(TestRevokeRequestPayload, self).tearDown()
@@ -221,6 +222,7 @@ class TestRevokeRequestPayload(TestCase):
         """
         payload = payloads.RevokeRequestPayload()
         self.assertIsInstance(str(payload), str)
+
 
 class TestRevokeResponsePayload(TestCase):
     """

@@ -17,6 +17,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class GetAttributesRequestPayload(base.RequestPayload):
     """
     A request payload for the GetAttributes operation.
@@ -34,6 +35,7 @@ class GetAttributesRequestPayload(base.RequestPayload):
         attribute_names: A list of strings identifying the names of the
             attributes associated with the managed object.
     """
+
     def __init__(self, unique_identifier=None, attribute_names=None):
         """
         Construct a GetAttributes request payload.
@@ -268,6 +270,7 @@ class GetAttributesRequestPayload(base.RequestPayload):
         else:
             return NotImplemented
 
+
 class GetAttributesResponsePayload(base.ResponsePayload):
     """
     A response payload for the GetAttributes operation.
@@ -282,6 +285,7 @@ class GetAttributesResponsePayload(base.ResponsePayload):
         attributes: The list of attributes associated with managed object
             identified by the unique identifier above.
     """
+
     def __init__(self, unique_identifier=None, attributes=None):
         """
         Construct a GetAttributes response payload.

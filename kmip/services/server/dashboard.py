@@ -1,3 +1,4 @@
+# flake8: noqa
 # Copyright (c) 2026 The Johns Hopkins University/Applied Physics Laboratory
 # All Rights Reserved.
 #
@@ -580,10 +581,12 @@ def _serialize_policies(policy_map: Mapping[str, Any]) -> list[dict[str, Any]]:
     return policies
 
 
-def _build_summary(session_factory: SessionFactory, status_provider: StatusProvider | None) -> dict[str, Any]:
+def _build_summary(session_factory: SessionFactory,
+                   status_provider: StatusProvider | None) -> dict[str, Any]:
     status = _safe_status(status_provider)
     with session_factory() as session:
-        total_objects = session.query(func.count(pie_objects.ManagedObject.unique_identifier)).scalar() or 0
+        total_objects = session.query(func.count(
+            pie_objects.ManagedObject.unique_identifier)).scalar() or 0
 
         by_type_rows = session.query(
             pie_objects.ManagedObject._object_type,
@@ -630,10 +633,18 @@ def _build_summary(session_factory: SessionFactory, status_provider: StatusProvi
         "by_type": by_type,
         "by_state": by_state,
         "recent": recent,
-        "kmip_host": kmip_info.get("hostname", "-"),
-        "kmip_port": kmip_info.get("port", "-"),
-        "storage_status": "healthy" if status.get("storage", {}).get("healthy") else "degraded",
-        "storage_uri": storage_info.get("database_uri", "-"),
+        "kmip_host": kmip_info.get(
+            "hostname",
+            "-"),
+        "kmip_port": kmip_info.get(
+            "port",
+            "-"),
+        "storage_status": "healthy" if status.get(
+            "storage",
+            {}).get("healthy") else "degraded",
+        "storage_uri": storage_info.get(
+            "database_uri",
+            "-"),
     }
 
 
@@ -686,19 +697,22 @@ def create_app(
             query = session.query(pie_objects.ManagedObject)
 
             if object_type:
-                query = query.filter(pie_objects.ManagedObject._object_type == object_type)
+                query = query.filter(
+                    pie_objects.ManagedObject._object_type == object_type)
 
             if name_filter:
                 name_ids = session.query(sqltypes.ManagedObjectName.mo_uid).filter(
                     sqltypes.ManagedObjectName.name.ilike("%{0}%".format(name_filter))
                 ).subquery()
-                query = query.filter(pie_objects.ManagedObject.unique_identifier.in_(name_ids))
+                query = query.filter(
+                    pie_objects.ManagedObject.unique_identifier.in_(name_ids))
 
             if state:
-                state_ids = session.query(pie_objects.CryptographicObject.unique_identifier).filter(
-                    pie_objects.CryptographicObject.state == state
-                ).subquery()
-                query = query.filter(pie_objects.ManagedObject.unique_identifier.in_(state_ids))
+                state_ids = session.query(
+                    pie_objects.CryptographicObject.unique_identifier).filter(
+                    pie_objects.CryptographicObject.state == state).subquery()
+                query = query.filter(
+                    pie_objects.ManagedObject.unique_identifier.in_(state_ids))
 
             total = query.count()
             items = query.order_by(
@@ -819,13 +833,16 @@ def create_app(
                 )
 
             if isinstance(obj, pie_objects.Certificate):
-                attributes.append({"label": "Certificate Type", "value": _enum_label(obj.certificate_type)})
+                attributes.append({"label": "Certificate Type",
+                                   "value": _enum_label(obj.certificate_type)})
 
             if isinstance(obj, pie_objects.SecretData):
-                attributes.append({"label": "Data Type", "value": _enum_label(obj.data_type)})
+                attributes.append(
+                    {"label": "Data Type", "value": _enum_label(obj.data_type)})
 
             if isinstance(obj, pie_objects.OpaqueObject):
-                attributes.append({"label": "Opaque Type", "value": _enum_label(obj.opaque_type)})
+                attributes.append(
+                    {"label": "Opaque Type", "value": _enum_label(obj.opaque_type)})
 
             details = {
                 "uid": obj.unique_identifier,
@@ -860,7 +877,11 @@ def create_app(
             if not obj:
                 abort(404)
             if not hasattr(obj, "state"):
-                return redirect(url_for("object_detail", uid=uid, notice="State not supported"))
+                return redirect(
+                    url_for(
+                        "object_detail",
+                        uid=uid,
+                        notice="State not supported"))
             obj.state = state
             session.commit()
 

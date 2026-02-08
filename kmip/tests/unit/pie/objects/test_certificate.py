@@ -18,6 +18,7 @@ import testtools
 from kmip.core import enums
 from kmip.pie import objects
 
+
 class DummyCertificate(objects.Certificate):
     """
     A dummy Certificate subclass for testing purposes.
@@ -48,6 +49,7 @@ class DummyCertificate(objects.Certificate):
     def __ne__(self, other):
         return False
 
+
 class TestCertificate(testtools.TestCase):
     """
     Test suite for Certificate.
@@ -55,6 +57,7 @@ class TestCertificate(testtools.TestCase):
     Since Certificate is an ABC abstract class, all tests are run against a
     dummy subclass defined above, DummyCertificate.
     """
+
     def setUp(self):
         super(TestCertificate, self).setUp()
 

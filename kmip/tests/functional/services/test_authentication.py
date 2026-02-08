@@ -24,6 +24,7 @@ from kmip.pie import client
 from kmip.pie import exceptions
 from kmip.pie import objects
 
+
 @pytest.mark.usefixtures("config_file")
 class TestSLUGSAuthenticationAndAccessControl(testtools.TestCase):
 
@@ -200,7 +201,10 @@ class TestSLUGSAuthenticationAndAccessControl(testtools.TestCase):
                 enums.CryptographicAlgorithm.AES)
             self.assertEqual(key.cryptographic_length, 256)
 
-            with open("/tmp/pykmip/policies/policy_caching.json", "w") as f:  # nosec B108
+            with open(
+                "/tmp/pykmip/policies/policy_caching.json",
+                "w"
+            ) as f:  # nosec B108
                 f.write('{\n')
                 f.write('  "policy_1": {\n')
                 f.write('    "groups": {\n')

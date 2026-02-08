@@ -19,6 +19,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class SignatureVerifyRequestPayload(base.RequestPayload):
     """
     A request payload for the SignatureVerify operation.
@@ -432,6 +433,7 @@ class SignatureVerifyRequestPayload(base.RequestPayload):
             'init_indicator': self.init_indicator,
             'final_indicator': self.final_indicator
         })
+
 
 class SignatureVerifyResponsePayload(base.ResponsePayload):
     """

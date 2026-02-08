@@ -72,6 +72,7 @@ import sys
 FILE_PATH = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.normpath(os.path.join(FILE_PATH, '../kmipconfig.ini'))
 
+
 class KMIPProxy(object):
 
     def __init__(self, host=None, port=None, keyfile=None,

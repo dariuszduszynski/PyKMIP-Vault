@@ -22,6 +22,7 @@ from kmip.core.objects import ExtensionType
 
 from kmip.core.utils import BytearrayStream
 
+
 class TestExtensionInformation(TestCase):
     """
     A test suite for the ExtensionInformation class.

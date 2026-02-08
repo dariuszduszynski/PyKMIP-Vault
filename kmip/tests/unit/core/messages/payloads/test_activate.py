@@ -20,6 +20,7 @@ from kmip.core import attributes
 
 from kmip.core.messages import payloads
 
+
 class TestActivateRequestPayload(TestCase):
     """
     Test suite for the ActivateRequestPayload class.
@@ -188,6 +189,7 @@ class TestActivateRequestPayload(TestCase):
         """
         payload = payloads.ActivateRequestPayload()
         self.assertIsInstance(str(payload), str)
+
 
 class TestActivateResponsePayload(TestCase):
     """

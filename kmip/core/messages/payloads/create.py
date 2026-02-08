@@ -20,6 +20,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class CreateRequestPayload(base.RequestPayload):
     """
     A request payload for the Create operation.
@@ -310,6 +311,7 @@ class CreateRequestPayload(base.RequestPayload):
             ]
         )
         return '{' + value + '}'
+
 
 class CreateResponsePayload(base.ResponsePayload):
     """

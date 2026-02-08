@@ -36,10 +36,12 @@ from kmip.pie.objects import ManagedObject, PrivateKey
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+
 class TestPrivateKey(testtools.TestCase):
     """
     Test suite for PrivateKey.
     """
+
     def setUp(self):
         super(TestPrivateKey, self).setUp()
 
@@ -570,7 +572,7 @@ class TestPrivateKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(1, len(get_obj.names))
         self.assertEqual([test_name], get_obj.names)
@@ -610,7 +612,7 @@ class TestPrivateKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_mo_names, get_obj._names)
 
@@ -647,7 +649,7 @@ class TestPrivateKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -687,7 +689,7 @@ class TestPrivateKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -722,14 +724,14 @@ class TestPrivateKey(testtools.TestCase):
         session = Session()
         update_key = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         update_key.names.append(added_name)
         session.commit()
 
         session = Session()
         get_obj = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -764,14 +766,14 @@ class TestPrivateKey(testtools.TestCase):
         session = Session()
         update_key = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         update_key.names.pop(remove_index)
         session.commit()
 
         session = Session()
         get_obj = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)
@@ -800,7 +802,7 @@ class TestPrivateKey(testtools.TestCase):
         session = Session()
         update_key = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         update_key.names.pop()
         update_key.names.pop()
         update_key.names.append('dog')
@@ -816,7 +818,7 @@ class TestPrivateKey(testtools.TestCase):
         session = Session()
         get_obj = session.query(PrivateKey).filter(
             ManagedObject.unique_identifier == key.unique_identifier
-            ).one()
+        ).one()
         session.commit()
         self.assertEqual(expected_names, get_obj.names)
         self.assertEqual(expected_mo_names, get_obj._names)

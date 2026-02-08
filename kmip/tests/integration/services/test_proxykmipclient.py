@@ -24,6 +24,7 @@ from kmip.pie import exceptions
 from kmip.pie import factory
 from kmip.pie import objects
 
+
 @pytest.mark.usefixtures("simple")
 class TestProxyKmipClientIntegration(testtools.TestCase):
 
@@ -573,7 +574,7 @@ class TestProxyKmipClientIntegration(testtools.TestCase):
                     'application_data': 'Testing4'
                 }
             ]
-            )
+        )
 
         uid = self.client.register(secret)
         self.assertIsInstance(uid, str)

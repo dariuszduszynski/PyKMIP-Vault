@@ -20,6 +20,7 @@ from kmip.core import utils
 from kmip.core.messages.contents import ProtocolVersion
 from kmip.core.messages import payloads
 
+
 class TestDiscoverVersionsRequestPayload(TestCase):
 
     def setUp(self):
@@ -194,6 +195,7 @@ class TestDiscoverVersionsRequestPayload(TestCase):
     def test_str(self):
         payload = payloads.DiscoverVersionsRequestPayload()
         self.assertIsInstance(str(payload), str)
+
 
 class TestDiscoverVersionsResponsePayload(TestCase):
 

@@ -21,6 +21,8 @@ from kmip.core.messages.payloads import base
 from kmip.core.utils import BytearrayStream
 
 # 4.21
+
+
 class DestroyRequestPayload(base.RequestPayload):
 
     def __init__(self,
@@ -84,6 +86,7 @@ class DestroyRequestPayload(base.RequestPayload):
         if isinstance(other, DestroyRequestPayload):
             return not self.__eq__(other)
         return NotImplemented
+
 
 class DestroyResponsePayload(base.ResponsePayload):
 

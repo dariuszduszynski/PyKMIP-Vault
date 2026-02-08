@@ -19,6 +19,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class EncryptRequestPayload(base.RequestPayload):
     """
     A request payload for the Encrypt operation.
@@ -335,6 +336,7 @@ class EncryptRequestPayload(base.RequestPayload):
             'iv_counter_nonce': self.iv_counter_nonce,
             'auth_additional_data': self.auth_additional_data
         })
+
 
 class EncryptResponsePayload(base.ResponsePayload):
     """

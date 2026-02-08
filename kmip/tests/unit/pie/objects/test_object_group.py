@@ -19,6 +19,7 @@ import testtools
 from kmip.pie import objects
 from kmip.pie import sqltypes
 
+
 class TestObjectGroup(testtools.TestCase):
     """
     Test suite for ObjectGroup.

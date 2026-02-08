@@ -23,6 +23,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestSetAttributeRequestPayload(testtools.TestCase):
     """
     A unit test suite for the SetAttribute request payload.
@@ -494,6 +495,7 @@ class TestSetAttributeRequestPayload(testtools.TestCase):
         a = payloads.SetAttributeRequestPayload(unique_identifier="1")
         b = payloads.SetAttributeRequestPayload(unique_identifier="2")
         self.assertTrue(a != b)
+
 
 class TestSetAttributeResponsePayload(testtools.TestCase):
     """

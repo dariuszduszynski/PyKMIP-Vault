@@ -16,6 +16,7 @@
 from kmip.core import enums
 from kmip.core.messages import contents
 
+
 class AttributeRuleSet(object):
     """
     A set of flags and indicators defining how an attribute may be used.
@@ -98,6 +99,7 @@ class AttributeRuleSet(object):
         self.applies_to_object_types = applies_to_object_types
         self.version_added = version_added
         self.version_deprecated = version_deprecated
+
 
 class AttributePolicy(object):
     """

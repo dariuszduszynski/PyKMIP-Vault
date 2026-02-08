@@ -20,6 +20,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class DeleteAttributeRequestPayload(base.RequestPayload):
     """
     A request payload for the DeleteAttribute operation.
@@ -368,6 +369,7 @@ class DeleteAttributeRequestPayload(base.RequestPayload):
             return not self.__eq__(other)
         else:
             return NotImplemented
+
 
 class DeleteAttributeResponsePayload(base.ResponsePayload):
     """

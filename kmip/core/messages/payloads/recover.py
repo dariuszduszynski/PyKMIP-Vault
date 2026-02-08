@@ -18,6 +18,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class RecoverRequestPayload(base.RequestPayload):
     """
     A request payload for the Recover operation.
@@ -145,6 +146,7 @@ class RecoverRequestPayload(base.RequestPayload):
         return str({
             'unique_identifier': self.unique_identifier
         })
+
 
 class RecoverResponsePayload(base.ResponsePayload):
     """

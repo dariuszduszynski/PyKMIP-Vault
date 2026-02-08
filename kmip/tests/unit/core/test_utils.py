@@ -18,6 +18,7 @@ from testtools import TestCase
 from kmip.core import exceptions
 from kmip.core import utils
 
+
 class TestUtils(TestCase):
 
     def setUp(self):
@@ -52,6 +53,7 @@ class TestUtils(TestCase):
                          'Value {0} requires {1} bytes to encode, '
                          'received {2} byte(s)'.format(num, bytes_exp,
                                                        bytes_obs))
+
 
 class TestBytearrayStream(TestCase):
 

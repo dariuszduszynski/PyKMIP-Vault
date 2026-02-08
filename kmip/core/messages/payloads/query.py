@@ -21,6 +21,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class QueryRequestPayload(base.RequestPayload):
     """
     A request payload for the Query operation.
@@ -32,6 +33,7 @@ class QueryRequestPayload(base.RequestPayload):
     Attributes:
         query_functions: A list of QueryFunction enumerations.
     """
+
     def __init__(self, query_functions=None):
         """
         Construct a QueryRequestPayload object.
@@ -184,6 +186,7 @@ class QueryRequestPayload(base.RequestPayload):
         else:
             return NotImplemented
 
+
 class QueryResponsePayload(base.ResponsePayload):
     """
     A response payload for the Query operation.
@@ -225,6 +228,7 @@ class QueryResponsePayload(base.ResponsePayload):
             of ProtectionStorageMask enumerations detailing the storage
             protections supported by the server. Added in KMIP 2.0.
     """
+
     def __init__(self,
                  operations=None,
                  object_types=None,

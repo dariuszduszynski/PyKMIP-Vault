@@ -15,6 +15,7 @@
 
 import abc
 
+
 class AuthAPI(metaclass=abc.ABCMeta):
     """
     The base class for an authentication API connector.

@@ -19,6 +19,7 @@ import os
 import configparser
 from kmip.core import exceptions
 
+
 class KmipServerConfig(object):
     """
     A configuration management tool for the KmipServer.
@@ -384,10 +385,10 @@ class KmipServerConfig(object):
             return
 
         logging_levels = {
-            "DEBUG":    logging.DEBUG,
-            "INFO":     logging.INFO,
-            "WARNING":  logging.WARNING,
-            "ERROR":    logging.ERROR,
+            "DEBUG": logging.DEBUG,
+            "INFO": logging.INFO,
+            "WARNING": logging.WARNING,
+            "ERROR": logging.ERROR,
             "CRITICAL": logging.CRITICAL
         }
         if value in logging_levels.values():

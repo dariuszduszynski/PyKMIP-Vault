@@ -24,6 +24,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestCreateKeyPairRequestPayload(testtools.TestCase):
 
     def setUp(self):
@@ -2644,6 +2645,7 @@ class TestCreateKeyPairRequestPayload(testtools.TestCase):
         not equal.
         """
         self.test_not_equal_on_not_equal_common_template_attribute()
+
 
 class TestCreateKeyPairResponsePayload(testtools.TestCase):
 

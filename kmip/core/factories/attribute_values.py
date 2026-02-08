@@ -18,6 +18,7 @@ from kmip.core import enums
 from kmip.core import primitives
 from kmip.core import utils
 
+
 class AttributeValueFactory(object):
 
     def create_attribute_value(self, name, value):
@@ -217,9 +218,9 @@ class AttributeValueFactory(object):
 
             elif isinstance(name, str):
                 return attributes.Name.create(
-                            name,
-                            enums.NameType.UNINTERPRETED_TEXT_STRING
-                        )
+                    name,
+                    enums.NameType.UNINTERPRETED_TEXT_STRING
+                )
             else:
                 raise ValueError('Unrecognized attribute type: '
                                  '{0}'.format(name))

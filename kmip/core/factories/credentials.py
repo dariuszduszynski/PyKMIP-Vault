@@ -16,6 +16,7 @@
 from kmip.core import enums
 from kmip.core import objects
 
+
 class CredentialFactory(object):
 
     def create_credential(self, credential_type, credential_value):

@@ -48,6 +48,7 @@ from kmip.core.secrets import Template
 from kmip.core import utils
 from kmip.core.utils import BytearrayStream
 
+
 class TestRequestBatchItem(testtools.TestCase):
 
     def setUp(self):
@@ -144,6 +145,7 @@ class TestRequestBatchItem(testtools.TestCase):
 
         self.assertEqual(len(self.encoding_kmip_2_0), len(buffer))
         self.assertEqual(str(self.encoding_kmip_2_0), str(buffer))
+
 
 class TestResponseHeader(testtools.TestCase):
 
@@ -262,6 +264,7 @@ class TestResponseHeader(testtools.TestCase):
 
         self.assertEqual(len(self.encoding_kmip_2_0), len(buffer))
         self.assertEqual(str(self.encoding_kmip_2_0), str(buffer))
+
 
 class TestRequestMessage(TestCase):
 
@@ -1360,6 +1363,7 @@ class TestRequestMessage(TestCase):
 
         msg = "Bad request message write: encoding mismatch"
         self.assertEqual(self.mac, result, msg)
+
 
 class TestResponseMessage(TestCase):
 

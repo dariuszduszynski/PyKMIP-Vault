@@ -248,6 +248,7 @@ class TestBase(testtools.TestCase):
         self.assertFalse(
             primitives.Base.is_type_next(enums.Types.INTEGER, empty))
 
+
 class TestStruct(testtools.TestCase):
 
     def setUp(self):
@@ -425,6 +426,7 @@ class TestStruct(testtools.TestCase):
         read_inner.read(stream)
         self.assertEqual(0, read_inner.length)
 
+
 class TestInteger(testtools.TestCase):
 
     def setUp(self):
@@ -570,6 +572,7 @@ class TestInteger(testtools.TestCase):
         self.assertEqual(primitives.Integer.MAX,
                          primitives.Integer(primitives.Integer.MAX).value)
 
+
 class TestLongInteger(testtools.TestCase):
 
     def setUp(self):
@@ -711,6 +714,7 @@ class TestLongInteger(testtools.TestCase):
         value = 2 ** 40
         self.assertEqual(value, primitives.LongInteger(value).value)
 
+
 class TestBigInteger(testtools.TestCase):
 
     def setUp(self):
@@ -845,6 +849,7 @@ class TestBigInteger(testtools.TestCase):
         """Test BigInteger supports 1024-bit values."""
         value = (1 << 1023) + 1
         self.assertEqual(value, primitives.BigInteger(value).value)
+
 
 class TestEnumeration(testtools.TestCase):
 
@@ -999,6 +1004,7 @@ class TestEnumeration(testtools.TestCase):
                          primitives.Enumeration(SampleEnum, SampleEnum.ONE).value)
         self.assertRaises(TypeError, primitives.Enumeration, SampleEnum, 'bad')
 
+
 class TestBoolean(testtools.TestCase):
 
     def setUp(self):
@@ -1120,6 +1126,7 @@ class TestBoolean(testtools.TestCase):
         self.assertTrue(primitives.Boolean(True).value)
         self.assertFalse(primitives.Boolean(False).value)
         self.assertRaises(TypeError, primitives.Boolean, 1)
+
 
 class TestTextString(testtools.TestCase):
 
@@ -1251,6 +1258,7 @@ class TestTextString(testtools.TestCase):
                          primitives.TextString(unicode_value).value)
         self.assertEqual('', primitives.TextString('').value)
         self.assertEqual(long_value, primitives.TextString(long_value).value)
+
 
 class TestByteString(testtools.TestCase):
 
@@ -1385,6 +1393,7 @@ class TestByteString(testtools.TestCase):
         self.assertEqual(b'', primitives.ByteString(b'').value)
         self.assertEqual(b'\x00' * 16,
                          primitives.ByteString(b'\x00' * 16).value)
+
 
 class TestDateTime(testtools.TestCase):
 
@@ -1530,6 +1539,7 @@ class TestDateTime(testtools.TestCase):
         self.assertEqual(100, now.value)
         self.assertEqual(100000, future.value)
         self.assertEqual(0, epoch.value)
+
 
 class TestInterval(testtools.TestCase):
 

@@ -23,6 +23,7 @@ from kmip.core.messages.payloads.create_key_pair import \
     CreateKeyPairResponsePayload
 from kmip.core.utils import BytearrayStream
 
+
 class RekeyKeyPairRequestPayload(base.RequestPayload):
 
     def __init__(self,
@@ -165,6 +166,8 @@ class RekeyKeyPairRequestPayload(base.RequestPayload):
                 raise TypeError(msg)
 
 # TODO (ph) Remove the dependency on the CreateKeyPairResponsePayload
+
+
 class RekeyKeyPairResponsePayload(CreateKeyPairResponsePayload):
 
     def __init__(self,

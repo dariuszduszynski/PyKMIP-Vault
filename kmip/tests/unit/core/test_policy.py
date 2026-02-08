@@ -21,6 +21,7 @@ import testtools
 from kmip.core import enums
 from kmip.core import policy
 
+
 class TestPolicy(testtools.TestCase):
 
     def setUp(self):

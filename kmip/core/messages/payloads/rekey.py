@@ -16,6 +16,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class RekeyRequestPayload(base.RequestPayload):
     """
     A request payload for the Rekey operation.
@@ -27,6 +28,7 @@ class RekeyRequestPayload(base.RequestPayload):
         template_attribute: A collection of attributes that should be set on
             the replacement key.
     """
+
     def __init__(self,
                  unique_identifier=None,
                  offset=None,
@@ -222,6 +224,7 @@ class RekeyRequestPayload(base.RequestPayload):
             'template_attribute': str(self.template_attribute)
         })
 
+
 class RekeyResponsePayload(base.ResponsePayload):
     """
     A response payload for the Rekey operation.
@@ -231,6 +234,7 @@ class RekeyResponsePayload(base.ResponsePayload):
         template_attribute: A collection of server attributes that were set on
             the replacement key.
     """
+
     def __init__(self,
                  unique_identifier=None,
                  template_attribute=None):

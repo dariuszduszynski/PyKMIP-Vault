@@ -21,6 +21,7 @@ from kmip import enums
 from kmip.core import objects
 from kmip.core import utils
 
+
 class TestNonce(testtools.TestCase):
     """
     Test suite for the Nonce struct.
@@ -396,6 +397,7 @@ class TestNonce(testtools.TestCase):
 
         self.assertEqual(expected, observed)
 
+
 class TestUsernamePasswordCredential(testtools.TestCase):
     """
     Test suite for the UsernamePasswordCredential struct.
@@ -764,6 +766,7 @@ class TestUsernamePasswordCredential(testtools.TestCase):
         observed = str(credential)
 
         self.assertEqual(expected, observed)
+
 
 class TestDeviceCredential(testtools.TestCase):
     """
@@ -1710,6 +1713,7 @@ class TestDeviceCredential(testtools.TestCase):
 
         self.assertEqual(expected, observed)
 
+
 class TestAttestationCredential(testtools.TestCase):
     """
     Test suite for the AttestationCredential struct.
@@ -2490,6 +2494,7 @@ class TestAttestationCredential(testtools.TestCase):
         observed = str(credential)
 
         self.assertEqual(expected, observed)
+
 
 class TestCredential(testtools.TestCase):
     """

@@ -34,6 +34,7 @@ from kmip.core import enums
 from kmip.core import exceptions
 from kmip.services.server import crypto
 
+
 class TestCryptographyEngine(testtools.TestCase):
     """
     Test suite for the CryptographyEngine.
@@ -1267,36 +1268,38 @@ class TestCryptographyEngine(testtools.TestCase):
 # GCM test vectors were obtained from the NIST CAVP test suite:
 #
 # https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Algorithm-Validation-Program/documents/mac/gcmtestvectors.zip
+
+
 @pytest.fixture(
     scope='function',
     params=[
         {'algorithm': enums.CryptographicAlgorithm.TRIPLE_DES,
          'cipher_mode': enums.BlockCipherMode.ECB,
          'key': (
-            b'\x01\x01\x01\x01\x01\x01\x01\x01'
-            b'\x01\x01\x01\x01\x01\x01\x01\x01'
-            b'\x01\x01\x01\x01\x01\x01\x01\x01'
+             b'\x01\x01\x01\x01\x01\x01\x01\x01'
+             b'\x01\x01\x01\x01\x01\x01\x01\x01'
+             b'\x01\x01\x01\x01\x01\x01\x01\x01'
          ),
          'plain_text': (
-            b'\x01\x02\x03\x04\x05\x06\x07\x08'
+             b'\x01\x02\x03\x04\x05\x06\x07\x08'
          ),
          'cipher_text': (
-            b'\xCE\xAD\x37\x3D\xB8\x0E\xAB\xF8'
+             b'\xCE\xAD\x37\x3D\xB8\x0E\xAB\xF8'
          ),
          'iv_nonce': None},
         {'algorithm': enums.CryptographicAlgorithm.AES,
          'cipher_mode': enums.BlockCipherMode.ECB,
          'key': (
-            b'\x00\x00\x00\x00\x00\x00\x00\x00'
-            b'\x00\x00\x00\x00\x00\x00\x00\x00'
+             b'\x00\x00\x00\x00\x00\x00\x00\x00'
+             b'\x00\x00\x00\x00\x00\x00\x00\x00'
          ),
          'plain_text': (
-            b'\xf3\x44\x81\xec\x3c\xc6\x27\xba'
-            b'\xcd\x5d\xc3\xfb\x08\xf2\x73\xe6'
+             b'\xf3\x44\x81\xec\x3c\xc6\x27\xba'
+             b'\xcd\x5d\xc3\xfb\x08\xf2\x73\xe6'
          ),
          'cipher_text': (
-            b'\x03\x36\x76\x3e\x96\x6d\x92\x59'
-            b'\x5a\x56\x7c\xc9\xce\x53\x7f\x5e'
+             b'\x03\x36\x76\x3e\x96\x6d\x92\x59'
+             b'\x5a\x56\x7c\xc9\xce\x53\x7f\x5e'
          ),
          'iv_nonce': None},
         {'algorithm': enums.CryptographicAlgorithm.AES,
@@ -1510,6 +1513,7 @@ class TestCryptographyEngine(testtools.TestCase):
 def symmetric_parameters(request):
     return request.param
 
+
 def test_encrypt_symmetric(symmetric_parameters):
     """
     Test that various encryption algorithms and block cipher modes can be
@@ -1541,8 +1545,10 @@ def test_encrypt_symmetric(symmetric_parameters):
             None
         )
 
-    assert symmetric_parameters.get('cipher_text') == result.get('cipher_text')  # nosec B101
+    assert symmetric_parameters.get(
+        'cipher_text') == result.get('cipher_text')  # nosec B101
     assert symmetric_parameters.get('auth_tag') == result.get('auth_tag')  # nosec B101
+
 
 def test_decrypt_symmetric(symmetric_parameters):
     """
@@ -1582,6 +1588,8 @@ def test_decrypt_symmetric(symmetric_parameters):
 #
 # cryptography_vectors/asymmetric/RSA/pkcs-1v2-1d2-vec/oaep-vect.txt
 # cryptography_vectors/asymmetric/RSA/pkcs1v15crypt-vectors.txt
+
+
 @pytest.fixture(
     scope='function',
     params=[
@@ -1710,6 +1718,7 @@ def test_decrypt_symmetric(symmetric_parameters):
 def asymmetric_parameters(request):
     return request.param
 
+
 def test_encrypt_decrypt_asymmetric(asymmetric_parameters):
     """
     Test that various encryption/decryption algorithms can be used to
@@ -1765,6 +1774,7 @@ def test_encrypt_decrypt_asymmetric(asymmetric_parameters):
 
     assert asymmetric_parameters.get('plain_text') == result  # nosec B101
 
+
 @pytest.fixture(
     scope='function',
     params=[
@@ -1784,6 +1794,7 @@ def test_encrypt_decrypt_asymmetric(asymmetric_parameters):
 def symmetric_padding_parameters(request):
     return request.param
 
+
 def test_handle_symmetric_padding(symmetric_padding_parameters):
     """
     Test that data of various lengths can be padded correctly using different
@@ -1798,6 +1809,7 @@ def test_handle_symmetric_padding(symmetric_padding_parameters):
     )
 
     assert result == symmetric_padding_parameters.get('padded_text')  # nosec B101
+
 
 def test_handle_symmetric_padding_undo(symmetric_padding_parameters):
     """
@@ -1835,6 +1847,8 @@ def test_handle_symmetric_padding_undo(symmetric_padding_parameters):
 #
 # http://csrc.nist.gov/groups/STM/cavp/documents/KBKDF800-108/kbkdfvs.pdf
 # http://csrc.nist.gov/groups/STM/cavp/documents/KBKDF800-108/CounterMode.zip
+
+
 @pytest.fixture(
     scope='function',
     params=[
@@ -2419,6 +2433,7 @@ def test_handle_symmetric_padding_undo(symmetric_padding_parameters):
 def derivation_parameters(request):
     return request.param
 
+
 def test_derive_key(derivation_parameters):
     """
     Test that various derivation methods and settings can be used to correctly
@@ -2445,119 +2460,122 @@ def test_derive_key(derivation_parameters):
 # AES Key Wrap test vectors were obtained from IETF RFC 3394:
 #
 # https://www.ietf.org/rfc/rfc3394.txt
+
+
 @pytest.fixture(
     scope='function',
     params=[
         {'key_material': (
-             b'\x00\x11\x22\x33\x44\x55\x66\x77'
-             b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
-         ),
-         'wrapping_method': enums.WrappingMethod.ENCRYPT,
-         'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
-         'encryption_key': (
-             b'\x00\x01\x02\x03\x04\x05\x06\x07'
-             b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
-         ),
-         'wrapped_data': (
-             b'\x1F\xA6\x8B\x0A\x81\x12\xB4\x47'
-             b'\xAE\xF3\x4B\xD8\xFB\x5A\x7B\x82'
-             b'\x9D\x3E\x86\x23\x71\xD2\xCF\xE5'
-         )},
+            b'\x00\x11\x22\x33\x44\x55\x66\x77'
+            b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
+        ),
+            'wrapping_method': enums.WrappingMethod.ENCRYPT,
+            'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
+            'encryption_key': (
+            b'\x00\x01\x02\x03\x04\x05\x06\x07'
+            b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
+        ),
+            'wrapped_data': (
+            b'\x1F\xA6\x8B\x0A\x81\x12\xB4\x47'
+            b'\xAE\xF3\x4B\xD8\xFB\x5A\x7B\x82'
+            b'\x9D\x3E\x86\x23\x71\xD2\xCF\xE5'
+        )},
         {'key_material': (
-             b'\x00\x11\x22\x33\x44\x55\x66\x77'
-             b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
-         ),
-         'wrapping_method': enums.WrappingMethod.ENCRYPT,
-         'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
-         'encryption_key': (
-             b'\x00\x01\x02\x03\x04\x05\x06\x07'
-             b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
-             b'\x10\x11\x12\x13\x14\x15\x16\x17'
-         ),
-         'wrapped_data': (
-             b'\x96\x77\x8B\x25\xAE\x6C\xA4\x35'
-             b'\xF9\x2B\x5B\x97\xC0\x50\xAE\xD2'
-             b'\x46\x8A\xB8\xA1\x7A\xD8\x4E\x5D'
-         )},
+            b'\x00\x11\x22\x33\x44\x55\x66\x77'
+            b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
+        ),
+            'wrapping_method': enums.WrappingMethod.ENCRYPT,
+            'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
+            'encryption_key': (
+            b'\x00\x01\x02\x03\x04\x05\x06\x07'
+            b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
+            b'\x10\x11\x12\x13\x14\x15\x16\x17'
+        ),
+            'wrapped_data': (
+            b'\x96\x77\x8B\x25\xAE\x6C\xA4\x35'
+            b'\xF9\x2B\x5B\x97\xC0\x50\xAE\xD2'
+            b'\x46\x8A\xB8\xA1\x7A\xD8\x4E\x5D'
+        )},
         {'key_material': (
-             b'\x00\x11\x22\x33\x44\x55\x66\x77'
-             b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
-         ),
-         'wrapping_method': enums.WrappingMethod.ENCRYPT,
-         'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
-         'encryption_key': (
-             b'\x00\x01\x02\x03\x04\x05\x06\x07'
-             b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
-             b'\x10\x11\x12\x13\x14\x15\x16\x17'
-             b'\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F'
-         ),
-         'wrapped_data': (
-             b'\x64\xE8\xC3\xF9\xCE\x0F\x5B\xA2'
-             b'\x63\xE9\x77\x79\x05\x81\x8A\x2A'
-             b'\x93\xC8\x19\x1E\x7D\x6E\x8A\xE7'
-         )},
+            b'\x00\x11\x22\x33\x44\x55\x66\x77'
+            b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
+        ),
+            'wrapping_method': enums.WrappingMethod.ENCRYPT,
+            'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
+            'encryption_key': (
+            b'\x00\x01\x02\x03\x04\x05\x06\x07'
+            b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
+            b'\x10\x11\x12\x13\x14\x15\x16\x17'
+            b'\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F'
+        ),
+            'wrapped_data': (
+            b'\x64\xE8\xC3\xF9\xCE\x0F\x5B\xA2'
+            b'\x63\xE9\x77\x79\x05\x81\x8A\x2A'
+            b'\x93\xC8\x19\x1E\x7D\x6E\x8A\xE7'
+        )},
         {'key_material': (
-             b'\x00\x11\x22\x33\x44\x55\x66\x77'
-             b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
-             b'\x00\x01\x02\x03\x04\x05\x06\x07'
-         ),
-         'wrapping_method': enums.WrappingMethod.ENCRYPT,
-         'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
-         'encryption_key': (
-             b'\x00\x01\x02\x03\x04\x05\x06\x07'
-             b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
-             b'\x10\x11\x12\x13\x14\x15\x16\x17'
-         ),
-         'wrapped_data': (
-             b'\x03\x1D\x33\x26\x4E\x15\xD3\x32'
-             b'\x68\xF2\x4E\xC2\x60\x74\x3E\xDC'
-             b'\xE1\xC6\xC7\xDD\xEE\x72\x5A\x93'
-             b'\x6B\xA8\x14\x91\x5C\x67\x62\xD2'
-         )},
+            b'\x00\x11\x22\x33\x44\x55\x66\x77'
+            b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
+            b'\x00\x01\x02\x03\x04\x05\x06\x07'
+        ),
+            'wrapping_method': enums.WrappingMethod.ENCRYPT,
+            'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
+            'encryption_key': (
+            b'\x00\x01\x02\x03\x04\x05\x06\x07'
+            b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
+            b'\x10\x11\x12\x13\x14\x15\x16\x17'
+        ),
+            'wrapped_data': (
+            b'\x03\x1D\x33\x26\x4E\x15\xD3\x32'
+            b'\x68\xF2\x4E\xC2\x60\x74\x3E\xDC'
+            b'\xE1\xC6\xC7\xDD\xEE\x72\x5A\x93'
+            b'\x6B\xA8\x14\x91\x5C\x67\x62\xD2'
+        )},
         {'key_material': (
-             b'\x00\x11\x22\x33\x44\x55\x66\x77'
-             b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
-             b'\x00\x01\x02\x03\x04\x05\x06\x07'
-         ),
-         'wrapping_method': enums.WrappingMethod.ENCRYPT,
-         'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
-         'encryption_key': (
-             b'\x00\x01\x02\x03\x04\x05\x06\x07'
-             b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
-             b'\x10\x11\x12\x13\x14\x15\x16\x17'
-             b'\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F'
-         ),
-         'wrapped_data': (
-             b'\xA8\xF9\xBC\x16\x12\xC6\x8B\x3F'
-             b'\xF6\xE6\xF4\xFB\xE3\x0E\x71\xE4'
-             b'\x76\x9C\x8B\x80\xA3\x2C\xB8\x95'
-             b'\x8C\xD5\xD1\x7D\x6B\x25\x4D\xA1'
-         )},
+            b'\x00\x11\x22\x33\x44\x55\x66\x77'
+            b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
+            b'\x00\x01\x02\x03\x04\x05\x06\x07'
+        ),
+            'wrapping_method': enums.WrappingMethod.ENCRYPT,
+            'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
+            'encryption_key': (
+            b'\x00\x01\x02\x03\x04\x05\x06\x07'
+            b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
+            b'\x10\x11\x12\x13\x14\x15\x16\x17'
+            b'\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F'
+        ),
+            'wrapped_data': (
+            b'\xA8\xF9\xBC\x16\x12\xC6\x8B\x3F'
+            b'\xF6\xE6\xF4\xFB\xE3\x0E\x71\xE4'
+            b'\x76\x9C\x8B\x80\xA3\x2C\xB8\x95'
+            b'\x8C\xD5\xD1\x7D\x6B\x25\x4D\xA1'
+        )},
         {'key_material': (
-             b'\x00\x11\x22\x33\x44\x55\x66\x77'
-             b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
-             b'\x00\x01\x02\x03\x04\x05\x06\x07'
-             b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
-         ),
-         'wrapping_method': enums.WrappingMethod.ENCRYPT,
-         'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
-         'encryption_key': (
-             b'\x00\x01\x02\x03\x04\x05\x06\x07'
-             b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
-             b'\x10\x11\x12\x13\x14\x15\x16\x17'
-             b'\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F'
-         ),
-         'wrapped_data': (
-             b'\x28\xC9\xF4\x04\xC4\xB8\x10\xF4'
-             b'\xCB\xCC\xB3\x5C\xFB\x87\xF8\x26'
-             b'\x3F\x57\x86\xE2\xD8\x0E\xD3\x26'
-             b'\xCB\xC7\xF0\xE7\x1A\x99\xF4\x3B'
-             b'\xFB\x98\x8B\x9B\x7A\x02\xDD\x21'
-         )}
+            b'\x00\x11\x22\x33\x44\x55\x66\x77'
+            b'\x88\x99\xAA\xBB\xCC\xDD\xEE\xFF'
+            b'\x00\x01\x02\x03\x04\x05\x06\x07'
+            b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
+        ),
+            'wrapping_method': enums.WrappingMethod.ENCRYPT,
+            'key_wrap_algorithm': enums.BlockCipherMode.NIST_KEY_WRAP,
+            'encryption_key': (
+            b'\x00\x01\x02\x03\x04\x05\x06\x07'
+            b'\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F'
+            b'\x10\x11\x12\x13\x14\x15\x16\x17'
+            b'\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F'
+        ),
+            'wrapped_data': (
+            b'\x28\xC9\xF4\x04\xC4\xB8\x10\xF4'
+            b'\xCB\xCC\xB3\x5C\xFB\x87\xF8\x26'
+            b'\x3F\x57\x86\xE2\xD8\x0E\xD3\x26'
+            b'\xCB\xC7\xF0\xE7\x1A\x99\xF4\x3B'
+            b'\xFB\x98\x8B\x9B\x7A\x02\xDD\x21'
+        )}
     ]
 )
 def wrapping_parameters(request):
     return request.param
+
 
 def test_wrap_key(wrapping_parameters):
     """
@@ -2577,6 +2595,7 @@ def test_wrap_key(wrapping_parameters):
 
 # Test vectors obtained from pyca/cryptography
 # https://cryptography.io/en/latest/
+
 
 DER_RSA_KEY = (
     b'\x30\x82\x02\x5e\x02\x01\x00\x02\x81\x81\x00\xae\xba\xc1\xb9\xa1\x74\x31'
@@ -2672,6 +2691,7 @@ PEM_RSA_KEY = (
 SIGN_TEST_DATA = (b'\x01\x02\x03\x04\x05\x06\x07\x08'
                   b'\x09\x10\x11\x12\x13\x14\x15\x16')
 
+
 @pytest.fixture(
     scope='function',
     params=[
@@ -2682,10 +2702,10 @@ SIGN_TEST_DATA = (b'\x01\x02\x03\x04\x05\x06\x07\x08'
          'padding': enums.PaddingMethod.PSS,
          'key': DER_RSA_KEY,
          'verify_args': (padding.PSS(
-                             mgf=padding.MGF1(hashes.MD5()),  # nosec B303
-                             salt_length=padding.PSS.MAX_LENGTH
-                         ),
-                         hashes.MD5())},  # nosec B303
+             mgf=padding.MGF1(hashes.MD5()),  # nosec B303
+             salt_length=padding.PSS.MAX_LENGTH
+         ),
+             hashes.MD5())},  # nosec B303
         {'digital_signature_algorithm':
             enums.DigitalSignatureAlgorithm.SHA1_WITH_RSA_ENCRYPTION,
          'crypto_alg': None,
@@ -2700,10 +2720,10 @@ SIGN_TEST_DATA = (b'\x01\x02\x03\x04\x05\x06\x07\x08'
          'padding': enums.PaddingMethod.PSS,
          'key': DER_RSA_KEY,
          'verify_args': (padding.PSS(
-                             mgf=padding.MGF1(hashes.SHA224()),
-                             salt_length=padding.PSS.MAX_LENGTH
-                         ),
-                         hashes.SHA224())},
+             mgf=padding.MGF1(hashes.SHA224()),
+             salt_length=padding.PSS.MAX_LENGTH
+         ),
+             hashes.SHA224())},
         {'digital_signature_algorithm':
             enums.DigitalSignatureAlgorithm.SHA256_WITH_RSA_ENCRYPTION,
          'crypto_alg': None,
@@ -2718,10 +2738,10 @@ SIGN_TEST_DATA = (b'\x01\x02\x03\x04\x05\x06\x07\x08'
          'padding': enums.PaddingMethod.PSS,
          'key': DER_RSA_KEY,
          'verify_args': (padding.PSS(
-                             mgf=padding.MGF1(hashes.SHA384()),
-                             salt_length=padding.PSS.MAX_LENGTH
-                         ),
-                         hashes.SHA384())},
+             mgf=padding.MGF1(hashes.SHA384()),
+             salt_length=padding.PSS.MAX_LENGTH
+         ),
+             hashes.SHA384())},
         {'digital_signature_algorithm': None,
          'crypto_alg': enums.CryptographicAlgorithm.RSA,
          'hash_algorithm': enums.HashingAlgorithm.SHA_512,
@@ -2732,6 +2752,7 @@ SIGN_TEST_DATA = (b'\x01\x02\x03\x04\x05\x06\x07\x08'
 )
 def signing_parameters(request):
     return request.param
+
 
 def load_private_key(key):
     try:
@@ -2747,15 +2768,16 @@ def load_private_key(key):
             backend=default_backend()
         )
 
+
 def test_sign(signing_parameters):
     engine = crypto.CryptographyEngine()
     result = engine.sign(
-         signing_parameters.get('digital_signature_algorithm'),
-         signing_parameters.get('crypto_alg'),
-         signing_parameters.get('hash_algorithm'),
-         signing_parameters.get('padding'),
-         signing_parameters.get('key'),
-         SIGN_TEST_DATA
+        signing_parameters.get('digital_signature_algorithm'),
+        signing_parameters.get('crypto_alg'),
+        signing_parameters.get('hash_algorithm'),
+        signing_parameters.get('padding'),
+        signing_parameters.get('key'),
+        SIGN_TEST_DATA
     )
 
     private_key = load_private_key(signing_parameters.get('key'))
@@ -2772,6 +2794,8 @@ def test_sign(signing_parameters):
 #
 # https://github.com/pyca/cryptography/blob/master/vectors/
 # cryptography_vectors/asymmetric/RSA/pkcs1v15sign-vectors.txt
+
+
 @pytest.fixture(
     scope='function',
     params=[
@@ -2900,6 +2924,7 @@ def test_sign(signing_parameters):
 )
 def signature_parameters(request):
     return request.param
+
 
 def test_verify_signature(signature_parameters):
     """

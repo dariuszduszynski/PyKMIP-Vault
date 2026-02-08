@@ -24,6 +24,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestDeriveKeyRequestPayload(testtools.TestCase):
     """
     Test suite for the DeriveKey request payload.
@@ -1682,6 +1683,7 @@ class TestDeriveKeyRequestPayload(testtools.TestCase):
         """
         self.test_not_equal_on_not_equal_object_type()
 
+
 class TestDeriveKeyResponsePayload(testtools.TestCase):
     """
     Test suite for the DeriveKey response payload.
@@ -2534,6 +2536,7 @@ class TestDeriveKeyResponsePayload(testtools.TestCase):
         observed = str(payload)
 
         self.assertEqual(expected, observed)
+
     def test_read_valid(self):
         """
         Test that a DeriveKey response payload can be read from a valid byte

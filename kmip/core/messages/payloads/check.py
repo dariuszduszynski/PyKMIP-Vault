@@ -18,6 +18,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class CheckRequestPayload(base.RequestPayload):
     """
     A request payload for the Check operation.
@@ -281,6 +282,7 @@ class CheckRequestPayload(base.RequestPayload):
             'cryptographic_usage_mask': self.cryptographic_usage_mask,
             'lease_time': self.lease_time
         })
+
 
 class CheckResponsePayload(base.ResponsePayload):
     """

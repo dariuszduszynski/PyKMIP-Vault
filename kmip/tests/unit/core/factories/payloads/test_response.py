@@ -20,6 +20,7 @@ from kmip.core.factories.payloads.response import ResponsePayloadFactory
 
 from kmip.core.messages import payloads
 
+
 class TestResponsePayloadFactory(testtools.TestCase):
 
     def setUp(self):

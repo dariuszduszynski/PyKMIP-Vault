@@ -15,6 +15,7 @@
 
 from kmip.core import enums
 
+
 class KmipError(Exception):
     """
     A generic KMIP error that is the base for the KMIP error hierarchy.
@@ -56,6 +57,7 @@ class KmipError(Exception):
         else:
             return NotImplemented
 
+
 class CryptographicFailure(KmipError):
     """
     An error generated when problems occur with cryptographic operations.
@@ -73,6 +75,7 @@ class CryptographicFailure(KmipError):
             message=message
         )
 
+
 class EncodingOptionError(KmipError):
     """
     An encoding error generated during key wrapping.
@@ -82,6 +85,7 @@ class EncodingOptionError(KmipError):
     key wrapping request (e.g., attributes are requested with the key but
     the encoding does not support wrapping attributes with the key value).
     """
+
     def __init__(self, message):
         """
         Create an EncodingOptionError.
@@ -94,6 +98,7 @@ class EncodingOptionError(KmipError):
             message=message
         )
 
+
 class IllegalOperation(KmipError):
     """
     An error generated when an improper operation is attempted. The operation
@@ -101,6 +106,7 @@ class IllegalOperation(KmipError):
     literal object/operation mismatch (e.g., a Template item cannot be
     activated with the Activate operation since it has no state).
     """
+
     def __init__(self, message):
         """
         Create an IllegalOperation exception.
@@ -112,6 +118,7 @@ class IllegalOperation(KmipError):
             reason=enums.ResultReason.ILLEGAL_OPERATION,
             message=message
         )
+
 
 class IndexOutOfBounds(KmipError):
     """
@@ -130,6 +137,7 @@ class IndexOutOfBounds(KmipError):
             message=message
         )
 
+
 class InvalidField(KmipError):
     """
     An error generated when an invalid field value is processed.
@@ -146,6 +154,7 @@ class InvalidField(KmipError):
             reason=enums.ResultReason.INVALID_FIELD,
             message=message
         )
+
 
 class InvalidMessage(KmipError):
     """
@@ -164,6 +173,7 @@ class InvalidMessage(KmipError):
             message=message
         )
 
+
 class ItemNotFound(KmipError):
     """
     An error generated when a request item cannot be located.
@@ -180,6 +190,7 @@ class ItemNotFound(KmipError):
             reason=enums.ResultReason.ITEM_NOT_FOUND,
             message=message
         )
+
 
 class KeyCompressionTypeNotSupported(KmipError):
     """
@@ -199,6 +210,7 @@ class KeyCompressionTypeNotSupported(KmipError):
             message=message
         )
 
+
 class KeyFormatTypeNotSupported(KmipError):
     """
     An error generated when dealing with unsupported key formats
@@ -217,10 +229,12 @@ class KeyFormatTypeNotSupported(KmipError):
             message=message
         )
 
+
 class OperationFailure(KmipError):
     """
     An exception raised upon the failure of a KMIP appliance operation.
     """
+
     def __init__(self, status, reason, message):
         """
         Construct the error message and attributes for the KMIP operation
@@ -232,6 +246,7 @@ class OperationFailure(KmipError):
             message: a string providing additional error information
         """
         super(OperationFailure, self).__init__(status, reason, message)
+
 
 class OperationNotSupported(KmipError):
     """
@@ -250,6 +265,7 @@ class OperationNotSupported(KmipError):
             message=message
         )
 
+
 class PermissionDenied(KmipError):
     """
     An error generated when permission constraints are violated.
@@ -267,11 +283,13 @@ class PermissionDenied(KmipError):
             message=message
         )
 
+
 class AttributeNotSupported(Exception):
     """
     An error generated when an unsupported attribute is processed.
     """
     pass
+
 
 class ConfigurationError(Exception):
     """
@@ -280,12 +298,14 @@ class ConfigurationError(Exception):
     """
     pass
 
+
 class ConnectionClosed(Exception):
     """
     An exception generated when attempting to use a connection that has been
     closed.
     """
     pass
+
 
 class NetworkingError(Exception):
     """
@@ -294,11 +314,13 @@ class NetworkingError(Exception):
     """
     pass
 
+
 class InvalidKmipEncoding(Exception):
     """
     An exception raised when processing invalid KMIP message encodings.
     """
     pass
+
 
 class InvalidPaddingBytes(Exception):
     """
@@ -307,6 +329,7 @@ class InvalidPaddingBytes(Exception):
     """
     pass
 
+
 class InvalidPrimitiveLength(Exception):
     """
     An exception raised for errors when processing primitives with invalid
@@ -314,15 +337,18 @@ class InvalidPrimitiveLength(Exception):
     """
     pass
 
+
 class ShutdownError(Exception):
     """
     An error generated when a problem occurs with shutting down the server.
     """
 
+
 class VersionNotSupported(Exception):
     """
     An error generated when an unsupported KMIP version is referenced.
     """
+
 
 class StreamNotEmptyError(Exception):
     def __init__(self, cls, extra):
@@ -334,6 +360,7 @@ class StreamNotEmptyError(Exception):
     def __str__(self):
         msg = "Invalid length used to read {0}, bytes remaining: {1}"
         return msg.format(self.cls, self.extra)
+
 
 class ReadValueError(Exception):
     def __init__(self, cls, attr, exp, recv):
@@ -347,6 +374,7 @@ class ReadValueError(Exception):
     def __str__(self):
         msg = "Tried to read {0}.{1}: expected {2}, received {3}"
         return msg.format(self.cls, self.attr, self.exp, self.recv)
+
 
 class WriteOverflowError(Exception):
     def __init__(self, cls, attr, exp, recv):
@@ -362,8 +390,10 @@ class WriteOverflowError(Exception):
         msg += "expected {2}, received {3}"
         return msg.format(self.cls, self.attr, self.exp, self.recv)
 
+
 class KMIPServerZombieError(Exception):
     """KMIP server error for hung and persistent live KMIP servers."""
+
     def __init__(self, pid):
         super(KMIPServerZombieError, self).__init__()
 
@@ -374,8 +404,10 @@ class KMIPServerZombieError(Exception):
     def __str__(self):
         return self.message
 
+
 class KMIPServerSuicideError(Exception):
     """KMIP server error for prematurely dead KMIP servers."""
+
     def __init__(self, pid):
         super(KMIPServerSuicideError, self).__init__()
 
@@ -383,6 +415,7 @@ class KMIPServerSuicideError(Exception):
 
     def __str__(self):
         return self.message
+
 
 class ErrorStrings:
     BAD_EXP_RECV = "Bad {0} {1}: expected {2}, received {3}"

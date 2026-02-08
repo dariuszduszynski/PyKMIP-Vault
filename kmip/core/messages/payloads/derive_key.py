@@ -21,6 +21,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class DeriveKeyRequestPayload(base.RequestPayload):
     """
     A request payload for the DeriveKey operation.
@@ -428,6 +429,7 @@ class DeriveKeyRequestPayload(base.RequestPayload):
             "derivation_parameters": self.derivation_parameters,
             "template_attribute": self.template_attribute
         })
+
 
 class DeriveKeyResponsePayload(base.ResponsePayload):
     """

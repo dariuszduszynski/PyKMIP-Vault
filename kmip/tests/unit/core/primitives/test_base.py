@@ -19,6 +19,7 @@ from kmip.core import exceptions
 from kmip.core import primitives
 from kmip.core import utils
 
+
 class TestBase(testtools.TestCase):
 
     def setUp(self):

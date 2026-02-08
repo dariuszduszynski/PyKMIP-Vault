@@ -18,6 +18,7 @@ from testtools import TestCase
 from kmip.core.misc import ServerInformation
 from kmip.core.utils import BytearrayStream
 
+
 class TestServerInformation(TestCase):
     """
     A test suite for the ServerInformation class.

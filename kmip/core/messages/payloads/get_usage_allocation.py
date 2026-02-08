@@ -18,6 +18,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class GetUsageAllocationRequestPayload(base.RequestPayload):
     """
     A request payload for the GetUsageAllocation operation.
@@ -193,6 +194,7 @@ class GetUsageAllocationRequestPayload(base.RequestPayload):
             'unique_identifier': self.unique_identifier,
             'usage_limits_count': self.usage_limits_count
         })
+
 
 class GetUsageAllocationResponsePayload(base.ResponsePayload):
     """

@@ -22,6 +22,7 @@ from kmip.core import utils
 from kmip.core.factories import secrets as secret_factory
 from kmip.core.messages.payloads import base
 
+
 class RegisterRequestPayload(base.RequestPayload):
     """
     A request payload for the Register operation.
@@ -381,6 +382,7 @@ class RegisterRequestPayload(base.RequestPayload):
             ]
         )
         return '{' + value + '}'
+
 
 class RegisterResponsePayload(base.ResponsePayload):
     """

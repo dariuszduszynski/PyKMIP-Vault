@@ -19,6 +19,7 @@ from kmip.core import exceptions
 from kmip.services.server.auth import api
 from kmip.services.server.auth import utils
 
+
 class SLUGSConnector(api.AuthAPI):
     """
     An authentication API connector for a SLUGS service.

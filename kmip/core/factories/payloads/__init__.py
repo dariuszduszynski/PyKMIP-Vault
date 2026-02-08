@@ -15,6 +15,7 @@
 
 from kmip.core import enums
 
+
 class PayloadFactory():
 
     def create(self, operation):

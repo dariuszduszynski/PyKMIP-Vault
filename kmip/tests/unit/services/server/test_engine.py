@@ -45,13 +45,16 @@ from kmip.pie import sqltypes
 
 from kmip.services.server import engine
 
+
 class MockRegexString(str):
     """
     A comparator string for doing simple containment regex comparisons
     for mock asserts.
     """
+
     def __eq__(self, other):
         return self in other
+
 
 class TestKmipEngine(testtools.TestCase):
     """
@@ -173,10 +176,10 @@ class TestKmipEngine(testtools.TestCase):
             e._protocol_version
         )
         self.assertRaisesRegex(exceptions.OperationNotSupported,
-            regex,
-            e._process_discover_versions,
-            *args
-        )
+                               regex,
+                               e._process_discover_versions,
+                               *args
+                               )
 
     def test_process_request(self):
         """
@@ -316,10 +319,10 @@ class TestKmipEngine(testtools.TestCase):
             protocol
         )
         self.assertRaisesRegex(exceptions.InvalidMessage,
-            regex,
-            e.process_request,
-            *args
-        )
+                               regex,
+                               e.process_request,
+                               *args
+                               )
 
     def test_process_request_protocol_version_none(self):
         """
@@ -364,10 +367,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (request, )
         regex = "Stale request rejected by server."
         self.assertRaisesRegex(exceptions.InvalidMessage,
-            regex,
-            e.process_request,
-            *args
-        )
+                               regex,
+                               e.process_request,
+                               *args
+                               )
 
         e._logger.warning.assert_any_call(
             MockRegexString(
@@ -395,10 +398,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (request, )
         regex = "Future request rejected by server."
         self.assertRaisesRegex(exceptions.InvalidMessage,
-            regex,
-            e.process_request,
-            *args
-        )
+                               regex,
+                               e.process_request,
+                               *args
+                               )
 
         e._logger.warning.assert_any_call(
             MockRegexString(
@@ -426,10 +429,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (request, )
         regex = "Asynchronous operations are not supported."
         self.assertRaisesRegex(exceptions.InvalidMessage,
-            regex,
-            e.process_request,
-            *args
-        )
+                               regex,
+                               e.process_request,
+                               *args
+                               )
 
     def test_process_request_unsupported_batch_option(self):
         """
@@ -454,10 +457,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (request, )
         regex = "Undo option for batch handling is not supported."
         self.assertRaisesRegex(exceptions.InvalidMessage,
-            regex,
-            e.process_request,
-            *args
-        )
+                               regex,
+                               e.process_request,
+                               *args
+                               )
 
     def test_process_request_missing_credential(self):
         """
@@ -671,10 +674,10 @@ class TestKmipEngine(testtools.TestCase):
 
         args = (batch, None, None)
         self.assertRaisesRegex(exceptions.InvalidMessage,
-            "Batch item ID is undefined.",
-            e._process_batch,
-            *args
-        )
+                               "Batch item ID is undefined.",
+                               e._process_batch,
+                               *args
+                               )
 
     def test_process_batch_expected_error(self):
         """
@@ -915,10 +918,10 @@ class TestKmipEngine(testtools.TestCase):
             args[0].name.title()
         )
         self.assertRaisesRegex(exceptions.OperationNotSupported,
-            regex,
-            e._process_operation,
-            *args
-        )
+                               regex,
+                               e._process_operation,
+                               *args
+                               )
 
     def test_get_object_type(self):
         """
@@ -960,10 +963,10 @@ class TestKmipEngine(testtools.TestCase):
         args = ('1', )
         regex = "Could not locate object: 1"
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._get_object_type,
-            *args
-        )
+                               regex,
+                               e._get_object_type,
+                               *args
+                               )
         e._data_session.commit()
         e._logger.warning.assert_called_once_with(
             "Could not identify object type for object: 1"
@@ -1026,10 +1029,10 @@ class TestKmipEngine(testtools.TestCase):
         )
 
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._get_object_type,
-            *args
-        )
+                               regex,
+                               e._get_object_type,
+                               *args
+                               )
         e._data_session.commit()
 
     def test_build_core_object(self):
@@ -1170,10 +1173,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (None, )
         regex = "Cannot build an unsupported object type."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._build_core_object,
-            *args
-        )
+                               regex,
+                               e._build_core_object,
+                               *args
+                               )
 
         class DummyObject:
             def __init__(self):
@@ -1182,10 +1185,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (DummyObject(), )
         regex = "The Template object type is not supported."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._build_core_object,
-            *args
-        )
+                               regex,
+                               e._build_core_object,
+                               *args
+                               )
 
     def test_process_template_attribute(self):
         """
@@ -1274,10 +1277,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (template_attribute, )
         regex = "Attribute templates are not supported."
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._process_template_attribute,
-            *args
-        )
+                               regex,
+                               e._process_template_attribute,
+                               *args
+                               )
 
         # Test that an unrecognized attribute generates an InvalidField error.
         name = attribute_factory.create_attribute(
@@ -1293,10 +1296,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (template_attribute, )
         regex = "The invalid attribute is unsupported."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_template_attribute,
-            *args
-        )
+                               regex,
+                               e._process_template_attribute,
+                               *args
+                               )
 
         # Test that missing indices generate an InvalidField error.
         name_a = attribute_factory.create_attribute(
@@ -1321,10 +1324,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (template_attribute, )
         regex = "Attribute index missing from multivalued attribute."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_template_attribute,
-            *args
-        )
+                               regex,
+                               e._process_template_attribute,
+                               *args
+                               )
 
         # Test that a non-zero index generates an InvalidField error.
         algorithm = attribute_factory.create_attribute(
@@ -1337,10 +1340,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (template_attribute, )
         regex = "Non-zero attribute index found for single-valued attribute."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_template_attribute,
-            *args
-        )
+                               regex,
+                               e._process_template_attribute,
+                               *args
+                               )
 
         # Test that setting multiple values for a single-value attribute
         # generates an InvalidField error.
@@ -1363,10 +1366,10 @@ class TestKmipEngine(testtools.TestCase):
             "attribute."
         )
         self.assertRaisesRegex(exceptions.IndexOutOfBounds,
-            regex,
-            e._process_template_attribute,
-            *args
-        )
+                               regex,
+                               e._process_template_attribute,
+                               *args
+                               )
 
     def test_get_attributes_from_managed_object(self):
         """
@@ -2175,10 +2178,10 @@ class TestKmipEngine(testtools.TestCase):
             "object."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._set_attributes_on_managed_object,
-            *args
-        )
+                               regex,
+                               e._set_attributes_on_managed_object,
+                               *args
+                               )
 
     def test_set_attribute_on_managed_object(self):
         """
@@ -2320,10 +2323,10 @@ class TestKmipEngine(testtools.TestCase):
         )
         regex = "Cannot set duplicate name values."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._set_attribute_on_managed_object,
-            *args
-        )
+                               regex,
+                               e._set_attribute_on_managed_object,
+                               *args
+                               )
 
         # Test that a multivalued, unsupported attribute cannot be set on an
         # object.
@@ -2348,10 +2351,10 @@ class TestKmipEngine(testtools.TestCase):
         )
         regex = "The Digest attribute is unsupported."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._set_attribute_on_managed_object,
-            *args
-        )
+                               regex,
+                               e._set_attribute_on_managed_object,
+                               *args
+                               )
 
         # Test that a set attribute cannot be overwritten.
         length = attribute_factory.create_attribute(
@@ -2365,10 +2368,10 @@ class TestKmipEngine(testtools.TestCase):
         )
         regex = "Cannot overwrite the Cryptographic Length attribute."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._set_attribute_on_managed_object,
-            *args
-        )
+                               regex,
+                               e._set_attribute_on_managed_object,
+                               *args
+                               )
 
         # Test that an unsupported attribute cannot be set.
         custom_attribute = attribute_factory.create_attribute(
@@ -2382,10 +2385,10 @@ class TestKmipEngine(testtools.TestCase):
         )
         regex = "The Custom Attribute attribute is unsupported."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._set_attribute_on_managed_object,
-            *args
-        )
+                               regex,
+                               e._set_attribute_on_managed_object,
+                               *args
+                               )
 
     def test_set_attribute_on_managed_object_by_index(self):
         """
@@ -3332,10 +3335,10 @@ class TestKmipEngine(testtools.TestCase):
         # operation context.
         args = [id_a, enums.Operation.GET]
         self.assertRaisesRegex(exceptions.PermissionDenied,
-            "Could not locate object: {0}".format(id_a),
-            e._get_object_with_access_controls,
-            *args
-        )
+                               "Could not locate object: {0}".format(id_a),
+                               e._get_object_with_access_controls,
+                               *args
+                               )
 
     def test_create(self):
         """
@@ -3472,10 +3475,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Cannot create a PublicKey object with the Create operation."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create,
-            *args
-        )
+                               regex,
+                               e._process_create,
+                               *args
+                               )
 
         e._logger.info.assert_any_call(
             "Processing operation: Create"
@@ -3528,10 +3531,10 @@ class TestKmipEngine(testtools.TestCase):
             "The cryptographic algorithm must be specified as an attribute."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create,
-            *args
-        )
+                               regex,
+                               e._process_create,
+                               *args
+                               )
 
         e._logger.info.assert_any_call(
             "Processing operation: Create"
@@ -3572,10 +3575,10 @@ class TestKmipEngine(testtools.TestCase):
             "The cryptographic length must be specified as an attribute."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create,
-            *args
-        )
+                               regex,
+                               e._process_create,
+                               *args
+                               )
 
         e._logger.info.assert_any_call(
             "Processing operation: Create"
@@ -3613,10 +3616,10 @@ class TestKmipEngine(testtools.TestCase):
             "The cryptographic usage mask must be specified as an attribute."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create,
-            *args
-        )
+                               regex,
+                               e._process_create,
+                               *args
+                               )
 
         e._logger.info.assert_any_call(
             "Processing operation: Create"
@@ -3824,10 +3827,10 @@ class TestKmipEngine(testtools.TestCase):
             "for the public key."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create_key_pair,
-            *args
-        )
+                               regex,
+                               e._process_create_key_pair,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: CreateKeyPair"
         )
@@ -3892,10 +3895,10 @@ class TestKmipEngine(testtools.TestCase):
             "for the private key."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create_key_pair,
-            *args
-        )
+                               regex,
+                               e._process_create_key_pair,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: CreateKeyPair"
         )
@@ -3960,10 +3963,10 @@ class TestKmipEngine(testtools.TestCase):
             "the public key."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create_key_pair,
-            *args
-        )
+                               regex,
+                               e._process_create_key_pair,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: CreateKeyPair"
         )
@@ -4028,10 +4031,10 @@ class TestKmipEngine(testtools.TestCase):
             "the private key."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create_key_pair,
-            *args
-        )
+                               regex,
+                               e._process_create_key_pair,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: CreateKeyPair"
         )
@@ -4094,10 +4097,10 @@ class TestKmipEngine(testtools.TestCase):
             "for the public key."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create_key_pair,
-            *args
-        )
+                               regex,
+                               e._process_create_key_pair,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: CreateKeyPair"
         )
@@ -4160,10 +4163,10 @@ class TestKmipEngine(testtools.TestCase):
             "for the private key."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create_key_pair,
-            *args
-        )
+                               regex,
+                               e._process_create_key_pair,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: CreateKeyPair"
         )
@@ -4244,10 +4247,10 @@ class TestKmipEngine(testtools.TestCase):
             "The public and private key algorithms must be the same."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create_key_pair,
-            *args
-        )
+                               regex,
+                               e._process_create_key_pair,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: CreateKeyPair"
         )
@@ -4315,10 +4318,10 @@ class TestKmipEngine(testtools.TestCase):
             "The public and private key lengths must be the same."
         )
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_create_key_pair,
-            *args
-        )
+                               regex,
+                               e._process_create_key_pair,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: CreateKeyPair"
         )
@@ -5654,10 +5657,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "The Template object type is not supported."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_register,
-            *args
-        )
+                               regex,
+                               e._process_register,
+                               *args
+                               )
 
     def test_request_omitting_secret(self):
         """
@@ -5676,10 +5679,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Cannot register a secret in absentia."
         self.assertRaisesRegex(exceptions.InvalidField,
-            regex,
-            e._process_register,
-            *args
-        )
+                               regex,
+                               e._process_register,
+                               *args
+                               )
 
     def test_derive_key(self):
         """
@@ -6542,12 +6545,12 @@ class TestKmipEngine(testtools.TestCase):
         # Verify that the third date given triggers an exception.
         args = (enums.AttributeType.INITIAL_DATE, date_values, 1563564520)
         self.assertRaisesRegex(exceptions.InvalidField,
-            "Too many Initial Date attributes provided. "
-            "Include one for an exact match. "
-            "Include two for a ranged match.",
-            e._track_date_attributes,
-            *args
-        )
+                               "Too many Initial Date attributes provided. "
+                               "Include one for an exact match. "
+                               "Include two for a ranged match.",
+                               e._track_date_attributes,
+                               *args
+                               )
 
         # Verify that a lower second date is interpreted as the new start date.
         date_values = {}
@@ -8059,10 +8062,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Key compression is not supported."
         self.assertRaisesRegex(exceptions.KeyCompressionTypeNotSupported,
-            regex,
-            e._process_get,
-            *args
-        )
+                               regex,
+                               e._process_get,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: Get"
         )
@@ -8134,10 +8137,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Key format conversion from RAW to OPAQUE is unsupported."
         self.assertRaisesRegex(exceptions.KeyFormatTypeNotSupported,
-            regex,
-            e._process_get,
-            *args
-        )
+                               regex,
+                               e._process_get,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: Get"
         )
@@ -8163,10 +8166,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Key format is not applicable to the specified object."
         self.assertRaisesRegex(exceptions.KeyFormatTypeNotSupported,
-            regex,
-            e._process_get,
-            *args
-        )
+                               regex,
+                               e._process_get,
+                               *args
+                               )
         e._logger.info.assert_any_call(
             "Processing operation: Get"
         )
@@ -8196,10 +8199,10 @@ class TestKmipEngine(testtools.TestCase):
         # Test by specifying the ID of the object to get.
         args = [payload]
         self.assertRaisesRegex(exceptions.PermissionDenied,
-            "Could not locate object: {0}".format(id_a),
-            e._process_get,
-            *args
-        )
+                               "Could not locate object: {0}".format(id_a),
+                               e._process_get,
+                               *args
+                               )
 
     def test_get_wrapped_key(self):
         """
@@ -9785,10 +9788,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Could not locate object: {0}".format(id_a)
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._process_destroy,
-            *args
-        )
+                               regex,
+                               e._process_destroy,
+                               *args
+                               )
 
         e._data_session.commit()
         e._data_store_session_factory()
@@ -9810,10 +9813,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Could not locate object: {0}".format(id_b)
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._process_destroy,
-            *args
-        )
+                               regex,
+                               e._process_destroy,
+                               *args
+                               )
 
         e._data_session.commit()
         e._data_store_session_factory()
@@ -9835,10 +9838,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Could not locate object: {0}".format(id_c)
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._process_destroy,
-            *args
-        )
+                               regex,
+                               e._process_destroy,
+                               *args
+                               )
 
         e._data_session.commit()
 
@@ -9869,10 +9872,10 @@ class TestKmipEngine(testtools.TestCase):
         # Test by specifying the ID of the object to destroy.
         args = [payload]
         self.assertRaisesRegex(exceptions.PermissionDenied,
-            "Could not locate object: {0}".format(id_a),
-            e._process_destroy,
-            *args
-        )
+                               "Could not locate object: {0}".format(id_a),
+                               e._process_destroy,
+                               *args
+                               )
 
     def test_destroy_active_state(self):
         """
@@ -9906,10 +9909,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Object is active and cannot be destroyed."
         self.assertRaisesRegex(exceptions.PermissionDenied,
-            regex,
-            e._process_destroy,
-            *args
-        )
+                               regex,
+                               e._process_destroy,
+                               *args
+                               )
 
     def test_query_1_0(self):
         """
@@ -11669,10 +11672,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Could not locate object: {0}".format(uid)
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._process_destroy,
-            *args
-        )
+                               regex,
+                               e._process_destroy,
+                               *args
+                               )
 
         e._data_session.commit()
         e._data_store_session_factory()
@@ -11846,10 +11849,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Could not locate object: {0}".format(public_id)
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._process_destroy,
-            *args
-        )
+                               regex,
+                               e._process_destroy,
+                               *args
+                               )
 
         e._data_session.commit()
         e._data_store_session_factory()
@@ -11879,10 +11882,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Could not locate object: {0}".format(private_id)
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._process_destroy,
-            *args
-        )
+                               regex,
+                               e._process_destroy,
+                               *args
+                               )
 
         e._data_session.commit()
         e._data_store_session_factory()
@@ -12018,10 +12021,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Could not locate object: {0}".format(uid)
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._process_destroy,
-            *args
-        )
+                               regex,
+                               e._process_destroy,
+                               *args
+                               )
 
         e._data_session.commit()
         e._data_store_session_factory()
@@ -12227,10 +12230,10 @@ class TestKmipEngine(testtools.TestCase):
         args = (payload, )
         regex = "Could not locate object: {0}".format(uuid)
         self.assertRaisesRegex(exceptions.ItemNotFound,
-            regex,
-            e._process_destroy,
-            *args
-        )
+                               regex,
+                               e._process_destroy,
+                               *args
+                               )
 
         e._data_session.commit()
         e._data_store_session_factory()

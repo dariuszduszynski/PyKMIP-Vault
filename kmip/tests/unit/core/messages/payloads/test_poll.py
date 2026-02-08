@@ -18,6 +18,7 @@ import testtools
 from kmip.core import utils
 from kmip.core.messages import payloads
 
+
 class TestPollRequestPayload(testtools.TestCase):
     """
     Test suite for the Poll request payload.

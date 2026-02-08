@@ -18,6 +18,7 @@ from kmip.core import enums
 from kmip.core.utils import BytearrayStream
 from kmip.core.messages.payloads import base
 
+
 class ActivateRequestPayload(base.RequestPayload):
     """
     A request payload for the Activate operation.
@@ -29,6 +30,7 @@ class ActivateRequestPayload(base.RequestPayload):
     Attributes:
         unique_identifier: The UUID of a managed cryptographic object
     """
+
     def __init__(self,
                  unique_identifier=None):
         """
@@ -98,6 +100,7 @@ class ActivateRequestPayload(base.RequestPayload):
                 msg = "invalid unique identifier"
                 raise TypeError(msg)
 
+
 class ActivateResponsePayload(base.ResponsePayload):
     """
     A response payload for the Activate operation.
@@ -108,6 +111,7 @@ class ActivateResponsePayload(base.ResponsePayload):
     Attributes:
         unique_identifier: The UUID of a managed cryptographic object.
     """
+
     def __init__(self,
                  unique_identifier=None):
         """

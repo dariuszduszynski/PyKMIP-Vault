@@ -22,6 +22,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestLocateRequestPayload(testtools.TestCase):
 
     def setUp(self):
@@ -1328,6 +1329,7 @@ class TestLocateRequestPayload(testtools.TestCase):
         equal.
         """
         self.test_not_equal_on_not_equal_maximum_items()
+
 
 class TestLocateResponsePayload(testtools.TestCase):
 

@@ -17,6 +17,7 @@ import testtools
 
 from kmip.core import enums
 
+
 class TestOrderedEnum(testtools.TestCase):
 
     def setUp(self):
@@ -77,6 +78,7 @@ class TestOrderedEnum(testtools.TestCase):
             enums.KMIPVersion.KMIP_2_0.__lt__(enums.WrappingMethod.ENCRYPT)
         )
 
+
 class TestEnumUtilityFunctions(testtools.TestCase):
 
     def setUp(self):
@@ -99,9 +101,9 @@ class TestEnumUtilityFunctions(testtools.TestCase):
 
     def test_get_enumerations_from_bit_mask(self):
         expected = [
-                enums.StorageStatusMask.ARCHIVAL_STORAGE,
-                enums.StorageStatusMask.DESTROYED_STORAGE,
-                enums.StorageStatusMask.ONLINE_STORAGE
+            enums.StorageStatusMask.ARCHIVAL_STORAGE,
+            enums.StorageStatusMask.DESTROYED_STORAGE,
+            enums.StorageStatusMask.ONLINE_STORAGE
         ]
         observed = enums.get_enumerations_from_bit_mask(
             enums.StorageStatusMask,

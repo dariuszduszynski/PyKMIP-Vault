@@ -18,6 +18,7 @@ from kmip.core import primitives
 from kmip.core import utils
 from kmip.core.messages.payloads import base
 
+
 class CancelRequestPayload(base.RequestPayload):
     """
     A request payload for the Cancel operation.
@@ -153,6 +154,7 @@ class CancelRequestPayload(base.RequestPayload):
             'asynchronous_correlation_value':
                 self.asynchronous_correlation_value
         })
+
 
 class CancelResponsePayload(base.ResponsePayload):
     """

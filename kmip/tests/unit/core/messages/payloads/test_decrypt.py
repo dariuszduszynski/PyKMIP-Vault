@@ -21,6 +21,7 @@ from kmip.core import utils
 
 from kmip.core.messages import payloads
 
+
 class TestDecryptRequestPayload(testtools.TestCase):
     """
     Test suite for the Decrypt request payload.
@@ -832,6 +833,7 @@ class TestDecryptRequestPayload(testtools.TestCase):
         equal.
         """
         self.test_not_equal_on_not_equal_unique_identifier()
+
 
 class TestDecryptResponsePayload(testtools.TestCase):
     """

@@ -18,6 +18,7 @@ import testtools
 from kmip.core import utils
 from kmip.core.messages import payloads
 
+
 class TestCheckRequestPayload(testtools.TestCase):
     """
     Test suite for the Check request payload.
@@ -579,6 +580,7 @@ class TestCheckRequestPayload(testtools.TestCase):
         """
         self.test_not_equal_on_not_equal_unique_identifier()
 
+
 class TestCheckResponsePayload(testtools.TestCase):
     """
     Test suite for the Check response payload.
@@ -1090,6 +1092,7 @@ class TestCheckResponsePayload(testtools.TestCase):
         observed = str(payload)
 
         self.assertEqual(expected, observed)
+
     def test_read_valid(self):
         """
         Test that a Check response payload can be read from a valid byte

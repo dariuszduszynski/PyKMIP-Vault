@@ -18,6 +18,7 @@ from kmip.core.messages.contents import ProtocolVersion
 from kmip.core.messages.payloads import base
 from kmip.core.utils import BytearrayStream
 
+
 class DiscoverVersionsRequestPayload(base.RequestPayload):
 
     def __init__(self, protocol_versions=None):
@@ -75,6 +76,7 @@ class DiscoverVersionsRequestPayload(base.RequestPayload):
             msg += "; expected {0}, received {1}".format(
                 list, self.protocol_versions)
             raise TypeError(msg)
+
 
 class DiscoverVersionsResponsePayload(base.ResponsePayload):
 

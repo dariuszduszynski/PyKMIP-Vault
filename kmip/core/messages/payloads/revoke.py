@@ -20,6 +20,7 @@ from kmip.core import primitives
 from kmip.core.messages.payloads import base
 from kmip.core.utils import BytearrayStream
 
+
 class RevokeRequestPayload(base.RequestPayload):
     """
     A request payload for the Revoke operation.
@@ -140,6 +141,7 @@ class RevokeRequestPayload(base.RequestPayload):
             msg = "invalid revocation reason"
             raise TypeError(msg)
 
+
 class RevokeResponsePayload(base.ResponsePayload):
     """
     A response payload for the Revoke operation.
@@ -148,6 +150,7 @@ class RevokeResponsePayload(base.ResponsePayload):
     Attributes:
         unique_identifier: The UUID of a managed cryptographic object.
     """
+
     def __init__(self,
                  unique_identifier=None):
         """
