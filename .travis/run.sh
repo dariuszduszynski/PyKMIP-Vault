@@ -18,6 +18,7 @@ if [[ "${RUN_INTEGRATION_TESTS}" == "1" ]]; then
     sudo mkdir -p /var/log/pykmip
     sudo chmod 777 /var/log/pykmip
     sudo chmod -R 777 /etc/pykmip/
+    python3 -m pip install -r requirements.txt
     python3 ./bin/run_server.py &
     tox -e integration -- --config client
 elif [[ "${RUN_INTEGRATION_TESTS}" == "2" ]]; then
